@@ -15,16 +15,17 @@ class CreateSamplesTable extends Migration
     {
         Schema::create('samples', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('company_id')->nullable();
-            $table->bigInteger('customer_id')->nullable();
+            $table->bigInteger('user_id')->nullable()->unsigned();
+            $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->bigInteger('customer_id')->nullable()->unsigned();
+            $table->bigInteger('opportunity_id')->nullable()->unsigned();
             $table->date('date')->nullable();
-            $table->bigInteger('status_id')->nullable();
-            $table->bigInteger('opportunity_id')->nullable();
+            $table->bigInteger('status_id')->nullable()->unsigned();
             $table->string('subject')->nullable();
-            $table->bigInteger('cargo_company_id')->nullable();
+            $table->bigInteger('cargo_company_id')->nullable()->unsigned();
             $table->string('cargo_tracking_number')->nullable();
-            $table->string('bus')->nullable();
-            $table->string('cargo_tracking_number')->nullable();
+            $table->string('bus_company')->nullable();
+            $table->string('car_plate')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

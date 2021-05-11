@@ -15,7 +15,14 @@ class CreatePriceListItemsTable extends Migration
     {
         Schema::create('price_list_items', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('price_list_id')->unsigned()->nullable();
+            $table->bigInteger('stock_id')->unsigned()->nullable();
+            $table->double('unit_price')->unsigned()->nullable();
+            $table->double('vat_rate')->unsigned()->nullable();
+            $table->string('currency_type')->nullable();
+            $table->double('currency')->unsigned()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

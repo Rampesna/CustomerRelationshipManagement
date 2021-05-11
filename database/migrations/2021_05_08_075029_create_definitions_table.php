@@ -15,7 +15,12 @@ class CreateDefinitionsTable extends Migration
     {
         Schema::create('definitions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->bigInteger('definition_id')->nullable()->unsigned();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

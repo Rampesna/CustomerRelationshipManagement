@@ -15,14 +15,14 @@ class CreateManagersTable extends Migration
     {
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('customer_id')->nullable();
+            $table->bigInteger('customer_id')->nullable()->unsigned();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
             $table->boolean('gender')->nullable();
             $table->date('birth_date')->nullable();
-            $table->bigInteger('department_id')->nullable();
-            $table->bigInteger('title_id')->nullable();
+            $table->bigInteger('department_id')->nullable()->unsigned();
+            $table->bigInteger('title_id')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,7 +15,11 @@ class CreateOpportunityActivitiesTable extends Migration
     {
         Schema::create('opportunity_activities', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->nullable()->unsigned();
+            $table->bigInteger('opportunity_id')->nullable()->unsigned();
+            $table->bigInteger('status_id')->nullable()->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

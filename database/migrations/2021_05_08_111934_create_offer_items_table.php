@@ -15,7 +15,22 @@ class CreateOfferItemsTable extends Migration
     {
         Schema::create('offer_items', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('offer_id')->unsigned()->nullable();
+            $table->bigInteger('stock_id')->unsigned()->nullable();
+            $table->bigInteger('unit_id')->unsigned()->nullable();
+            $table->double('unit_price')->unsigned()->nullable();
+            $table->double('amount')->unsigned()->nullable();
+            $table->double('vat_rate')->unsigned()->nullable();
+            $table->double('vat_total')->unsigned()->nullable();
+            $table->double('discount_rate')->unsigned()->nullable();
+            $table->double('discount_total')->unsigned()->nullable();
+            $table->double('subtotal')->unsigned()->nullable();
+            $table->double('grand_total')->unsigned()->nullable();
+            $table->text('description_1')->nullable();
+            $table->text('description_2')->nullable();
+            $table->text('description_3')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

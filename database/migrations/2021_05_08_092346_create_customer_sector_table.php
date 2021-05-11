@@ -14,8 +14,8 @@ class CreateCustomerSectorTable extends Migration
     public function up()
     {
         Schema::create('customer_sector', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigInteger('customer_id')->unsigned();
+            $table->bigInteger('sector_id')->unsigned();
         });
     }
 

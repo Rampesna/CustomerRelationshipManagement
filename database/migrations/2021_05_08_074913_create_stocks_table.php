@@ -15,7 +15,20 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->string('guid')->nullable();
+            $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->string('name')->nullable();
+            $table->string('short_name')->nullable();
+            $table->double('wholesale_vat')->nullable();
+            $table->double('retail_vat')->nullable();
+            $table->string('currency_type')->nullable();
+            $table->bigInteger('unit_type_id')->nullable()->unsigned();
+            $table->double('unit_price')->nullable();
+            $table->bigInteger('type_id')->nullable()->unsigned();
+            $table->bigInteger('status_id')->nullable()->unsigned();
+            $table->double('amount')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

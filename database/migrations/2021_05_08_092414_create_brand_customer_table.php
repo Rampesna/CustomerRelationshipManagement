@@ -14,8 +14,8 @@ class CreateBrandCustomerTable extends Migration
     public function up()
     {
         Schema::create('brand_customer', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigInteger('customer_id')->unsigned();
+            $table->bigInteger('brand_id')->unsigned();
         });
     }
 

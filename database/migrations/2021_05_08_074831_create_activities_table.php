@@ -15,15 +15,16 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('company_id');
-            $table->bigInteger('relation_id')->nullable();
+            $table->bigInteger('user_id')->nullable()->unsigned();
+            $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->bigInteger('relation_id')->nullable()->unsigned();
             $table->string('relation_type')->nullable();
             $table->string('subject')->nullable();
             $table->text('notes')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->date('meet_reason_id')->nullable();
-            $table->date('priority_id')->nullable();
+            $table->bigInteger('meet_reason_id')->nullable()->unsigned();
+            $table->bigInteger('priority_id')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

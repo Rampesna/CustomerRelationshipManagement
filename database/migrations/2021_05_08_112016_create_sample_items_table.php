@@ -15,7 +15,11 @@ class CreateSampleItemsTable extends Migration
     {
         Schema::create('sample_items', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('sample_id')->unsigned()->nullable();
+            $table->bigInteger('stock_id')->unsigned()->nullable();
+            $table->bigInteger('unit_id')->unsigned()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
