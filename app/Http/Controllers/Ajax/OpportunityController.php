@@ -34,8 +34,8 @@ class OpportunityController extends Controller
         filterColumn('user_id', function ($opportunities, $keyword) {
             return $opportunities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
-        editColumn('id', function ($reservation) {
-            return '#' . $reservation->id;
+        editColumn('id', function ($opportunity) {
+            return '#' . $opportunity->id;
         })->
         editColumn('customer_id', function ($opportunity) {
             return $opportunity->customer_id ? @$opportunity->customer->title : '';
@@ -67,4 +67,5 @@ class OpportunityController extends Controller
         $opportunityService->setOpportunity($request->id ? Opportunity::find($request->id) : new Opportunity);
         $opportunityService->save($request);
     }
+
 }

@@ -1,0 +1,92 @@
+@extends('layouts.master')
+@section('title', 'Müşteriler')
+@php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
+@php(setlocale(LC_TIME, 'Turkish'))
+
+@section('content')
+
+    @include('pages.customer.components.create')
+    @include('pages.customer.components.edit')
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card" id="customersCard">
+                <div class="card-body">
+                    <table class="table" id="customers">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Firma</th>
+                            <th>Ünvan</th>
+                            <th>Vergi No</th>
+                            <th>E-posta</th>
+                            <th>Ülke</th>
+                            <th>Telefon</th>
+                            <th>Sınıf</th>
+                            <th>Tip</th>
+                            <th>Referans</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Firma</th>
+                            <th>Ünvan</th>
+                            <th>Vergi No</th>
+                            <th>E-posta</th>
+                            <th>Ülke</th>
+                            <th>Telefon</th>
+                            <th>Sınıf</th>
+                            <th>Tip</th>
+                            <th>Referans</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        <a onclick="create()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Yeni Oluştur</span>
+                </div>
+            </div>
+        </a>
+        <div id="EditingContexts">
+            <hr>
+{{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-xl-12">--}}
+{{--                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
+            <a onclick="edit()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-pen text-primary"></i><span class="ml-4">Düzenle</span>
+                    </div>
+                </div>
+            </a>
+            <a onclick="drop()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+@endsection
+
+@section('page-styles')
+    @include('pages.customer.components.style')
+@stop
+
+@section('page-script')
+    @include('pages.customer.components.script')
+@stop

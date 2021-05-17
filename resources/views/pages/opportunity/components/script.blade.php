@@ -24,7 +24,6 @@
     var countryIdCreate = $("#country_id_create");
     var provinceIdCreate = $("#province_id_create");
     var districtIdCreate = $("#district_id_create");
-
     var priorityIdCreate = $("#priority_id_create");
     var accessTypeIdCreate = $("#access_type_id_create");
     var estimatedResultTypeIdCreate = $("#estimated_result_type_id_create");
@@ -314,6 +313,11 @@
         });
     }
 
+    function show() {
+        var id = $("#id_edit").val();
+        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+    }
+
     function drop() {
 
     }
@@ -439,11 +443,15 @@
             data: {},
             success: function (users) {
                 userIdCreate.empty();
+                userIdEdit.empty();
                 userIdCreate.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                userIdEdit.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
                 $.each(users, function (index) {
                     userIdCreate.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                    userIdEdit.append(`<option value="${users[index].id}">${users[index].name}</option>`);
                 });
                 userIdCreate.selectpicker('refresh');
+                userIdEdit.selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -462,11 +470,15 @@
             },
             success: function (customers) {
                 customerIdCreate.empty();
+                customerIdEdit.empty();
                 customerIdCreate.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                customerIdEdit.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
                 $.each(customers, function (index) {
                     customerIdCreate.append(`<option value="${customers[index].id}">${customers[index].title}</option>`);
+                    customerIdEdit.append(`<option value="${customers[index].id}">${customers[index].title}</option>`);
                 });
                 customerIdCreate.selectpicker('refresh');
+                customerIdEdit.selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -654,36 +666,40 @@
         var capacity_type_id = $("#capacity_type_id_create").val();
         var status_id = $("#status_id_create").val();
 
-        saveOpportunity({
-            _token: '{{ csrf_token() }}',
-            auth_user_id: auth_user_id,
-            user_id: user_id,
-            company_id: company_id,
-            customer_id: customer_id,
-            name: name,
-            email: email,
-            phone_number: phone_number,
-            manager_name: manager_name,
-            manager_email: manager_email,
-            manager_phone_number: manager_phone_number,
-            website: website,
-            description: description,
-            date: date,
-            price: price,
-            currency: currency,
-            priority_id: priority_id,
-            access_type_id: access_type_id,
-            domestic: domestic,
-            country_id: country_id,
-            province_id: province_id,
-            district_id: district_id,
-            foundation_date: foundation_date,
-            estimated_result: estimated_result,
-            estimated_result_type_id: estimated_result_type_id,
-            capacity: capacity,
-            capacity_type_id: capacity_type_id,
-            status_id: status_id,
-        }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            saveOpportunity({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                user_id: user_id,
+                company_id: company_id,
+                customer_id: customer_id,
+                name: name,
+                email: email,
+                phone_number: phone_number,
+                manager_name: manager_name,
+                manager_email: manager_email,
+                manager_phone_number: manager_phone_number,
+                website: website,
+                description: description,
+                date: date,
+                price: price,
+                currency: currency,
+                priority_id: priority_id,
+                access_type_id: access_type_id,
+                domestic: domestic,
+                country_id: country_id,
+                province_id: province_id,
+                district_id: district_id,
+                foundation_date: foundation_date,
+                estimated_result: estimated_result,
+                estimated_result_type_id: estimated_result_type_id,
+                capacity: capacity,
+                capacity_type_id: capacity_type_id,
+                status_id: status_id,
+            }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
+        }
     });
 
     UpdateButton.click(function () {
@@ -716,37 +732,41 @@
         var capacity_type_id = $("#capacity_type_id_edit").val();
         var status_id = $("#status_id_edit").val();
 
-        saveOpportunity({
-            _token: '{{ csrf_token() }}',
-            auth_user_id: auth_user_id,
-            id: id,
-            user_id: user_id,
-            company_id: company_id,
-            customer_id: customer_id,
-            name: name,
-            email: email,
-            phone_number: phone_number,
-            manager_name: manager_name,
-            manager_email: manager_email,
-            manager_phone_number: manager_phone_number,
-            website: website,
-            description: description,
-            date: date,
-            price: price,
-            currency: currency,
-            priority_id: priority_id,
-            access_type_id: access_type_id,
-            domestic: domestic,
-            country_id: country_id,
-            province_id: province_id,
-            district_id: district_id,
-            foundation_date: foundation_date,
-            estimated_result: estimated_result,
-            estimated_result_type_id: estimated_result_type_id,
-            capacity: capacity,
-            capacity_type_id: capacity_type_id,
-            status_id: status_id,
-        }, 'Fırsat Başarıyla Güncellendi', 'Fırsat Güncellenirken Bir Hata Oluştu!', 1);
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            saveOpportunity({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                id: id,
+                user_id: user_id,
+                company_id: company_id,
+                customer_id: customer_id,
+                name: name,
+                email: email,
+                phone_number: phone_number,
+                manager_name: manager_name,
+                manager_email: manager_email,
+                manager_phone_number: manager_phone_number,
+                website: website,
+                description: description,
+                date: date,
+                price: price,
+                currency: currency,
+                priority_id: priority_id,
+                access_type_id: access_type_id,
+                domestic: domestic,
+                country_id: country_id,
+                province_id: province_id,
+                district_id: district_id,
+                foundation_date: foundation_date,
+                estimated_result: estimated_result,
+                estimated_result_type_id: estimated_result_type_id,
+                capacity: capacity,
+                capacity_type_id: capacity_type_id,
+                status_id: status_id,
+            }, 'Fırsat Başarıyla Güncellendi', 'Fırsat Güncellenirken Bir Hata Oluştu!', 1);
+        }
     });
 
     function saveOpportunity(data, successMessage, errorMessage, direction) {

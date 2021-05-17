@@ -40,7 +40,7 @@ class Customer extends Model
         return $this->belongsTo(Definition::class, 'type_id', 'id');
     }
 
-    public function referance()
+    public function reference()
     {
         return $this->belongsTo(Definition::class, 'reference_id', 'id');
     }

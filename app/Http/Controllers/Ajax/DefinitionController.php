@@ -32,4 +32,39 @@ class DefinitionController extends Controller
     {
         return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 5)->get());
     }
+
+    public function activityMeetingReasons(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 6)->get());
+    }
+
+    public function activityPriorities(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 7)->get());
+    }
+
+    public function customerClasses(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 8)->get());
+    }
+
+    public function customerTypes(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 9)->get());
+    }
+
+    public function customerReferences(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 10)->get());
+    }
+
+    public function managerDepartments(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 11)->get());
+    }
+
+    public function managerTitles(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 12)->get());
+    }
 }

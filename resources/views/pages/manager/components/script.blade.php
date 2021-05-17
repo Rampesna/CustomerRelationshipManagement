@@ -1,0 +1,510 @@
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js?v=7.0.3') }}"></script>
+
+<script>
+    const months = [
+        'Ocak',
+        'Şubat',
+        'Mart',
+        'Nisan',
+        'Mayıs',
+        'Haziran',
+        'Temmuz',
+        'Ağustos',
+        'Eylül',
+        'Ekim',
+        'Kasım',
+        'Aralık',
+    ];
+
+    var SelectedCompany = $("#SelectedCompany");
+
+    var companyIdCreate = $("#company_id_create");
+    var customerIdCreate = $("#customer_id_create");
+    var departmentIdCreate = $("#department_id_create");
+    var titleIdCreate = $("#title_id_create");
+
+    var companyIdEdit = $("#company_id_edit");
+    var customerIdEdit = $("#customer_id_edit");
+    var departmentIdEdit = $("#department_id_edit");
+    var titleIdEdit = $("#title_id_edit");
+
+    var CreateButton = $("#CreateButton");
+    var UpdateButton = $("#UpdateButton");
+
+    var managers = $('#managers').DataTable({
+        language: {
+            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
+            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
+            loadingRecords: "Kayıtlar Yükleniyor.",
+            zeroRecords: "Tablo Boş",
+            search: "Arama:",
+            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
+            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
+            sProcessing: "Yükleniyor...",
+            paginate: {
+                first: "İlk",
+                previous: "Önceki",
+                next: "Sonraki",
+                last: "Son"
+            },
+            select: {
+                rows: {
+                    "_": "%d kayıt seçildi",
+                    "0": "",
+                    "1": "1 kayıt seçildi"
+                }
+            },
+            buttons: {
+                print: {
+                    title: 'Yazdır'
+                }
+            }
+        },
+
+        dom: 'rtipl',
+
+        order: [
+            [
+                0,
+                "desc"
+            ]
+        ],
+
+        initComplete: function () {
+            var r = $('#managers tfoot tr');
+            $('#managers thead').append(r);
+            this.api().columns().every(function (index) {
+                var column = this;
+                var input = document.createElement('input');
+                input.className = 'form-control';
+                $(input).appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        column.search($(this).val(), false, false, true).draw();
+                    });
+            });
+        },
+
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: 'get',
+            url: '{{ route('ajax.manager.datatable') }}',
+            data: function (d) {
+                return $.extend({}, d, {
+                    company_id: SelectedCompany.val()
+                });
+            },
+        },
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'customer_id', name: 'customer_id'},
+            {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'phone_number', name: 'phone_number'},
+            {data: 'gender', name: 'gender'},
+            {data: 'department_id', name: 'department_id'},
+            {data: 'title_id', name: 'title_id'},
+        ],
+
+        responsive: true,
+        stateSave: true,
+        select: 'single'
+    });
+
+    var CreateRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'create_rightbar_close',
+                toggleBy: 'create_rightbar_toggle'
+            });
+
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+
+                    height = height - 2;
+
+                    return height;
+                }
+            });
+        }
+
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('CreateRightbar');
+
+                if (!_element) {
+                    return;
+                }
+
+                // Initialize
+                _init();
+            },
+
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    CreateRightBar.init();
+
+    var EditRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'edit_rightbar_close',
+                toggleBy: 'edit_rightbar_toggle'
+            });
+
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+
+                    height = height - 2;
+
+                    return height;
+                }
+            });
+        }
+
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('EditRightbar');
+
+                if (!_element) {
+                    return;
+                }
+
+                // Initialize
+                _init();
+            },
+
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    EditRightBar.init();
+
+    function create() {
+        $("#CreateForm").trigger('reset');
+        companyIdCreate.selectpicker('refresh');
+        $("#create_rightbar_toggle").trigger('click');
+    }
+
+    function edit() {
+        $("#edit_rightbar_toggle").trigger('click');
+        $("#EditRightbar").hide();
+
+        var id = $("#id_edit").val();
+
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.customer.show') }}',
+            data: {
+                id: id
+            },
+            success: function (customer) {
+                $("#company_id_edit").val(customer.company_id).selectpicker('refresh');
+                $("#title_edit").val(customer.title);
+                $("#tax_number_edit").val(customer.tax_number);
+                $("#tax_office").val(customer.tax_office);
+                $("#email_edit").val(customer.email);
+                $("#country_id_edit").val(customer.country_id).selectpicker('refresh');
+                $("#phone_number_edit").val(customer.phone_number);
+                getProvincesEdit();
+                $("#province_id_edit").val(customer.province_id).selectpicker('refresh');
+                getDistrictsEdit();
+                $("#district_id_edit").val(customer.district_id).selectpicker('refresh');
+                $("#website_edit").val(customer.website);
+                $("#foundation_date_edit").val(customer.foundation_date);
+                $("#class_id_edit").val(customer.class_id).selectpicker('refresh');
+                $("#type_id_edit").val(customer.type_id).selectpicker('refresh');
+                $("#reference_id_edit").val(customer.reference_id).selectpicker('refresh');
+                $("#EditRightbar").fadeIn(250);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function show() {
+        var id = $("#id_edit").val();
+        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+    }
+
+    function drop() {
+
+    }
+
+    function getManagerDepartments() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.managerDepartments') }}',
+            data: {
+                company_id: SelectedCompany.val()
+            },
+            success: function (departments) {
+                departmentIdCreate.empty();
+                departmentIdEdit.empty();
+                $.each(references, function (index) {
+                    departmentIdCreate.append(`<option value="${departments[index].id}">${departments[index].name}</option>`);
+                    departmentIdEdit.append(`<option value="${departments[index].id}">${departments[index].name}</option>`);
+                });
+                departmentIdCreate.selectpicker('refresh');
+                departmentIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    getCustomerReferences();
+
+    SelectedCompany.change(function () {
+        getCustomerClasses();
+        getCustomerTypes();
+        getCustomerReferences();
+        customers.ajax.reload().draw();
+    });
+
+    countryIdCreate.change(function () {
+        getProvincesCreate();
+    });
+
+    provinceIdCreate.change(function () {
+        getDistrictsCreate();
+    });
+
+    countryIdEdit.change(function () {
+        getProvincesEdit();
+    });
+
+    provinceIdEdit.change(function () {
+        getDistrictsEdit();
+    });
+
+    CreateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var company_id = $("#company_id_create").val();
+        var title = $("#title_create").val();
+        var tax_number = $("#tax_number_create").val();
+        var tax_office = $("#tax_office_create").val();
+        var email = $("#email_create").val();
+        var country_id = $("#country_id_create").val();
+        var phone_number = $("#phone_number_create").val();
+        var province_id = $("#province_id_create").val();
+        var district_id = $("#district_id_create").val();
+        var website = $("#website_create").val();
+        var foundation_date = $("#foundation_date_create").val();
+        var class_id = $("#class_id_create").val();
+        var type_id = $("#type_id_create").val();
+        var reference_id = $("#reference_id_create").val();
+
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            saveCustomer({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                company_id: company_id,
+                title: title,
+                tax_number: tax_number,
+                tax_office: tax_office,
+                email: email,
+                country_id: country_id,
+                phone_number: phone_number,
+                province_id: province_id,
+                district_id: district_id,
+                website: website,
+                foundation_date: foundation_date,
+                class_id: class_id,
+                type_id: type_id,
+                reference_id: reference_id,
+            }, 'Yeni Müşteri Başarıyla Oluşturuldu', 'Müşteri Oluşturulurken Bir Hata Oluştu!', 0);
+        }
+    });
+
+    UpdateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var id = $("#id_edit").val();
+        var company_id = $("#company_id_edit").val();
+        var title = $("#title_edit").val();
+        var tax_number = $("#tax_number_edit").val();
+        var tax_office = $("#tax_office_edit").val();
+        var email = $("#email_edit").val();
+        var country_id = $("#country_id_edit").val();
+        var phone_number = $("#phone_number_edit").val();
+        var province_id = $("#province_id_edit").val();
+        var district_id = $("#district_id_edit").val();
+        var website = $("#website_edit").val();
+        var foundation_date = $("#foundation_date_edit").val();
+        var class_id = $("#class_id_edit").val();
+        var type_id = $("#type_id_edit").val();
+        var reference_id = $("#reference_id_edit").val();
+
+        console.log({
+            _token: '{{ csrf_token() }}',
+            id: id,
+            auth_user_id: auth_user_id,
+            company_id: company_id,
+            title: title,
+            tax_number: tax_number,
+            tax_office: tax_office,
+            email: email,
+            country_id: country_id,
+            phone_number: phone_number,
+            province_id: province_id,
+            district_id: district_id,
+            website: website,
+            foundation_date: foundation_date,
+            class_id: class_id,
+            type_id: type_id,
+            reference_id: reference_id,
+        })
+
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            saveCustomer({
+                _token: '{{ csrf_token() }}',
+                id: id,
+                auth_user_id: auth_user_id,
+                company_id: company_id,
+                title: title,
+                tax_number: tax_number,
+                tax_office: tax_office,
+                email: email,
+                country_id: country_id,
+                phone_number: phone_number,
+                province_id: province_id,
+                district_id: district_id,
+                website: website,
+                foundation_date: foundation_date,
+                class_id: class_id,
+                type_id: type_id,
+                reference_id: reference_id,
+            }, 'Müşteri Başarıyla Güncellendi', 'Müşteri Güncellenirken Bir Hata Oluştu!', 1);
+        }
+    });
+
+    function saveCustomer(data, successMessage, errorMessage, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.customer.save') }}',
+            data: data,
+            success: function (response) {
+                toastr.success(successMessage);
+                if (direction === 0) {
+                    $("#create_rightbar_toggle").click();
+                } else if (direction === 1) {
+                    $("#edit_rightbar_toggle").click();
+                }
+                customers.ajax.reload().draw();
+                console.log(response)
+            },
+            error: function (error) {
+                toastr.success(errorMessage);
+                console.log(error)
+            }
+        });
+    }
+
+    $('body').on('contextmenu', function (e) {
+        var selectedRows = customers.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            var id = selectedRows.data()[0].id.replace('#', '');
+            $("#id_edit").val(id);
+            $("#EditingContexts").show();
+        } else {
+            $("#EditingContexts").hide();
+        }
+
+        var top = e.pageY - 10;
+        var left = e.pageX - 10;
+
+        $("#context-menu").css({
+            display: "block",
+            top: top,
+            left: left
+        });
+
+        return false;
+    }).on("click", function () {
+        $("#context-menu").hide();
+    }).on('focusout', function () {
+        $("#context-menu").hide();
+    });
+
+    $('#customers tbody').on('mousedown', 'tr', function (e) {
+        if (e.button === 0) {
+            return false;
+        } else {
+            customers.row(this).select();
+        }
+    });
+
+    $(document).click((e) => {
+        if ($.contains($("#customersCard").get(0), e.target)) {
+        } else {
+            $("#context-menu").hide();
+            customers.rows().deselect();
+        }
+    });
+</script>

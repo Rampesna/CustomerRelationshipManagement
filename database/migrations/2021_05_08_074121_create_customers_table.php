@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
             $table->bigInteger('company_id')->nullable()->unsigned();
             $table->string('title')->nullable();
             $table->string('tax_number')->nullable();
-            $table->string('office')->nullable();
+            $table->string('tax_office')->nullable();
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('website')->nullable();
