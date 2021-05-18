@@ -25,10 +25,13 @@ class ManagerController extends Controller
         editColumn('id', function ($manager) {
             return '#' . $manager->id;
         })->
+        editColumn('customer_id', function ($manager) {
+            return @$manager->customer ? @$manager->customer->title : '';
+        })->
         editColumn('birth_date', function ($manager) {
             return $manager->birth_date ? @date('d.m.Y', strtotime($manager->birth_date)) : '';
         })->
-        editColumn('birth_date', function ($manager) {
+        editColumn('gender', function ($manager) {
             return $manager->gender == 1 ? 'Erkek' : 'Kadın';
         })->
         editColumn('department_id', function ($manager) {
@@ -42,7 +45,9 @@ class ManagerController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Manager::find($request->id), 200);
+        return response()->json(Manager::with([
+            'customer'
+        ])->find($request->id), 200);
     }
 
     public function save(Request $request)

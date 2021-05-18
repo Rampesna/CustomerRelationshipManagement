@@ -2,17 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\Opportunity;
-use App\Models\OpportunityActivity;
+use App\Models\Manager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ManagerService
 {
     private $manager;
 
     /**
-     * @return mixed
+     * @return Manager
      */
     public function getManager()
     {
@@ -20,9 +18,9 @@ class ManagerService
     }
 
     /**
-     * @param mixed $manager
+     * @param Manager $manager
      */
-    public function setManager($manager): void
+    public function setManager(Manager $manager): void
     {
         $this->manager = $manager;
     }

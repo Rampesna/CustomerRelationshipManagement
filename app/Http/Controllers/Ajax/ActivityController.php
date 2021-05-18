@@ -29,14 +29,14 @@ class ActivityController extends Controller
         editColumn('relation_type', function ($activity) {
             return @$activity->relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (
             @$activity->relation_type == 'App\\Models\\Customer' ? 'Müşteri' : (
-            @$activity->relation_type == 'App\\Models\\Manager' ? 'Yetkili' : ''
+            @$activity->relation_type == 'App\\Models\\Manager' ? 'Yetkili' : @$activity->relation_type
             )
             );
         })->
         editColumn('relation_id', function ($activity) {
             return @$activity->relation_type == 'App\\Models\\Opportunity' ? $activity->relation->name : (
             @$activity->relation_type == 'App\\Models\\Customer' ? $activity->relation->title : (
-            @$activity->relation_type == 'App\\Models\\Manager' ? $activity->relation->name : ''
+            @$activity->relation_type == 'App\\Models\\Manager' ? $activity->relation->name : @$activity->relation_id
             )
             );
         })->

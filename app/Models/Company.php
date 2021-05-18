@@ -14,4 +14,9 @@ class Company extends Model
     {
         return $this->belongsTo(ErpType::class, 'erp_type_id', 'id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

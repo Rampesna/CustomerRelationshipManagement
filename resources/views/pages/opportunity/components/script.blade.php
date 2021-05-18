@@ -252,8 +252,15 @@
     EditRightBar.init();
 
     function create() {
+        getUsers(SelectedCompany.val());
+        getCustomers(SelectedCompany.val());
+        getOpportunityPriorities(SelectedCompany.val());
+        getOpportunityAccessTypes(SelectedCompany.val());
+        getOpportunityEstimatedResultTypes(SelectedCompany.val());
+        getOpportunityCapacityTypes(SelectedCompany.val());
+        getOpportunityStatuses(SelectedCompany.val());
         $("#CreateForm").trigger('reset');
-        companyIdCreate.selectpicker('refresh');
+        companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
         userIdCreate.selectpicker('refresh');
         customerIdCreate.selectpicker('refresh');
         countryIdCreate.selectpicker('refresh');
@@ -436,11 +443,13 @@
         });
     }
 
-    function getUsers() {
+    function getUsers(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.user.index') }}',
-            data: {},
+            data: {
+                company_id: company_id
+            },
             success: function (users) {
                 userIdCreate.empty();
                 userIdEdit.empty();
@@ -459,9 +468,7 @@
         });
     }
 
-    function getCustomers() {
-        var company_id = SelectedCompany.val();
-
+    function getCustomers(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.customer.index') }}',
@@ -486,12 +493,12 @@
         });
     }
 
-    function getOpportunityPriorities() {
+    function getOpportunityPriorities(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.opportunityPriorities') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (priorities) {
                 priorityIdCreate.empty();
@@ -509,12 +516,12 @@
         });
     }
 
-    function getOpportunityAccessTypes() {
+    function getOpportunityAccessTypes(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.opportunityAccessTypes') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (accessTypes) {
                 accessTypeIdCreate.empty();
@@ -532,12 +539,12 @@
         });
     }
 
-    function getOpportunityEstimatedResultTypes() {
+    function getOpportunityEstimatedResultTypes(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.opportunityEstimatedResultTypes') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (estimatedResultTypes) {
                 estimatedResultTypeIdCreate.empty();
@@ -555,12 +562,12 @@
         });
     }
 
-    function getOpportunityCapacityTypes() {
+    function getOpportunityCapacityTypes(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.opportunityCapacityTypes') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (capacityTypes) {
                 capacityTypeIdCreate.empty();
@@ -578,12 +585,12 @@
         });
     }
 
-    function getOpportunityStatuses() {
+    function getOpportunityStatuses(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.opportunityStatuses') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (statuses) {
                 statusIdCreate.empty();
@@ -617,23 +624,43 @@
         getDistrictsEdit();
     });
 
+    companyIdCreate.change(function () {
+        getUsers($(this).val());
+        getCustomers($(this).val());
+        getOpportunityPriorities($(this).val());
+        getOpportunityAccessTypes($(this).val());
+        getOpportunityEstimatedResultTypes($(this).val());
+        getOpportunityCapacityTypes($(this).val());
+        getOpportunityStatuses($(this).val());
+    });
+
+    companyIdEdit.change(function () {
+        getUsers($(this).val());
+        getCustomers($(this).val());
+        getOpportunityPriorities($(this).val());
+        getOpportunityAccessTypes($(this).val());
+        getOpportunityEstimatedResultTypes($(this).val());
+        getOpportunityCapacityTypes($(this).val());
+        getOpportunityStatuses($(this).val());
+    });
+
     getCountries();
-    getUsers();
-    getCustomers();
-    getOpportunityPriorities();
-    getOpportunityAccessTypes();
-    getOpportunityEstimatedResultTypes();
-    getOpportunityCapacityTypes();
-    getOpportunityStatuses();
-    getCustomers();
+    getUsers(SelectedCompany.val());
+    getCustomers(SelectedCompany.val());
+    getOpportunityPriorities(SelectedCompany.val());
+    getOpportunityAccessTypes(SelectedCompany.val());
+    getOpportunityEstimatedResultTypes(SelectedCompany.val());
+    getOpportunityCapacityTypes(SelectedCompany.val());
+    getOpportunityStatuses(SelectedCompany.val());
 
     SelectedCompany.change(function () {
-        getCustomers();
-        getOpportunityPriorities();
-        getOpportunityAccessTypes();
-        getOpportunityEstimatedResultTypes();
-        getOpportunityCapacityTypes();
-        getOpportunityStatuses();
+        getUsers($(this).val());
+        getCustomers(SelectedCompany.val());
+        getOpportunityPriorities(SelectedCompany.val());
+        getOpportunityAccessTypes(SelectedCompany.val());
+        getOpportunityEstimatedResultTypes(SelectedCompany.val());
+        getOpportunityCapacityTypes(SelectedCompany.val());
+        getOpportunityStatuses(SelectedCompany.val());
         opportunities.ajax.reload().draw();
     });
 
@@ -827,6 +854,7 @@
 
     $(document).click((e) => {
         if ($.contains($("#opportunitiesCard").get(0), e.target)) {
+
         } else {
             $("#context-menu").hide();
             opportunities.rows().deselect();

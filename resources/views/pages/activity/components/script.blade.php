@@ -248,13 +248,14 @@
 
     function create() {
         $("#CreateForm").trigger('reset');
-        companyIdCreate.selectpicker('refresh');
+        companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
         userIdCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
     function edit() {
         $("#edit_rightbar_toggle").trigger('click');
+        $("#EditRightbar").hide();
 
         var id = $("#id_edit").val();
 
@@ -265,16 +266,17 @@
                 id: id
             },
             success: function (activity) {
-                // console.log(activity)
                 $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
+                getUsers(activity.company_id);
                 $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
                 $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
-                getRelationsEdit(activity.relation_id);
+                getRelationsEdit(activity.relation_id, companyIdEdit.val());
                 $("#subject_edit").val(activity.subject);
                 $("#start_date_edit").val(activity.start_date);
                 $("#end_date_edit").val(activity.end_date);
                 $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
                 $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
+                $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
                 console.log(error)
@@ -291,11 +293,14 @@
 
     }
 
-    function getUsers() {
+    function getUsers(company_id) {
         $.ajax({
+            async: false,
             type: 'get',
             url: '{{ route('ajax.user.index') }}',
-            data: {},
+            data: {
+                company_id: company_id
+            },
             success: function (users) {
                 userIdCreate.empty();
                 userIdEdit.empty();
@@ -314,8 +319,7 @@
         });
     }
 
-    function getRelationsCreate() {
-        var company_id = SelectedCompany.val();
+    function getRelationsCreate(company_id) {
         var relation_type = relationTypeCreate.val();
 
         if (relation_type === 'App\\Models\\Opportunity') {
@@ -361,8 +365,7 @@
         }
     }
 
-    function getRelationsEdit(id) {
-        var company_id = SelectedCompany.val();
+    function getRelationsEdit(id, company_id) {
         var relation_type = relationTypeEdit.val();
 
         if (relation_type === 'App\\Models\\Opportunity') {
@@ -408,12 +411,12 @@
         }
     }
 
-    function getActivityMeetingReasons() {
+    function getActivityMeetingReasons(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.activityMeetingReasons') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (meetingReasons) {
                 meetingReasonIdCreate.empty();
@@ -431,12 +434,12 @@
         });
     }
 
-    function getActivityPriorities() {
+    function getActivityPriorities(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.activityPriorities') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (priorities) {
                 priorityIdCreate.empty();
@@ -454,26 +457,41 @@
         });
     }
 
-    getUsers();
-    getRelationsCreate();
-    getRelationsEdit();
-    getActivityMeetingReasons();
-    getActivityPriorities();
+    getUsers(SelectedCompany.val());
+    getRelationsCreate(SelectedCompany.val());
+    getRelationsEdit(SelectedCompany.val());
+    getActivityMeetingReasons(SelectedCompany.val());
+    getActivityPriorities(SelectedCompany.val());
 
     SelectedCompany.change(function () {
-        getRelationsCreate();
-        getRelationsEdit();
-        getActivityMeetingReasons();
-        getActivityPriorities();
+        getUsers($(this).val());
+        getRelationsCreate($(this).val());
+        getRelationsEdit(SelectedCompany.val());
+        getActivityMeetingReasons(SelectedCompany.val());
+        getActivityPriorities(SelectedCompany.val());
         activities.ajax.reload().draw();
     });
 
     relationTypeCreate.change(function () {
-        getRelationsCreate();
+        getRelationsCreate(companyIdCreate.val());
     });
 
     relationTypeEdit.change(function () {
-        getRelationsEdit();
+        getRelationsEdit(null, companyIdEdit.val());
+    });
+
+    companyIdCreate.change(function () {
+        getUsers($(this).val());
+        getRelationsCreate($(this).val());
+        getActivityMeetingReasons($(this).val());
+        getActivityPriorities($(this).val());
+    });
+
+    companyIdEdit.change(function () {
+        getUsers($(this).val());
+        getRelationsEdit(null, $(this).val());
+        getActivityMeetingReasons($(this).val());
+        getActivityPriorities($(this).val());
     });
 
     CreateButton.click(function () {

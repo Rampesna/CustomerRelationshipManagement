@@ -250,7 +250,7 @@
 
     function create() {
         $("#CreateForm").trigger('reset');
-        companyIdCreate.selectpicker('refresh');
+        companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -418,12 +418,12 @@
         });
     }
 
-    function getCustomerClasses() {
+    function getCustomerClasses(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.customerClasses') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (classes) {
                 classIdCreate.empty();
@@ -441,12 +441,12 @@
         });
     }
 
-    function getCustomerTypes() {
+    function getCustomerTypes(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.customerTypes') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (types) {
                 typeIdCreate.empty();
@@ -464,12 +464,12 @@
         });
     }
 
-    function getCustomerReferences() {
+    function getCustomerReferences(company_id) {
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.definition.customerReferences') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: company_id
             },
             success: function (references) {
                 referenceIdCreate.empty();
@@ -488,14 +488,14 @@
     }
 
     getCountries();
-    getCustomerClasses();
-    getCustomerTypes();
-    getCustomerReferences();
+    getCustomerClasses(SelectedCompany.val());
+    getCustomerTypes(SelectedCompany.val());
+    getCustomerReferences(SelectedCompany.val());
 
     SelectedCompany.change(function () {
-        getCustomerClasses();
-        getCustomerTypes();
-        getCustomerReferences();
+        getCustomerClasses(SelectedCompany.val());
+        getCustomerTypes(SelectedCompany.val());
+        getCustomerReferences(SelectedCompany.val());
         customers.ajax.reload().draw();
     });
 
@@ -513,6 +513,18 @@
 
     provinceIdEdit.change(function () {
         getDistrictsEdit();
+    });
+
+    companyIdCreate.change(function () {
+        getCustomerClasses($(this).val());
+        getCustomerTypes($(this).val());
+        getCustomerReferences($(this).val());
+    });
+
+    companyIdEdit.change(function () {
+        getCustomerClasses($(this).val());
+        getCustomerTypes($(this).val());
+        getCustomerReferences($(this).val());
     });
 
     CreateButton.click(function () {

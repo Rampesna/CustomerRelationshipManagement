@@ -17,8 +17,8 @@ class CreateSamplesTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->nullable()->unsigned();
             $table->bigInteger('company_id')->nullable()->unsigned();
-            $table->bigInteger('customer_id')->nullable()->unsigned();
-            $table->bigInteger('opportunity_id')->nullable()->unsigned();
+            $table->bigInteger('relation_id')->nullable()->unsigned();
+            $table->string('relation_type')->nullable();
             $table->date('date')->nullable();
             $table->bigInteger('status_id')->nullable()->unsigned();
             $table->string('subject')->nullable();

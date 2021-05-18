@@ -67,4 +67,29 @@ class DefinitionController extends Controller
     {
         return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 12)->get());
     }
+
+    public function cargoCompanies(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 13)->get());
+    }
+
+    public function sampleStatuses(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 14)->get());
+    }
+
+    public function offerPayTypes(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 15)->get());
+    }
+
+    public function offerDeliveryTypes(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 16)->get());
+    }
+
+    public function offerStatuses(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 17)->get());
+    }
 }

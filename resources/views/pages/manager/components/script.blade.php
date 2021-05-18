@@ -19,12 +19,10 @@
 
     var SelectedCompany = $("#SelectedCompany");
 
-    var companyIdCreate = $("#company_id_create");
     var customerIdCreate = $("#customer_id_create");
     var departmentIdCreate = $("#department_id_create");
     var titleIdCreate = $("#title_id_create");
 
-    var companyIdEdit = $("#company_id_edit");
     var customerIdEdit = $("#customer_id_edit");
     var departmentIdEdit = $("#department_id_edit");
     var titleIdEdit = $("#title_id_edit");
@@ -242,7 +240,6 @@
 
     function create() {
         $("#CreateForm").trigger('reset');
-        companyIdCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -254,27 +251,24 @@
 
         $.ajax({
             type: 'get',
-            url: '{{ route('ajax.customer.show') }}',
+            url: '{{ route('ajax.manager.show') }}',
             data: {
                 id: id
             },
-            success: function (customer) {
-                $("#company_id_edit").val(customer.company_id).selectpicker('refresh');
-                $("#title_edit").val(customer.title);
-                $("#tax_number_edit").val(customer.tax_number);
-                $("#tax_office").val(customer.tax_office);
-                $("#email_edit").val(customer.email);
-                $("#country_id_edit").val(customer.country_id).selectpicker('refresh');
-                $("#phone_number_edit").val(customer.phone_number);
-                getProvincesEdit();
-                $("#province_id_edit").val(customer.province_id).selectpicker('refresh');
-                getDistrictsEdit();
-                $("#district_id_edit").val(customer.district_id).selectpicker('refresh');
-                $("#website_edit").val(customer.website);
-                $("#foundation_date_edit").val(customer.foundation_date);
-                $("#class_id_edit").val(customer.class_id).selectpicker('refresh');
-                $("#type_id_edit").val(customer.type_id).selectpicker('refresh');
-                $("#reference_id_edit").val(customer.reference_id).selectpicker('refresh');
+            success: function (manager) {
+                console.log(manager)
+                SelectedCompany.val(manager.customer.company_id).selectpicker('refresh');
+                getCustomers();
+                getManagerDepartments();
+                getManagerTitles();
+                $("#customer_id_edit").val(manager.customer_id).selectpicker('refresh');
+                $("#name_edit").val(manager.name);
+                $("#email_edit").val(manager.email);
+                $("#phone_number_edit").val(manager.phone_number);
+                $("#gender_edit").val(manager.gender).selectpicker('refresh');
+                $("#birth_date_edit").val(manager.birth_date);
+                $("#department_id_edit").val(manager.department_id).selectpicker('refresh');
+                $("#title_id_edit").val(manager.title_id).selectpicker('refresh');
                 $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
@@ -292,6 +286,29 @@
 
     }
 
+    function getCustomers() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.customer.index') }}',
+            data: {
+                company_id: SelectedCompany.val()
+            },
+            success: function (customers) {
+                customerIdCreate.empty();
+                customerIdEdit.empty();
+                $.each(customers, function (index) {
+                    customerIdCreate.append(`<option value="${customers[index].id}">${customers[index].title}</option>`);
+                    customerIdEdit.append(`<option value="${customers[index].id}">${customers[index].title}</option>`);
+                });
+                customerIdCreate.selectpicker('refresh');
+                customerIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     function getManagerDepartments() {
         $.ajax({
             type: 'get',
@@ -302,7 +319,7 @@
             success: function (departments) {
                 departmentIdCreate.empty();
                 departmentIdEdit.empty();
-                $.each(references, function (index) {
+                $.each(departments, function (index) {
                     departmentIdCreate.append(`<option value="${departments[index].id}">${departments[index].name}</option>`);
                     departmentIdEdit.append(`<option value="${departments[index].id}">${departments[index].name}</option>`);
                 });
@@ -315,114 +332,99 @@
         });
     }
 
-    getCustomerReferences();
+    function getManagerTitles() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.managerTitles') }}',
+            data: {
+                company_id: SelectedCompany.val()
+            },
+            success: function (titles) {
+                titleIdCreate.empty();
+                titleIdEdit.empty();
+                $.each(titles, function (index) {
+                    titleIdCreate.append(`<option value="${titles[index].id}">${titles[index].name}</option>`);
+                    titleIdEdit.append(`<option value="${titles[index].id}">${titles[index].name}</option>`);
+                });
+                titleIdCreate.selectpicker('refresh');
+                titleIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    getCustomers();
+    getManagerDepartments();
+    getManagerTitles();
 
     SelectedCompany.change(function () {
-        getCustomerClasses();
-        getCustomerTypes();
-        getCustomerReferences();
-        customers.ajax.reload().draw();
-    });
-
-    countryIdCreate.change(function () {
-        getProvincesCreate();
-    });
-
-    provinceIdCreate.change(function () {
-        getDistrictsCreate();
-    });
-
-    countryIdEdit.change(function () {
-        getProvincesEdit();
-    });
-
-    provinceIdEdit.change(function () {
-        getDistrictsEdit();
+        getCustomers();
+        getManagerDepartments();
+        getManagerTitles();
+        // managers.ajax.reload().draw();
     });
 
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
-        var company_id = $("#company_id_create").val();
-        var title = $("#title_create").val();
-        var tax_number = $("#tax_number_create").val();
-        var tax_office = $("#tax_office_create").val();
+        var customer_id = $("#customer_id_create").val();
+        var name = $("#name_create").val();
         var email = $("#email_create").val();
-        var country_id = $("#country_id_create").val();
         var phone_number = $("#phone_number_create").val();
-        var province_id = $("#province_id_create").val();
-        var district_id = $("#district_id_create").val();
-        var website = $("#website_create").val();
-        var foundation_date = $("#foundation_date_create").val();
-        var class_id = $("#class_id_create").val();
-        var type_id = $("#type_id_create").val();
-        var reference_id = $("#reference_id_create").val();
+        var gender = $("#gender_create").val();
+        var birth_date = $("#birth_date_create").val();
+        var department_id = $("#department_id_create").val();
+        var title_id = $("#title_id_create").val();
 
-        if (company_id == null || company_id === '') {
-            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        if (customer_id == null || customer_id === '') {
+            toastr.warning('Müşteri Seçimi Yapılması Zorunludur!');
         } else {
-            saveCustomer({
+            saveManager({
                 _token: '{{ csrf_token() }}',
                 auth_user_id: auth_user_id,
-                company_id: company_id,
-                title: title,
-                tax_number: tax_number,
-                tax_office: tax_office,
+                customer_id: customer_id,
+                name: name,
                 email: email,
-                country_id: country_id,
                 phone_number: phone_number,
-                province_id: province_id,
-                district_id: district_id,
-                website: website,
-                foundation_date: foundation_date,
-                class_id: class_id,
-                type_id: type_id,
-                reference_id: reference_id,
-            }, 'Yeni Müşteri Başarıyla Oluşturuldu', 'Müşteri Oluşturulurken Bir Hata Oluştu!', 0);
+                gender: gender,
+                birth_date: birth_date,
+                department_id: department_id,
+                title_id: title_id,
+            }, 'Yeni Yetkili Başarıyla Oluşturuldu', 'Yetkili Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
 
     UpdateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var id = $("#id_edit").val();
-        var company_id = $("#company_id_edit").val();
-        var title = $("#title_edit").val();
-        var tax_number = $("#tax_number_edit").val();
-        var tax_office = $("#tax_office_edit").val();
+        var customer_id = $("#customer_id_edit").val();
+        var name = $("#name_edit").val();
         var email = $("#email_edit").val();
-        var country_id = $("#country_id_edit").val();
         var phone_number = $("#phone_number_edit").val();
-        var province_id = $("#province_id_edit").val();
-        var district_id = $("#district_id_edit").val();
-        var website = $("#website_edit").val();
-        var foundation_date = $("#foundation_date_edit").val();
-        var class_id = $("#class_id_edit").val();
-        var type_id = $("#type_id_edit").val();
-        var reference_id = $("#reference_id_edit").val();
+        var gender = $("#gender_edit").val();
+        var birth_date = $("#birth_date_edit").val();
+        var department_id = $("#department_id_edit").val();
+        var title_id = $("#title_id_edit").val();
 
         console.log({
             _token: '{{ csrf_token() }}',
             id: id,
             auth_user_id: auth_user_id,
-            company_id: company_id,
-            title: title,
-            tax_number: tax_number,
-            tax_office: tax_office,
+            customer_id: customer_id,
+            name: name,
             email: email,
-            country_id: country_id,
             phone_number: phone_number,
-            province_id: province_id,
-            district_id: district_id,
-            website: website,
-            foundation_date: foundation_date,
-            class_id: class_id,
-            type_id: type_id,
-            reference_id: reference_id,
+            gender: gender,
+            birth_date: birth_date,
+            department_id: department_id,
+            title_id: title_id,
         })
 
-        if (company_id == null || company_id === '') {
-            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        if (customer_id == null || customer_id === '') {
+            toastr.warning('Müşteri Seçimi Yapılması Zorunludur!');
         } else {
-            saveCustomer({
+            saveManager({
                 _token: '{{ csrf_token() }}',
                 id: id,
                 auth_user_id: auth_user_id,
@@ -440,14 +442,14 @@
                 class_id: class_id,
                 type_id: type_id,
                 reference_id: reference_id,
-            }, 'Müşteri Başarıyla Güncellendi', 'Müşteri Güncellenirken Bir Hata Oluştu!', 1);
+            }, 'Yetkili Başarıyla Güncellendi', 'Yetkili Güncellenirken Bir Hata Oluştu!', 1);
         }
     });
 
-    function saveCustomer(data, successMessage, errorMessage, direction) {
+    function saveManager(data, successMessage, errorMessage, direction) {
         $.ajax({
             type: 'post',
-            url: '{{ route('ajax.customer.save') }}',
+            url: '{{ route('ajax.manager.save') }}',
             data: data,
             success: function (response) {
                 toastr.success(successMessage);
@@ -456,7 +458,7 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                customers.ajax.reload().draw();
+                managers.ajax.reload().draw();
                 console.log(response)
             },
             error: function (error) {
@@ -467,7 +469,7 @@
     }
 
     $('body').on('contextmenu', function (e) {
-        var selectedRows = customers.rows({selected: true});
+        var selectedRows = managers.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id.replace('#', '');
             $("#id_edit").val(id);
@@ -492,19 +494,19 @@
         $("#context-menu").hide();
     });
 
-    $('#customers tbody').on('mousedown', 'tr', function (e) {
+    $('#managers tbody').on('mousedown', 'tr', function (e) {
         if (e.button === 0) {
             return false;
         } else {
-            customers.row(this).select();
+            managers.row(this).select();
         }
     });
 
     $(document).click((e) => {
-        if ($.contains($("#customersCard").get(0), e.target)) {
+        if ($.contains($("#managersCard").get(0), e.target)) {
         } else {
             $("#context-menu").hide();
-            customers.rows().deselect();
+            managers.rows().deselect();
         }
     });
 </script>

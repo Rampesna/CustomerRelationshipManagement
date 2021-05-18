@@ -6,6 +6,8 @@ use App\Http\Controllers\Ajax\ActivityController;
 use App\Http\Controllers\Ajax\UserController;
 use App\Http\Controllers\Ajax\CustomerController;
 use App\Http\Controllers\Ajax\ManagerController;
+use App\Http\Controllers\Ajax\SampleController;
+use App\Http\Controllers\Ajax\OfferController;
 use App\Http\Controllers\Ajax\CountryController;
 use App\Http\Controllers\Ajax\ProvinceController;
 use App\Http\Controllers\Ajax\DistrictController;
@@ -55,6 +57,20 @@ Route::prefix('manager')->group(function () {
     Route::post('save', [ManagerController::class, 'save'])->name('ajax.manager.save');
 });
 
+Route::prefix('sample')->group(function () {
+    Route::get('index', [SampleController::class, 'index'])->name('ajax.sample.index');
+    Route::get('datatable', [SampleController::class, 'datatable'])->name('ajax.sample.datatable');
+    Route::get('show', [SampleController::class, 'show'])->name('ajax.sample.show');
+    Route::post('save', [SampleController::class, 'save'])->name('ajax.sample.save');
+});
+
+Route::prefix('offer')->group(function () {
+    Route::get('index', [OfferController::class, 'index'])->name('ajax.offer.index');
+    Route::get('datatable', [OfferController::class, 'datatable'])->name('ajax.offer.datatable');
+    Route::get('show', [OfferController::class, 'show'])->name('ajax.offer.show');
+    Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
+});
+
 Route::prefix('country')->group(function () {
     Route::get('index', [CountryController::class, 'index'])->name('ajax.country.index');
 });
@@ -83,4 +99,11 @@ Route::prefix('definition')->group(function () {
 
     Route::get('managerDepartments', [DefinitionController::class, 'managerDepartments'])->name('ajax.definition.managerDepartments');
     Route::get('managerTitles', [DefinitionController::class, 'managerTitles'])->name('ajax.definition.managerTitles');
+
+    Route::get('cargoCompanies', [DefinitionController::class, 'cargoCompanies'])->name('ajax.definition.cargoCompanies');
+    Route::get('sampleStatuses', [DefinitionController::class, 'sampleStatuses'])->name('ajax.definition.sampleStatuses');
+
+    Route::get('offerPayTypes', [DefinitionController::class, 'offerPayTypes'])->name('ajax.definition.offerPayTypes');
+    Route::get('offerDeliveryTypes', [DefinitionController::class, 'offerDeliveryTypes'])->name('ajax.definition.offerDeliveryTypes');
+    Route::get('offerStatuses', [DefinitionController::class, 'offerStatuses'])->name('ajax.definition.offerStatuses');
 });

@@ -2,27 +2,25 @@
 
 namespace App\Services;
 
-use App\Models\Opportunity;
-use App\Models\OpportunityActivity;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CustomerService
 {
     private $customer;
 
     /**
-     * @return mixed
+     * @return Customer
      */
-    public function getCustomer()
+    public function getCustomer(): Customer
     {
         return $this->customer;
     }
 
     /**
-     * @param mixed $customer
+     * @param Customer $customer
      */
-    public function setCustomer($customer): void
+    public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
     }

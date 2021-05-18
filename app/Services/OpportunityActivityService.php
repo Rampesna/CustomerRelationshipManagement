@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\OpportunityActivity;
-use Illuminate\Http\Request;
 
 class OpportunityActivityService
 {

@@ -2,27 +2,25 @@
 
 namespace App\Services;
 
-use App\Models\Opportunity;
-use App\Models\OpportunityActivity;
+use App\Models\Activity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ActivityService
 {
     private $activity;
 
     /**
-     * @return mixed
+     * @return Activity
      */
-    public function getActivity()
+    public function getActivity(): Activity
     {
         return $this->activity;
     }
 
     /**
-     * @param mixed $activity
+     * @param Activity $activity
      */
-    public function setActivity($activity): void
+    public function setActivity(Activity $activity): void
     {
         $this->activity = $activity;
     }

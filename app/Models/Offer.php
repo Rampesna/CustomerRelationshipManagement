@@ -39,4 +39,9 @@ class Offer extends Model
     {
         return $this->belongsTo(Definition::class, 'delivery_type_id', 'id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Definition::class, 'status_id', 'id');
+    }
 }

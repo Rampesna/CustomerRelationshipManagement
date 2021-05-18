@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Opportunity;
 use App\Models\OpportunityActivity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class OpportunityService
 {
