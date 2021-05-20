@@ -407,20 +407,6 @@
         var department_id = $("#department_id_edit").val();
         var title_id = $("#title_id_edit").val();
 
-        console.log({
-            _token: '{{ csrf_token() }}',
-            id: id,
-            auth_user_id: auth_user_id,
-            customer_id: customer_id,
-            name: name,
-            email: email,
-            phone_number: phone_number,
-            gender: gender,
-            birth_date: birth_date,
-            department_id: department_id,
-            title_id: title_id,
-        })
-
         if (customer_id == null || customer_id === '') {
             toastr.warning('Müşteri Seçimi Yapılması Zorunludur!');
         } else {

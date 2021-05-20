@@ -17,6 +17,7 @@ class CreateStocksTable extends Migration
             $table->id();
             $table->string('guid')->nullable();
             $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->string('short_name')->nullable();
             $table->double('wholesale_vat')->nullable();

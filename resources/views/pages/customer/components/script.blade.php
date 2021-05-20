@@ -251,6 +251,9 @@
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getCustomerClasses(SelectedCompany.val());
+        getCustomerTypes(SelectedCompany.val());
+        getCustomerReferences(SelectedCompany.val());
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -585,26 +588,6 @@
         var class_id = $("#class_id_edit").val();
         var type_id = $("#type_id_edit").val();
         var reference_id = $("#reference_id_edit").val();
-
-        console.log({
-            _token: '{{ csrf_token() }}',
-            id: id,
-            auth_user_id: auth_user_id,
-            company_id: company_id,
-            title: title,
-            tax_number: tax_number,
-            tax_office: tax_office,
-            email: email,
-            country_id: country_id,
-            phone_number: phone_number,
-            province_id: province_id,
-            district_id: district_id,
-            website: website,
-            foundation_date: foundation_date,
-            class_id: class_id,
-            type_id: type_id,
-            reference_id: reference_id,
-        })
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');

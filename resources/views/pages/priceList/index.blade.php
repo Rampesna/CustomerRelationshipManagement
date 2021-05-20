@@ -13,7 +13,26 @@
             <div class="card" id="priceListsCard">
                 <div class="card-body">
                     <table class="table" id="priceLists">
-
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Adı</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Durum</th>
+                            <th>Firma</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Adı</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Durum</th>
+                            <th>Firma</th>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -30,13 +49,13 @@
         </a>
         <div id="EditingContexts">
             <hr>
-            <a onclick="show()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>
-                    </div>
-                </div>
-            </a>
+{{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-xl-12">--}}
+{{--                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">

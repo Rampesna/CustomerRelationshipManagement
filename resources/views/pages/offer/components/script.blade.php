@@ -249,6 +249,11 @@
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getUsers(SelectedCompany.val());
+        getRelationsCreate(SelectedCompany.val());
+        getPayTypes(SelectedCompany.val());
+        getDeliveryTypes(SelectedCompany.val());
+        getOfferStatuses(SelectedCompany.val());
         userIdCreate.selectpicker('refresh');
         relationTypeCreate.selectpicker('refresh');
         relationIdCreate.selectpicker('refresh');
@@ -273,10 +278,6 @@
             success: function (offer) {
                 $("#company_id_edit").val(offer.company_id).selectpicker('refresh');
                 getUsers(companyIdEdit.val());
-                getRelationsEdit(offer.relation_id, offer.company_id);
-                getPayTypes(offer.company_id);
-                getDeliveryTypes(offer.company_id);
-                getOfferStatuses(offer.company_id);
                 userIdEdit.val(offer.user_id).selectpicker('refresh');
                 relationTypeEdit.val(offer.relation_type).selectpicker('refresh');
                 getRelationsEdit(offer.relation_id, offer.company_id);

@@ -1,0 +1,485 @@
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js?v=7.0.3') }}"></script>
+
+<script>
+    const months = [
+        'Ocak',
+        'Şubat',
+        'Mart',
+        'Nisan',
+        'Mayıs',
+        'Haziran',
+        'Temmuz',
+        'Ağustos',
+        'Eylül',
+        'Ekim',
+        'Kasım',
+        'Aralık',
+    ];
+
+    $('.decimal').on("copy cut paste drop", function () {
+        return false;
+    }).keyup(function () {
+        var val = $(this).val();
+        if (isNaN(val)) {
+            val = val.replace(/[^0-9\.]/g, '');
+            if (val.split('.').length > 2)
+                val = val.replace(/\.+$/, "");
+        }
+        $(this).val(val);
+    });
+
+    var SelectedCompany = $("#SelectedCompany");
+
+    var companyIdCreate = $("#company_id_create");
+    var userIdCreate = $("#user_id_create");
+    var statusIdCreate = $("#status_id_create");
+
+    var companyIdEdit = $("#company_id_edit");
+    var userIdEdit = $("#user_id_edit");
+    var statusIdEdit = $("#status_id_edit");
+
+    var CreateButton = $("#CreateButton");
+    var UpdateButton = $("#UpdateButton");
+
+    var priceLists = $('#priceLists').DataTable({
+        language: {
+            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
+            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
+            loadingRecords: "Kayıtlar Yükleniyor.",
+            zeroRecords: "Tablo Boş",
+            search: "Arama:",
+            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
+            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
+            sProcessing: "Yükleniyor...",
+            paginate: {
+                first: "İlk",
+                previous: "Önceki",
+                next: "Sonraki",
+                last: "Son"
+            },
+            select: {
+                rows: {
+                    "_": "%d kayıt seçildi",
+                    "0": "",
+                    "1": "1 kayıt seçildi"
+                }
+            },
+            buttons: {
+                print: {
+                    title: 'Yazdır'
+                }
+            }
+        },
+
+        dom: 'rtipl',
+
+        order: [
+            [
+                0,
+                "desc"
+            ]
+        ],
+
+        initComplete: function () {
+            var r = $('#priceLists tfoot tr');
+            $('#priceLists thead').append(r);
+            this.api().columns().every(function (index) {
+                var column = this;
+                var input = document.createElement('input');
+                input.className = 'form-control';
+                $(input).appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        column.search($(this).val(), false, false, true).draw();
+                    });
+            });
+        },
+
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: 'get',
+            url: '{{ route('ajax.priceList.datatable') }}',
+            data: function (d) {
+                return $.extend({}, d, {
+                    company_id: SelectedCompany.val()
+                });
+            },
+        },
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'name', name: 'name'},
+            {data: 'start_date', name: 'start_date'},
+            {data: 'end_date', name: 'end_date'},
+            {data: 'status_id', name: 'status_id'},
+            {data: 'company_id', name: 'company_id'},
+        ],
+
+        responsive: true,
+        stateSave: true,
+        select: 'single'
+    });
+
+    var CreateRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'create_rightbar_close',
+                toggleBy: 'create_rightbar_toggle'
+            });
+
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+
+                    height = height - 2;
+
+                    return height;
+                }
+            });
+        }
+
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('CreateRightbar');
+
+                if (!_element) {
+                    return;
+                }
+
+                // Initialize
+                _init();
+            },
+
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    CreateRightBar.init();
+
+    var EditRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'edit_rightbar_close',
+                toggleBy: 'edit_rightbar_toggle'
+            });
+
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+
+                    height = height - 2;
+
+                    return height;
+                }
+            });
+        }
+
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('EditRightbar');
+
+                if (!_element) {
+                    return;
+                }
+
+                // Initialize
+                _init();
+            },
+
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    EditRightBar.init();
+
+    function create() {
+        $("#CreateForm").trigger('reset');
+        companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getUsers(SelectedCompany.val());
+        getPriceListStatuses(SelectedCompany.val());
+        $("#create_rightbar_toggle").trigger('click');
+    }
+
+    function edit() {
+        $("#edit_rightbar_toggle").trigger('click');
+        $("#EditRightbar").hide();
+
+        var id = $("#id_edit").val();
+
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.priceList.show') }}',
+            data: {
+                id: id
+            },
+            success: function (priceList) {
+                $("#company_id_edit").val(priceList.company_id).selectpicker('refresh');
+                getUsers(priceList.company_id);
+                getPriceListStatuses(priceList.company_id);
+                $("#user_id_edit").val(priceList.user_id).selectpicker('refresh');
+                $("#name_edit").val(priceList.name);
+                $("#status_id_edit").val(priceList.status_id).selectpicker('refresh');
+                $("#start_date_edit").val(priceList.start_date);
+                $("#end_date_edit").val(priceList.end_date);
+                $("#description_edit").val(priceList.description);
+                $("#EditRightbar").fadeIn(250);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function show() {
+        var id = $("#id_edit").val();
+        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+    }
+
+    function drop() {
+
+    }
+
+    function getUsers(company_id) {
+        $.ajax({
+            async: false,
+            type: 'get',
+            url: '{{ route('ajax.user.index') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (users) {
+                userIdCreate.empty();
+                userIdEdit.empty();
+                userIdCreate.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                userIdEdit.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                $.each(users, function (index) {
+                    userIdCreate.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                    userIdEdit.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                });
+                userIdCreate.selectpicker('refresh');
+                userIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getPriceListStatuses(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.priceListStatuses') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (priceListStatuses) {
+                statusIdCreate.empty();
+                statusIdEdit.empty();
+                $.each(priceListStatuses, function (index) {
+                    statusIdCreate.append(`<option value="${priceListStatuses[index].id}">${priceListStatuses[index].name}</option>`);
+                    statusIdEdit.append(`<option value="${priceListStatuses[index].id}">${priceListStatuses[index].name}</option>`);
+                });
+                statusIdCreate.selectpicker('refresh');
+                statusIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    getUsers(SelectedCompany.val());
+    getPriceListStatuses(SelectedCompany.val());
+
+    SelectedCompany.change(function () {
+        getUsers(SelectedCompany.val());
+        getPriceListStatuses(SelectedCompany.val());
+        priceLists.ajax.reload().draw();
+    });
+
+    companyIdCreate.change(function () {
+        getUsers($(this).val());
+        getPriceListStatuses($(this).val());
+    });
+
+    companyIdEdit.change(function () {
+        getUsers($(this).val());
+        getPriceListStatuses($(this).val());
+    });
+
+    CreateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var company_id = $("#company_id_create").val();
+        var user_id = $("#user_id_create").val();
+        var name = $("#name_create").val();
+        var description = $("#description_create").val();
+        var start_date = $("#start_date_create").val();
+        var end_date = $("#end_date_create").val();
+        var status_id = $("#status_id_create").val();
+
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            savePriceList({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                company_id: company_id,
+                user_id: user_id,
+                name: name,
+                description: description,
+                start_date: start_date,
+                end_date: end_date,
+                status_id: status_id,
+            }, 'Yeni Fiyat Listesi Başarıyla Oluşturuldu', 'Fiyat Listesi Oluşturulurken Bir Hata Oluştu!', 0);
+        }
+    });
+
+    UpdateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var id = $("#id_edit").val();
+        var company_id = $("#company_id_edit").val();
+        var user_id = $("#user_id_edit").val();
+        var name = $("#name_edit").val();
+        var description = $("#description_edit").val();
+        var start_date = $("#start_date_edit").val();
+        var end_date = $("#end_date_edit").val();
+        var status_id = $("#status_id_edit").val();
+
+        if (company_id == null || company_id === '') {
+            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else {
+            savePriceList({
+                _token: '{{ csrf_token() }}',
+                id: id,
+                auth_user_id: auth_user_id,
+                company_id: company_id,
+                user_id: user_id,
+                name: name,
+                description: description,
+                start_date: start_date,
+                end_date: end_date,
+                status_id: status_id,
+            }, 'Fiyat Listesi Başarıyla Güncellendi', 'Fiyat Listesi Güncellenirken Bir Hata Oluştu!', 1);
+        }
+    });
+
+    function savePriceList(data, successMessage, errorMessage, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.priceList.save') }}',
+            data: data,
+            success: function (response) {
+                toastr.success(successMessage);
+                if (direction === 0) {
+                    $("#create_rightbar_toggle").click();
+                } else if (direction === 1) {
+                    $("#edit_rightbar_toggle").click();
+                }
+                priceLists.ajax.reload().draw();
+                console.log(response)
+            },
+            error: function (error) {
+                toastr.success(errorMessage);
+                console.log(error)
+            }
+        });
+    }
+
+    $('body').on('contextmenu', function (e) {
+        var selectedRows = priceLists.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            var id = selectedRows.data()[0].id.replace('#', '');
+            $("#id_edit").val(id);
+            $("#EditingContexts").show();
+        } else {
+            $("#EditingContexts").hide();
+        }
+
+        var top = e.pageY - 10;
+        var left = e.pageX - 10;
+
+        $("#context-menu").css({
+            display: "block",
+            top: top,
+            left: left
+        });
+
+        return false;
+    }).on("click", function () {
+        $("#context-menu").hide();
+    }).on('focusout', function () {
+        $("#context-menu").hide();
+    });
+
+    $('#priceLists tbody').on('mousedown', 'tr', function (e) {
+        if (e.button === 0) {
+            return false;
+        } else {
+            priceLists.row(this).select();
+        }
+    });
+
+    $(document).click((e) => {
+        if ($.contains($("#priceListsCard").get(0), e.target)) {
+        } else {
+            $("#context-menu").hide();
+            priceLists.rows().deselect();
+        }
+    });
+</script>

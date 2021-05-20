@@ -13,7 +13,30 @@
             <div class="card" id="stocksCard">
                 <div class="card-body">
                     <table class="table" id="stocks">
-
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Kodu</th>
+                            <th>Adı</th>
+                            <th>Stok</th>
+                            <th>Birim</th>
+                            <th>Birim Fiyat</th>
+                            <th>Tip</th>
+                            <th>Durum</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Kodu</th>
+                            <th>Adı</th>
+                            <th>Stok</th>
+                            <th>Birim</th>
+                            <th>Birim Fiyat</th>
+                            <th>Tip</th>
+                            <th>Durum</th>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -30,13 +53,13 @@
         </a>
         <div id="EditingContexts">
             <hr>
-            <a onclick="show()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>
-                    </div>
-                </div>
-            </a>
+{{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-xl-12">--}}
+{{--                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">

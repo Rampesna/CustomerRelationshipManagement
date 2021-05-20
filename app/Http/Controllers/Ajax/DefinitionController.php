@@ -92,4 +92,24 @@ class DefinitionController extends Controller
     {
         return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 17)->get());
     }
+
+    public function unitTypes(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 18)->get());
+    }
+
+    public function stockTypes(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 19)->get());
+    }
+
+    public function stockStatuses(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 20)->get());
+    }
+
+    public function priceListStatuses(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('definition_id', 21)->get());
+    }
 }

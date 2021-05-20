@@ -3,11 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Ajax\OpportunityController;
 use App\Http\Controllers\Ajax\ActivityController;
-use App\Http\Controllers\Ajax\UserController;
 use App\Http\Controllers\Ajax\CustomerController;
 use App\Http\Controllers\Ajax\ManagerController;
 use App\Http\Controllers\Ajax\SampleController;
+use App\Http\Controllers\Ajax\SampleItemController;
 use App\Http\Controllers\Ajax\OfferController;
+use App\Http\Controllers\Ajax\StockController;
+use App\Http\Controllers\Ajax\PriceListController;
+use App\Http\Controllers\Ajax\UserController;
 use App\Http\Controllers\Ajax\CountryController;
 use App\Http\Controllers\Ajax\ProvinceController;
 use App\Http\Controllers\Ajax\DistrictController;
@@ -39,9 +42,6 @@ Route::prefix('activity')->group(function () {
     Route::post('save', [ActivityController::class, 'save'])->name('ajax.activity.save');
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
-});
 
 Route::prefix('customer')->group(function () {
     Route::get('index', [CustomerController::class, 'index'])->name('ajax.customer.index');
@@ -62,6 +62,13 @@ Route::prefix('sample')->group(function () {
     Route::get('datatable', [SampleController::class, 'datatable'])->name('ajax.sample.datatable');
     Route::get('show', [SampleController::class, 'show'])->name('ajax.sample.show');
     Route::post('save', [SampleController::class, 'save'])->name('ajax.sample.save');
+
+    Route::prefix('sampleItem')->group(function () {
+        Route::get('index', [SampleItemController::class, 'index'])->name('ajax.sampleItem.index');
+        Route::get('datatable', [SampleItemController::class, 'datatable'])->name('ajax.sampleItem.datatable');
+        Route::get('show', [SampleItemController::class, 'show'])->name('ajax.sampleItem.show');
+        Route::post('save', [SampleItemController::class, 'save'])->name('ajax.sampleItem.save');
+    });
 });
 
 Route::prefix('offer')->group(function () {
@@ -69,6 +76,26 @@ Route::prefix('offer')->group(function () {
     Route::get('datatable', [OfferController::class, 'datatable'])->name('ajax.offer.datatable');
     Route::get('show', [OfferController::class, 'show'])->name('ajax.offer.show');
     Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
+});
+
+Route::prefix('stock')->group(function () {
+    Route::get('index', [StockController::class, 'index'])->name('ajax.stock.index');
+    Route::get('datatable', [StockController::class, 'datatable'])->name('ajax.stock.datatable');
+    Route::get('show', [StockController::class, 'show'])->name('ajax.stock.show');
+    Route::post('save', [StockController::class, 'save'])->name('ajax.stock.save');
+});
+
+Route::prefix('priceList')->group(function () {
+    Route::get('index', [PriceListController::class, 'index'])->name('ajax.priceList.index');
+    Route::get('datatable', [PriceListController::class, 'datatable'])->name('ajax.priceList.datatable');
+    Route::get('show', [PriceListController::class, 'show'])->name('ajax.priceList.show');
+    Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::prefix('user')->group(function () {
+    Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
 });
 
 Route::prefix('country')->group(function () {
@@ -106,4 +133,10 @@ Route::prefix('definition')->group(function () {
     Route::get('offerPayTypes', [DefinitionController::class, 'offerPayTypes'])->name('ajax.definition.offerPayTypes');
     Route::get('offerDeliveryTypes', [DefinitionController::class, 'offerDeliveryTypes'])->name('ajax.definition.offerDeliveryTypes');
     Route::get('offerStatuses', [DefinitionController::class, 'offerStatuses'])->name('ajax.definition.offerStatuses');
+
+    Route::get('unitTypes', [DefinitionController::class, 'unitTypes'])->name('ajax.definition.unitTypes');
+    Route::get('stockTypes', [DefinitionController::class, 'stockTypes'])->name('ajax.definition.stockTypes');
+    Route::get('stockStatuses', [DefinitionController::class, 'stockStatuses'])->name('ajax.definition.stockStatuses');
+
+    Route::get('priceListStatuses', [DefinitionController::class, 'priceListStatuses'])->name('ajax.definition.priceListStatuses');
 });

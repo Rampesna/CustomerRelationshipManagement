@@ -249,6 +249,11 @@
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getUsers(SelectedCompany.val());
+        getRelationsCreate(SelectedCompany.val());
+        getRelationsEdit(SelectedCompany.val());
+        getActivityMeetingReasons(SelectedCompany.val());
+        getActivityPriorities(SelectedCompany.val());
         userIdCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }

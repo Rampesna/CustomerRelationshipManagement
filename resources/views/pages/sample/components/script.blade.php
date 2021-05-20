@@ -116,6 +116,67 @@
         select: 'single'
     });
 
+    var sampleItems = $('#sampleItems').DataTable({
+        language: {
+            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
+            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
+            loadingRecords: "Kayıtlar Yükleniyor.",
+            zeroRecords: "Tablo Boş",
+            search: "Arama:",
+            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
+            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
+            sProcessing: "Yükleniyor...",
+            paginate: {
+                first: "İlk",
+                previous: "Önceki",
+                next: "Sonraki",
+                last: "Son"
+            },
+            select: {
+                rows: {
+                    "_": "%d kayıt seçildi",
+                    "0": "",
+                    "1": "1 kayıt seçildi"
+                }
+            },
+            buttons: {
+                print: {
+                    title: 'Yazdır'
+                }
+            }
+        },
+
+        dom: 'rtipl',
+
+        order: [
+            [
+                0,
+                "desc"
+            ]
+        ],
+
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: 'get',
+            url: '{{ route('ajax.sampleItem.datatable') }}',
+            data: function (d) {
+                return $.extend({}, d, {
+                    sample_id: $("#id_edit").val()
+                });
+            }
+        },
+        columns: [
+            {data: 'stock_id', name: 'stock_id'},
+            {data: 'amount', name: 'amount'},
+            {data: 'unit_id', name: 'unit_id'},
+        ],
+
+        responsive: true,
+        stateSave: true,
+        select: 'single'
+    });
+
     var CreateRightBar = function () {
         var _element;
         var _offcanvasObject;
@@ -247,6 +308,11 @@
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getUsers(SelectedCompany.val());
+        getRelationsCreate(SelectedCompany.val());
+        getRelationsEdit(null, SelectedCompany.val());
+        getCargoCompanies(SelectedCompany.val());
+        getSampleStatuses(SelectedCompany.val());
         userIdCreate.selectpicker('refresh');
         relationTypeCreate.selectpicker('refresh');
         relationIdCreate.selectpicker('refresh');
@@ -258,7 +324,7 @@
     function edit() {
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
-
+        sampleItems.ajax.reload().draw();
         var id = $("#id_edit").val();
 
         $.ajax({
