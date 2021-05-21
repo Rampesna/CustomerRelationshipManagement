@@ -18,6 +18,7 @@ class CreateFilesTable extends Migration
             $table->string('relation_type')->nullable();
             $table->bigInteger('relation_id')->nullable()->unsigned();
             $table->string('name')->nullable();
+            $table->string('mime_type')->nullable();
             $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();

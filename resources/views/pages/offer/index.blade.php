@@ -7,6 +7,7 @@
 
     @include('pages.offer.components.create')
     @include('pages.offer.components.edit')
+    @include('pages.offer.modals.create-offer-item')
 
     <div class="row">
         <div class="col-xl-12">

@@ -15,34 +15,14 @@ class OpportunityController extends Controller
 
     public function show(Request $request)
     {
-        if ($request->tab == 'index') {
-            return view('pages.opportunity.show.index.index', [
+        try {
+            return view('pages.opportunity.show.' . $request->tab . '.index', [
                 'opportunity' => Opportunity::with([
                     'customer'
                 ])->find($request->id),
                 'tab' => $request->tab
             ]);
-        } else if ($request->tab == 'offer') {
-            return view('pages.opportunity.show.offer.index', [
-                'opportunity' => Opportunity::find($request->id),
-                'tab' => $request->tab
-            ]);
-        } else if ($request->tab == 'activity') {
-            return view('pages.opportunity.show.activity.index', [
-                'opportunity' => Opportunity::find($request->id),
-                'tab' => $request->tab
-            ]);
-        } else if ($request->tab == 'sample') {
-            return view('pages.opportunity.show.sample.index', [
-                'opportunity' => Opportunity::find($request->id),
-                'tab' => $request->tab
-            ]);
-        } else if ($request->tab == 'comment') {
-            return view('pages.opportunity.show.comment.index', [
-                'opportunity' => Opportunity::find($request->id),
-                'tab' => $request->tab
-            ]);
-        } else {
+        } catch (\Exception $exception) {
             return abort(404);
         }
     }

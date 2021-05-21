@@ -12,14 +12,14 @@ use App\Http\Controllers\OfferController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PriceListController;
 
+Route::post('file-uploader', [DashboardController::class, 'fileUploader'])->name('file-uploader');
+
 Route::get('password', function () {
     return bcrypt(123456);
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    return \App\Models\Customer::with([
-        'reference'
-    ])->find(1);
+    return 1;
 });
 
 Auth::routes();

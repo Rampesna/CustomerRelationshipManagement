@@ -17,6 +17,8 @@
         'Aralık',
     ];
 
+    var BODY = $('body');
+
     var SelectedCompany = $("#SelectedCompany");
     var companyIdCreate = $("#company_id_create");
     var userIdCreate = $("#user_id_create");
@@ -818,7 +820,7 @@
         });
     }
 
-    $('body').on('contextmenu', function (e) {
+    BODY.on('contextmenu dblclick', function (e) {
         var selectedRows = opportunities.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id.replace('#', '');

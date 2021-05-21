@@ -42,7 +42,7 @@
 
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <a href="#">
-        <img style="width: 30%; height: auto" alt="Logo" src="{{ asset('assets/media/logos/otel_takip_sistemi_long.png') }}" />
+        <img style="width: 30%; height: auto" alt="Logo" src="{{ asset('assets/media/logos/bien.png') }}" />
     </a>
     <div class="d-flex align-items-center">
         <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">

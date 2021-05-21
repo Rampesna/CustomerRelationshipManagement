@@ -26,9 +26,7 @@ class CreateOfferItemsTable extends Migration
             $table->double('discount_total')->unsigned()->nullable();
             $table->double('subtotal')->unsigned()->nullable();
             $table->double('grand_total')->unsigned()->nullable();
-            $table->text('description_1')->nullable();
-            $table->text('description_2')->nullable();
-            $table->text('description_3')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -8,8 +8,12 @@ use App\Http\Controllers\Ajax\ManagerController;
 use App\Http\Controllers\Ajax\SampleController;
 use App\Http\Controllers\Ajax\SampleItemController;
 use App\Http\Controllers\Ajax\OfferController;
+use App\Http\Controllers\Ajax\OfferItemController;
 use App\Http\Controllers\Ajax\StockController;
 use App\Http\Controllers\Ajax\PriceListController;
+use App\Http\Controllers\Ajax\FileController;
+use App\Http\Controllers\Ajax\SocialController;
+use App\Http\Controllers\Ajax\CommentController;
 use App\Http\Controllers\Ajax\UserController;
 use App\Http\Controllers\Ajax\CountryController;
 use App\Http\Controllers\Ajax\ProvinceController;
@@ -32,6 +36,10 @@ Route::prefix('opportunity')->group(function () {
     Route::get('datatable', [OpportunityController::class, 'datatable'])->name('ajax.opportunity.datatable');
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
     Route::post('save', [OpportunityController::class, 'save'])->name('ajax.opportunity.save');
+
+    Route::get('offersDatatable', [OpportunityController::class, 'offersDatatable'])->name('ajax.opportunity.offersDatatable');
+    Route::get('activitiesDatatable', [OpportunityController::class, 'activitiesDatatable'])->name('ajax.opportunity.activitiesDatatable');
+    Route::get('samplesDatatable', [OpportunityController::class, 'samplesDatatable'])->name('ajax.opportunity.samplesDatatable');
 });
 
 Route::prefix('activity')->group(function () {
@@ -48,6 +56,11 @@ Route::prefix('customer')->group(function () {
     Route::get('datatable', [CustomerController::class, 'datatable'])->name('ajax.customer.datatable');
     Route::get('show', [CustomerController::class, 'show'])->name('ajax.customer.show');
     Route::post('save', [CustomerController::class, 'save'])->name('ajax.customer.save');
+
+    Route::get('managersDatatable', [CustomerController::class, 'managersDatatable'])->name('ajax.customer.managersDatatable');
+    Route::get('offersDatatable', [CustomerController::class, 'offersDatatable'])->name('ajax.customer.offersDatatable');
+    Route::get('activitiesDatatable', [CustomerController::class, 'activitiesDatatable'])->name('ajax.customer.activitiesDatatable');
+    Route::get('samplesDatatable', [CustomerController::class, 'samplesDatatable'])->name('ajax.customer.samplesDatatable');
 });
 
 Route::prefix('manager')->group(function () {
@@ -76,6 +89,14 @@ Route::prefix('offer')->group(function () {
     Route::get('datatable', [OfferController::class, 'datatable'])->name('ajax.offer.datatable');
     Route::get('show', [OfferController::class, 'show'])->name('ajax.offer.show');
     Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
+
+    Route::prefix('offerItem')->group(function () {
+        Route::get('index', [OfferItemController::class, 'index'])->name('ajax.offerItem.index');
+        Route::get('datatable', [OfferItemController::class, 'datatable'])->name('ajax.offerItem.datatable');
+        Route::get('show', [OfferItemController::class, 'show'])->name('ajax.offerItem.show');
+        Route::post('save', [OfferItemController::class, 'save'])->name('ajax.offerItem.save');
+        Route::delete('drop', [OfferItemController::class, 'drop'])->name('ajax.offerItem.drop');
+    });
 });
 
 Route::prefix('stock')->group(function () {
@@ -90,6 +111,27 @@ Route::prefix('priceList')->group(function () {
     Route::get('datatable', [PriceListController::class, 'datatable'])->name('ajax.priceList.datatable');
     Route::get('show', [PriceListController::class, 'show'])->name('ajax.priceList.show');
     Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
+});
+
+Route::prefix('file')->group(function () {
+    Route::get('index', [FileController::class, 'index'])->name('ajax.file.index');
+    Route::get('show', [FileController::class, 'show'])->name('ajax.file.show');
+    Route::post('save', [FileController::class, 'save'])->name('ajax.file.save');
+    Route::delete('drop', [FileController::class, 'drop'])->name('ajax.file.drop');
+});
+
+Route::prefix('social')->group(function () {
+    Route::get('index', [SocialController::class, 'index'])->name('ajax.social.index');
+    Route::get('datatable', [SocialController::class, 'datatable'])->name('ajax.social.datatable');
+    Route::get('show', [SocialController::class, 'show'])->name('ajax.social.show');
+    Route::post('save', [SocialController::class, 'save'])->name('ajax.social.save');
+});
+
+Route::prefix('comment')->group(function () {
+    Route::get('index', [CommentController::class, 'index'])->name('ajax.comment.index');
+    Route::get('datatable', [CommentController::class, 'datatable'])->name('ajax.comment.datatable');
+    Route::get('show', [CommentController::class, 'show'])->name('ajax.comment.show');
+    Route::post('save', [CommentController::class, 'save'])->name('ajax.comment.save');
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
