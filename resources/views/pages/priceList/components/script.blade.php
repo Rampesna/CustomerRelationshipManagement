@@ -17,19 +17,13 @@
         'Aralık',
     ];
 
-    $('.decimal').on("copy cut paste drop", function () {
-        return false;
-    }).keyup(function () {
-        var val = $(this).val();
-        if (isNaN(val)) {
-            val = val.replace(/[^0-9\.]/g, '');
-            if (val.split('.').length > 2)
-                val = val.replace(/\.+$/, "");
-        }
-        $(this).val(val);
-    });
-
     var SelectedCompany = $("#SelectedCompany");
+
+    var CreatePriceListItemForm = $("#CreatePriceListItemForm");
+    var CreatePriceListItemButton = $("#CreatePriceListItemButton");
+
+    var priceListItemDeleteIcon = $("#priceListItemDeleteIcon");
+    var priceListItemCreateIcon = $("#priceListItemCreateIcon");
 
     var companyIdCreate = $("#company_id_create");
     var userIdCreate = $("#user_id_create");
@@ -38,6 +32,9 @@
     var companyIdEdit = $("#company_id_edit");
     var userIdEdit = $("#user_id_edit");
     var statusIdEdit = $("#status_id_edit");
+
+    var priceListItemStockIdCreate = $("#price_list_item_stock_id_create");
+    var priceListItemUnitIdCreate = $("#price_list_item_unit_id_create");
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
@@ -113,6 +110,68 @@
             {data: 'end_date', name: 'end_date'},
             {data: 'status_id', name: 'status_id'},
             {data: 'company_id', name: 'company_id'},
+        ],
+
+        responsive: true,
+        stateSave: true,
+        select: 'single'
+    });
+
+    var priceListItems = $('#priceListItems').DataTable({
+        language: {
+            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
+            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
+            loadingRecords: "Kayıtlar Yükleniyor.",
+            zeroRecords: "Tablo Boş",
+            search: "Arama:",
+            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
+            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
+            sProcessing: "Yükleniyor...",
+            paginate: {
+                first: "İlk",
+                previous: "Önceki",
+                next: "Sonraki",
+                last: "Son"
+            },
+            select: {
+                rows: {
+                    "_": "%d kayıt seçildi",
+                    "0": "",
+                    "1": "1 kayıt seçildi"
+                }
+            },
+            buttons: {
+                print: {
+                    title: 'Yazdır'
+                }
+            }
+        },
+
+        dom: 'rtipl',
+
+        order: [
+            [
+                0,
+                "desc"
+            ]
+        ],
+
+        processing: true,
+        serverSide: true,
+        ajax: {
+            type: 'get',
+            url: '{{ route('ajax.priceListItem.datatable') }}',
+            data: function (d) {
+                return $.extend({}, d, {
+                    price_list_id: $("#id_edit").val()
+                });
+            }
+        },
+        columns: [
+            {data: 'stock_id', name: 'stock_id'},
+            {data: 'unit_price', name: 'unit_price'},
+            {data: 'vat_rate', name: 'vat_rate'},
+            {data: 'currency_type', name: 'currency_type'},
         ],
 
         responsive: true,
@@ -259,7 +318,8 @@
     function edit() {
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
-
+        priceListItems.ajax.reload().draw();
+        priceListItemDeleteIcon.hide();
         var id = $("#id_edit").val();
 
         $.ajax({
@@ -284,11 +344,6 @@
                 console.log(error)
             }
         });
-    }
-
-    function show() {
-        var id = $("#id_edit").val();
-        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
     }
 
     function drop() {
@@ -344,12 +399,35 @@
         });
     }
 
+    function getStocks(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.index') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (stocks) {
+                priceListItemStockIdCreate.empty();
+                priceListItemStockIdCreate.append(`<option value="" selected hidden disabled></option>`);
+                $.each(stocks, function (index) {
+                    priceListItemStockIdCreate.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
+                });
+                priceListItemStockIdCreate.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     getUsers(SelectedCompany.val());
+    getStocks(SelectedCompany.val());
     getPriceListStatuses(SelectedCompany.val());
 
     SelectedCompany.change(function () {
-        getUsers(SelectedCompany.val());
-        getPriceListStatuses(SelectedCompany.val());
+        getUsers($(this).val());
+        getStocks($(this).val());
+        getPriceListStatuses($(this).val());
         priceLists.ajax.reload().draw();
     });
 
@@ -480,6 +558,103 @@
         } else {
             $("#context-menu").hide();
             priceLists.rows().deselect();
+        }
+    });
+
+    priceListItems.on('select', function (e) {
+        var selectedRows = priceListItems.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            priceListItemDeleteIcon.show();
+            $("#price_list_item_id_edit").val(selectedRows.data()[0].id.replace('#', ''));
+        } else {
+            priceListItemDeleteIcon.hide();
+            $("#EditingContexts").hide();
+        }
+    });
+
+    priceListItems.on('deselect', function (e) {
+        priceListItemDeleteIcon.hide();
+    });
+
+    priceListItemDeleteIcon.click(function () {
+        var id = $("#price_list_item_id_edit").val();
+        if (id) {
+            $.ajax({
+                type: 'delete',
+                url: '{{ route('ajax.priceListItem.drop') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id
+                },
+                success: function () {
+                    priceListItems.ajax.reload().draw();
+                },
+                error: function () {
+                    toastr.error('Satır Silinirken Bir Hata Oluştu!');
+                }
+            });
+        }
+    });
+
+    priceListItemCreateIcon.click(function () {
+        CreatePriceListItemForm.trigger('reset');
+        priceListItemStockIdCreate.selectpicker('refresh');
+        priceListItemUnitIdCreate.selectpicker('refresh');
+        $("#CreatePriceListItemModal").modal('show');
+    });
+
+    priceListItemStockIdCreate.change(function () {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.show') }}',
+            data: {
+                id: $(this).val()
+            },
+            success: function (stock) {
+                $("#price_list_item_unit_price_create").val(stock.unit_type_id);
+                $("#price_list_item_vat_rate_create").val(stock.retrail_vat);
+                $("#price_list_item_currency_type_create").val(stock.currency_type).selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    CreatePriceListItemButton.click(function () {
+        var price_list_id = $("#id_edit").val();
+        var stock_id = $("#price_list_item_stock_id_create").val();
+        var unit_price = $("#price_list_item_unit_price_create").val();
+        var vat_rate = $("#price_list_item_vat_rate_create").val();
+        var currency_type = $("#price_list_item_currency_type_create").val();
+
+        if (price_list_id == null || price_list_id === '') {
+            toastr.error('Fiyat Listesi Seçiminde Sistemsel Bi Hata Oluştu! Yöneticiniz İle İletişime Geçin.');
+        } else if (stock_id == null || stock_id === '') {
+            toastr.warning('Mal/Hizmet Seçilmesi Zorunludur!');
+        } else if (unit_price == null || unit_price === '') {
+            toastr.warning('Birim Fiyat Boş Olamaz!');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '{{ route('ajax.priceListItem.save') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    price_list_id: price_list_id,
+                    stock_id: stock_id,
+                    unit_price: unit_price,
+                    vat_rate: vat_rate,
+                    currency_type: currency_type,
+                },
+                success: function () {
+                    $("#CreatePriceListItemModal").modal('hide');
+                    priceListItems.ajax.reload().draw();
+                },
+                error: function (error) {
+                    console.log(error)
+                    toastr.error('Mal/Hizmet Eklenirken Sistemsel Bir Hata Oluştu!');
+                }
+            });
         }
     });
 </script>

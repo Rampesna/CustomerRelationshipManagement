@@ -66,6 +66,30 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-xl-8">
+                    <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="priceListItemCreateIcon"></i></h5>
+                </div>
+                <div class="col-xl-4 text-right">
+                    <i class="fa fa-trash text-danger cursor-pointer" id="priceListItemDeleteIcon" style="display: none"></i>
+                </div>
+            </div>
+            <div class="row mt-6">
+                <input type="hidden" id="price_list_item_id_edit">
+                <div class="col-xl-12">
+                    <table class="table table-bordered table-hover" id="priceListItems">
+                        <thead>
+                        <tr>
+                            <th>Mal / Hizmet</th>
+                            <th>Birim Fiyat</th>
+                            <th>KDV Oranı</th>
+                            <th>Döviz Türü</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
             <hr>
             <div class="offcanvas-footer">
                 <div class="row">

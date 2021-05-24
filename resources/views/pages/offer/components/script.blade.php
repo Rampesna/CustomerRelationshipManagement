@@ -367,6 +367,7 @@
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
         offerItems.ajax.reload().draw();
+        offerItemDeleteIcon.hide();
         var id = $("#id_edit").val();
 
         $.ajax({

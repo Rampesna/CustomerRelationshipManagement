@@ -13,7 +13,7 @@
                     <input type="hidden" id="company_id_create" value="{{ $customer->company_id }}">
                     <input type="hidden" id="relation_type_create" value="App\Models\Customer">
                     <input type="hidden" id="relation_id_create" value="{{ $customer->id }}">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="user_id_create">Temsilci Seçimi</label>
                             <select id="user_id_create" class="form-control">

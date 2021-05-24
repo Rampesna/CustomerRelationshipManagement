@@ -6,7 +6,7 @@
             <div class="offcanvas-wrapper mb-5 scroll-pull">
                 <div class="row">
                     <div class="col-xl-10">
-                        <h5>Aktiviyi Düzenle</h5>
+                        <h5>Aktiviteyi Düzenle</h5>
                     </div>
                 </div>
                 <hr>
@@ -14,7 +14,7 @@
                     <input type="hidden" id="company_id_edit" value="{{ $customer->company_id }}">
                     <input type="hidden" id="relation_type_edit" value="App\Models\Customer">
                     <input type="hidden" id="relation_id_edit" value="{{ $customer->id }}">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="user_id_edit">Temsilci Seçimi</label>
                             <select id="user_id_edit" class="form-control">

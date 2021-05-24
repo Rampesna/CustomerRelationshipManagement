@@ -14,4 +14,9 @@ class Definition extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function definitions()
+    {
+        return $this->hasMany(Definition::class);
+    }
 }

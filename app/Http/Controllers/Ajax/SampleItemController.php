@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sample;
 use App\Models\SampleItem;
-use App\Services\CustomerService;
-use App\Services\ManagerService;
-use App\Services\SampleService;
+use App\Services\SampleItemService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -38,13 +35,18 @@ class SampleItemController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Sample::find($request->id), 200);
+        return response()->json(SampleItem::find($request->id), 200);
     }
 
     public function save(Request $request)
     {
-        $sampleService = new SampleService;
-        $sampleService->setSample($request->id ? Sample::find($request->id) : new Sample);
+        $sampleService = new SampleItemService;
+        $sampleService->setSampleItem($request->id ? SampleItem::find($request->id) : new SampleItem);
         $sampleService->save($request);
+    }
+
+    public function drop(Request $request)
+    {
+        SampleItem::find($request->id)->delete();
     }
 }

@@ -40,6 +40,7 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        @Authority(14)
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">
                 <div class="col-xl-12">
@@ -47,6 +48,7 @@
                 </div>
             </div>
         </a>
+        @endAuthority
         <div id="EditingContexts">
             <hr>
             <a onclick="show()" class="dropdown-item cursor-pointer">
@@ -56,6 +58,7 @@
                     </div>
                 </div>
             </a>
+            @Authority(15)
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -63,6 +66,9 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
+
+            @Authority(16)
             <a onclick="drop()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -70,6 +76,7 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
         </div>
     </div>
 

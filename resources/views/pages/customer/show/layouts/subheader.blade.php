@@ -37,48 +37,59 @@
                 </a>
             </li>
 
+            @Authority(28)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'finance-activity') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'finance-activity']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Finansal Hareketler</span>
                 </a>
             </li>
+            @endAuthority
 
+            @Authority(29)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'purchase') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'purchase']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Satın Alımlar</span>
                 </a>
             </li>
+            @endAuthority
 
+            @Authority(30)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'erp-order') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'erp-order']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Ticari Program Siparişler</span>
                 </a>
             </li>
+            @endAuthority
 
+            @Authority(31)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'file') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'file']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Dosyalar</span>
                 </a>
             </li>
+            @endAuthority
 
+            @Authority(32)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'social') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'social']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Sosyal Medya Hesapları</span>
                 </a>
             </li>
+            @endAuthority
 
+            @Authority(33)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'comment') active @endif" href="{{ route('customer.show', ['id' => $customer->id, 'tab' => 'comment']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Yorumlar</span>
                 </a>
             </li>
-
+            @endAuthority
         </ul>
     </div>
 </div>

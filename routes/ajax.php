@@ -7,6 +7,7 @@ use App\Http\Controllers\Ajax\CustomerController;
 use App\Http\Controllers\Ajax\ManagerController;
 use App\Http\Controllers\Ajax\SampleController;
 use App\Http\Controllers\Ajax\SampleItemController;
+use App\Http\Controllers\Ajax\PriceListItemController;
 use App\Http\Controllers\Ajax\OfferController;
 use App\Http\Controllers\Ajax\OfferItemController;
 use App\Http\Controllers\Ajax\StockController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Ajax\FileController;
 use App\Http\Controllers\Ajax\SocialController;
 use App\Http\Controllers\Ajax\CommentController;
 use App\Http\Controllers\Ajax\UserController;
+use App\Http\Controllers\Ajax\CompanyController;
+use App\Http\Controllers\Ajax\RoleController;
+use App\Http\Controllers\Ajax\PermissionController;
 use App\Http\Controllers\Ajax\CountryController;
 use App\Http\Controllers\Ajax\ProvinceController;
 use App\Http\Controllers\Ajax\DistrictController;
@@ -50,7 +54,6 @@ Route::prefix('activity')->group(function () {
     Route::post('save', [ActivityController::class, 'save'])->name('ajax.activity.save');
 });
 
-
 Route::prefix('customer')->group(function () {
     Route::get('index', [CustomerController::class, 'index'])->name('ajax.customer.index');
     Route::get('datatable', [CustomerController::class, 'datatable'])->name('ajax.customer.datatable');
@@ -81,6 +84,7 @@ Route::prefix('sample')->group(function () {
         Route::get('datatable', [SampleItemController::class, 'datatable'])->name('ajax.sampleItem.datatable');
         Route::get('show', [SampleItemController::class, 'show'])->name('ajax.sampleItem.show');
         Route::post('save', [SampleItemController::class, 'save'])->name('ajax.sampleItem.save');
+        Route::delete('drop', [SampleItemController::class, 'drop'])->name('ajax.sampleItem.drop');
     });
 });
 
@@ -111,6 +115,14 @@ Route::prefix('priceList')->group(function () {
     Route::get('datatable', [PriceListController::class, 'datatable'])->name('ajax.priceList.datatable');
     Route::get('show', [PriceListController::class, 'show'])->name('ajax.priceList.show');
     Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
+
+    Route::prefix('priceListItem')->group(function () {
+        Route::get('index', [PriceListItemController::class, 'index'])->name('ajax.priceListItem.index');
+        Route::get('datatable', [PriceListItemController::class, 'datatable'])->name('ajax.priceListItem.datatable');
+        Route::get('show', [PriceListItemController::class, 'show'])->name('ajax.priceListItem.show');
+        Route::post('save', [PriceListItemController::class, 'save'])->name('ajax.priceListItem.save');
+        Route::delete('drop', [PriceListItemController::class, 'drop'])->name('ajax.priceListItem.drop');
+    });
 });
 
 Route::prefix('file')->group(function () {
@@ -138,6 +150,26 @@ Route::prefix('comment')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
+    Route::get('datatable', [UserController::class, 'datatable'])->name('ajax.user.datatable');
+    Route::get('show', [UserController::class, 'show'])->name('ajax.user.show');
+    Route::post('save', [UserController::class, 'save'])->name('ajax.user.save');
+
+    Route::get('emailControl', [UserController::class, 'emailControl'])->name('ajax.user.emailControl');
+});
+
+Route::prefix('role')->group(function () {
+    Route::get('index', [RoleController::class, 'index'])->name('ajax.role.index');
+    Route::get('datatable', [RoleController::class, 'datatable'])->name('ajax.role.datatable');
+    Route::get('show', [RoleController::class, 'show'])->name('ajax.role.show');
+    Route::post('save', [RoleController::class, 'save'])->name('ajax.role.save');
+});
+
+Route::prefix('permission')->group(function () {
+    Route::get('index', [PermissionController::class, 'index'])->name('ajax.permission.index');
+});
+
+Route::prefix('company')->group(function () {
+    Route::get('index', [CompanyController::class, 'index'])->name('ajax.company.index');
 });
 
 Route::prefix('country')->group(function () {
@@ -153,6 +185,11 @@ Route::prefix('district')->group(function () {
 });
 
 Route::prefix('definition')->group(function () {
+    Route::get('datatable', [DefinitionController::class, 'datatable'])->name('ajax.definition.datatable');
+    Route::get('subDefinitions', [DefinitionController::class, 'subDefinitions'])->name('ajax.definition.subDefinitions');
+    Route::post('save', [DefinitionController::class, 'save'])->name('ajax.definition.save');
+    Route::delete('drop', [DefinitionController::class, 'drop'])->name('ajax.definition.drop');
+
     Route::get('opportunityPriorities', [DefinitionController::class, 'opportunityPriorities'])->name('ajax.definition.opportunityPriorities');
     Route::get('opportunityAccessTypes', [DefinitionController::class, 'opportunityAccessTypes'])->name('ajax.definition.opportunityAccessTypes');
     Route::get('opportunityEstimatedResultTypes', [DefinitionController::class, 'opportunityEstimatedResultTypes'])->name('ajax.definition.opportunityEstimatedResultTypes');

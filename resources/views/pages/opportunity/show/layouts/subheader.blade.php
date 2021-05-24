@@ -30,13 +30,14 @@
                 </a>
             </li>
 
+            @Authority(17)
             <li class="nav-item">
                 <a class="nav-link @if($tab == 'comment') active @endif" href="{{ route('opportunity.show', ['id' => $opportunity->id, 'tab' => 'comment']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Yorumlar</span>
                 </a>
             </li>
-
+            @endAuthority
 
         </ul>
     </div>

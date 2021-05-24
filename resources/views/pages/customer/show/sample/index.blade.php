@@ -9,6 +9,8 @@
     @include('pages.customer.show.sample.components.create')
     @include('pages.customer.show.sample.components.edit')
 
+    @include('pages.customer.show.sample.modals.create-sample-item')
+
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="samplesCard">
@@ -41,6 +43,7 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        @Authority(41)
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">
                 <div class="col-xl-12">
@@ -48,6 +51,7 @@
                 </div>
             </div>
         </a>
+        @endAuthority
         <div id="EditingContexts">
             <hr>
             {{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
@@ -57,6 +61,7 @@
             {{--                    </div>--}}
             {{--                </div>--}}
             {{--            </a>--}}
+            @Authority(42)
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -64,6 +69,9 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
+
+            @Authority(43)
             <a onclick="drop()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -71,6 +79,7 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
         </div>
     </div>
 

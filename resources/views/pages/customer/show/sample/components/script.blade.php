@@ -19,6 +19,12 @@
 
     var SelectedCompany = $("#SelectedCompany");
 
+    var CreateSampleItemForm = $("#CreateSampleItemForm");
+    var CreateSampleItemButton = $("#CreateSampleItemButton");
+
+    var sampleItemDeleteIcon = $("#sampleItemDeleteIcon");
+    var sampleItemCreateIcon = $("#sampleItemCreateIcon");
+
     var companyIdCreate = $("#company_id_create");
     var userIdCreate = $("#user_id_create");
     var relationTypeCreate = $("#relation_type_create");
@@ -32,6 +38,9 @@
     var relationIdEdit = $("#relation_id_edit");
     var cargoCompanyIdEdit = $("#cargo_company_id_edit");
     var statusIdEdit = $("#status_id_edit");
+
+    var sampleItemStockIdCreate = $("#sample_item_stock_id_create");
+    var sampleItemUnitIdCreate = $("#sample_item_unit_id_create");
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
@@ -321,6 +330,7 @@
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
         sampleItems.ajax.reload().draw();
+        sampleItemDeleteIcon.hide();
         var id = $("#id_edit").val();
 
         $.ajax({
@@ -430,7 +440,51 @@
         });
     }
 
+    function getStocks(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.index') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (stocks) {
+                sampleItemStockIdCreate.empty();
+                sampleItemStockIdCreate.append(`<option value="" selected hidden disabled></option>`);
+                $.each(stocks, function (index) {
+                    sampleItemStockIdCreate.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
+                });
+                sampleItemStockIdCreate.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getUnits(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.unitTypes') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (unitTypes) {
+                sampleItemUnitIdCreate.empty();
+                sampleItemUnitIdCreate.append(`<option value="" selected hidden disabled></option>`);
+                $.each(unitTypes, function (index) {
+                    sampleItemUnitIdCreate.append(`<option value="${unitTypes[index].id}">${unitTypes[index].name}</option>`);
+                });
+                sampleItemUnitIdCreate.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     getUsers({{ $customer->company_id }});
+    getStocks({{ $customer->company_id }});
+    getUnits({{ $customer->company_id }});
     getCargoCompanies({{ $customer->company_id }});
     getSampleStatuses({{ $customer->company_id }});
 
@@ -571,6 +625,101 @@
         } else {
             $("#context-menu").hide();
             samples.rows().deselect();
+        }
+    });
+
+    sampleItems.on('select', function (e) {
+        var selectedRows = sampleItems.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            sampleItemDeleteIcon.show();
+            $("#sample_item_id_edit").val(selectedRows.data()[0].id.replace('#', ''));
+        } else {
+            sampleItemDeleteIcon.hide();
+            $("#EditingContexts").hide();
+        }
+    });
+
+    sampleItems.on('deselect', function (e) {
+        sampleItemDeleteIcon.hide();
+    });
+
+    sampleItemDeleteIcon.click(function () {
+        var id = $("#sample_item_id_edit").val();
+        if (id) {
+            $.ajax({
+                type: 'delete',
+                url: '{{ route('ajax.sampleItem.drop') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id
+                },
+                success: function () {
+                    sampleItems.ajax.reload().draw();
+                },
+                error: function () {
+                    toastr.error('Satır Silinirken Bir Hata Oluştu!');
+                }
+            });
+        }
+    });
+
+    sampleItemCreateIcon.click(function () {
+        CreateSampleItemForm.trigger('reset');
+        sampleItemStockIdCreate.selectpicker('refresh');
+        sampleItemUnitIdCreate.selectpicker('refresh');
+        $("#CreateSampleItemModal").modal('show');
+    });
+
+    sampleItemStockIdCreate.change(function () {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.show') }}',
+            data: {
+                id: $(this).val()
+            },
+            success: function (stock) {
+                $("#sample_item_unit_id_create").val(stock.unit_type_id).selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    CreateSampleItemButton.click(function () {
+        var sample_id = $("#id_edit").val();
+        var stock_id = $("#sample_item_stock_id_create").val();
+        var amount = $("#sample_item_amount_create").val();
+        var unit_id = $("#sample_item_unit_id_create").val();
+
+        if (sample_id == null || sample_id === '') {
+            toastr.error('Numune Seçiminde Sistemsel Bi Hata Oluştu! Yöneticiniz İle İletişime Geçin.');
+        } else if (stock_id == null || stock_id === '') {
+            toastr.warning('Mal/Hizmet Seçilmesi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Miktar Boş Olamaz!');
+        } else if (unit_id == null || unit_id === '') {
+            toastr.warning('Birim Seçilmesi Zorunludur!');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '{{ route('ajax.sampleItem.save') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    sample_id: sample_id,
+                    stock_id: stock_id,
+                    amount: amount,
+                    unit_id: unit_id
+                },
+                success: function () {
+                    $("#CreateSampleItemModal").modal('hide');
+                    sampleItems.ajax.reload().draw();
+                },
+                error: function (error) {
+                    console.log(error)
+                    toastr.error('Mal/Hizmet Eklenirken Sistemsel Bir Hata Oluştu!');
+                }
+            });
         }
     });
 </script>

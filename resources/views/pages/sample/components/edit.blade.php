@@ -97,18 +97,19 @@
         <hr>
         <div class="row">
             <div class="col-xl-8">
-                <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer"></i></h5>
+                <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="sampleItemCreateIcon"></i></h5>
             </div>
             <div class="col-xl-4 text-right">
-                <i class="fa fa-trash text-danger cursor-pointer" id="reservationEditCustomersDeleteRowButton"></i>
+                <i class="fa fa-trash text-danger cursor-pointer" id="sampleItemDeleteIcon" style="display: none"></i>
             </div>
         </div>
         <div class="row mt-6">
+            <input type="hidden" id="sample_item_id_edit">
             <div class="col-xl-12">
                 <table class="table table-bordered table-hover" id="sampleItems">
                     <thead>
                     <tr>
-                        <th>Stok</th>
+                        <th>Mal / Hizmet</th>
                         <th>Miktar</th>
                         <th>Birim</th>
                     </tr>

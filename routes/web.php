@@ -11,8 +11,9 @@ use App\Http\Controllers\SampleController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PriceListController;
-
-Route::post('file-uploader', [DashboardController::class, 'fileUploader'])->name('file-uploader');
+use App\Http\Controllers\DefinitionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 Route::get('password', function () {
     return bcrypt(123456);
@@ -24,7 +25,7 @@ Route::get('test', function (\Illuminate\Http\Request $request) {
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'MobileDetect'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('dashboard.index');
     });
@@ -40,63 +41,84 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
             return redirect()->route('opportunity.index');
         });
-        Route::get('index', [OpportunityController::class, 'index'])->name('opportunity.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [OpportunityController::class, 'show'])->name('opportunity.show')->middleware('Authority:1');
+        Route::get('index', [OpportunityController::class, 'index'])->name('opportunity.index')->middleware('Authority:13');
+        Route::get('show/{id?}/{tab?}', [OpportunityController::class, 'show'])->name('opportunity.show')->middleware('Authority:13');
     });
 
     Route::prefix('activity')->group(function () {
         Route::get('/', function () {
             return redirect()->route('activity.index');
         });
-        Route::get('index', [ActivityController::class, 'index'])->name('activity.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [ActivityController::class, 'show'])->name('activity.show')->middleware('Authority:1');
+        Route::get('index', [ActivityController::class, 'index'])->name('activity.index')->middleware('Authority:19');
+        Route::get('show/{id?}/{tab?}', [ActivityController::class, 'show'])->name('activity.show')->middleware('Authority:19');
     });
 
     Route::prefix('customer')->group(function () {
         Route::get('/', function () {
             return redirect()->route('customer.index');
         });
-        Route::get('index', [CustomerController::class, 'index'])->name('customer.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [CustomerController::class, 'show'])->name('customer.show')->middleware('Authority:1');
+        Route::get('index', [CustomerController::class, 'index'])->name('customer.index')->middleware('Authority:24');
+        Route::get('show/{id?}/{tab?}', [CustomerController::class, 'show'])->name('customer.show')->middleware('Authority:24');
     });
 
     Route::prefix('manager')->group(function () {
         Route::get('/', function () {
             return redirect()->route('manager.index');
         });
-        Route::get('index', [ManagerController::class, 'index'])->name('manager.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [ManagerController::class, 'show'])->name('manager.show')->middleware('Authority:1');
+        Route::get('index', [ManagerController::class, 'index'])->name('manager.index')->middleware('Authority:35');
+        Route::get('show/{id?}/{tab?}', [ManagerController::class, 'show'])->name('manager.show')->middleware('Authority:35');
     });
 
     Route::prefix('sample')->group(function () {
         Route::get('/', function () {
             return redirect()->route('sample.index');
         });
-        Route::get('index', [SampleController::class, 'index'])->name('sample.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [SampleController::class, 'show'])->name('sample.show')->middleware('Authority:1');
+        Route::get('index', [SampleController::class, 'index'])->name('sample.index')->middleware('Authority:40');
+        Route::get('show/{id?}/{tab?}', [SampleController::class, 'show'])->name('sample.show')->middleware('Authority:40');
     });
 
     Route::prefix('offer')->group(function () {
         Route::get('/', function () {
             return redirect()->route('sample.index');
         });
-        Route::get('index', [OfferController::class, 'index'])->name('offer.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [OfferController::class, 'show'])->name('offer.show')->middleware('Authority:1');
+        Route::get('index', [OfferController::class, 'index'])->name('offer.index')->middleware('Authority:45');
+        Route::get('show/{id?}/{tab?}', [OfferController::class, 'show'])->name('offer.show')->middleware('Authority:45');
     });
 
     Route::prefix('stock')->group(function () {
         Route::get('/', function () {
             return redirect()->route('stock.index');
         });
-        Route::get('index', [StockController::class, 'index'])->name('stock.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [StockController::class, 'show'])->name('stock.show')->middleware('Authority:1');
+        Route::get('index', [StockController::class, 'index'])->name('stock.index')->middleware('Authority:50');
+        Route::get('show/{id?}/{tab?}', [StockController::class, 'show'])->name('stock.show')->middleware('Authority:50');
     });
 
     Route::prefix('priceList')->group(function () {
         Route::get('/', function () {
             return redirect()->route('priceList.index');
         });
-        Route::get('index', [PriceListController::class, 'index'])->name('priceList.index')->middleware('Authority:1');
-        Route::get('show/{id?}/{tab?}', [PriceListController::class, 'show'])->name('priceList.show')->middleware('Authority:1');
+        Route::get('index', [PriceListController::class, 'index'])->name('priceList.index')->middleware('Authority:55');
+        Route::get('show/{id?}/{tab?}', [PriceListController::class, 'show'])->name('priceList.show')->middleware('Authority:55');
+    });
+
+    Route::prefix('definition')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('definition.index');
+        });
+        Route::get('index', [DefinitionController::class, 'index'])->name('definition.index')->middleware('Authority:60');
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('user.index');
+        });
+        Route::get('index', [UserController::class, 'index'])->name('user.index')->middleware('Authority:3');
+    });
+
+    Route::prefix('role')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('role.index');
+        });
+        Route::get('index', [RoleController::class, 'index'])->name('role.index')->middleware('Authority:8');
     });
 });

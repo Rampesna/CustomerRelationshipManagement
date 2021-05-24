@@ -8,6 +8,8 @@
     @include('pages.priceList.components.create')
     @include('pages.priceList.components.edit')
 
+    @include('pages.priceList.modals.create-price-list-item')
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="priceListsCard">
@@ -40,6 +42,7 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        @Authority(56)
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">
                 <div class="col-xl-12">
@@ -47,6 +50,7 @@
                 </div>
             </div>
         </a>
+        @endAuthority
         <div id="EditingContexts">
             <hr>
 {{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
@@ -56,6 +60,7 @@
 {{--                    </div>--}}
 {{--                </div>--}}
 {{--            </a>--}}
+            @Authority(57)
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -63,6 +68,9 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
+
+            @Authority(58)
             <a onclick="drop()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -70,6 +78,7 @@
                     </div>
                 </div>
             </a>
+            @endAuthority
         </div>
     </div>
 

@@ -13,7 +13,9 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h6 class="mt-3 mb-0">{{ @$customer->title ?? '--' }}</h6>
+                        @Authority(26)
                         <button id="editCustomer" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditModal">Düzenle</button>
+                        @endAuthority
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between">
