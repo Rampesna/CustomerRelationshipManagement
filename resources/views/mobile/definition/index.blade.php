@@ -11,7 +11,9 @@
         <div class="col-6 text-right">
             <div class="row">
                 <div class="col-12">
+                    @Authority(62)
                     <button id="EditButton" class="btn btn-dark-75" onclick="edit()" style="display: none">Düzenle</button>
+                    @endAuthority
                 </div>
             </div>
         </div>

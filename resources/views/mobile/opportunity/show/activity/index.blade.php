@@ -1,15 +1,32 @@
 @extends('mobile.layouts.master')
-@section('title', 'Fırsat Detayları')
+@section('title', 'Aktiviteler')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
     @include('mobile.opportunity.show.layouts.subheader')
-    @include('mobile.opportunity.show.activity.components.create')
-    @include('mobile.opportunity.show.activity.components.edit')
+    @include('mobile.opportunity.show.activity.modals.create')
+    @include('mobile.opportunity.show.activity.modals.edit')
 
-    <div class="row mt-15">
+    <div class="row">
+        <div class="col-6">
+            @Authority(20)
+            <button class="btn btn-primary" onclick="create()">Yeni Oluştur</button>
+            @endAuthority
+        </div>
+        <div class="col-6 text-right">
+            <div class="row">
+                @Authority(21)
+                <div class="col-12">
+                    <button id="EditButton" class="btn btn-dark-75" onclick="edit()" style="display: none">Düzenle</button>
+                </div>
+                @endAuthority
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
         <div class="col-xl-12">
             <div class="card" id="activitiesCard">
                 <div class="card-body">

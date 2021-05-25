@@ -20,10 +20,16 @@
     var SelectedCompany = $("#SelectedCompany");
 
     var CreateOfferItemForm = $("#CreateOfferItemForm");
+    var NewOfferCreateOfferItemForm = $("#NewOfferCreateOfferItemForm");
+
     var CreateOfferItemButton = $("#CreateOfferItemButton");
+    var NewOfferCreateOfferItemButton = $("#NewOfferCreateOfferItemButton");
 
     var offerItemDeleteIcon = $("#offerItemDeleteIcon");
+    var newOfferItemDeleteIcon = $("#newOfferItemDeleteIcon");
+
     var offerItemCreateIcon = $("#offerItemCreateIcon");
+    var newOfferItemCreateIcon = $("#newOfferItemCreateIcon");
 
     var companyIdCreate = $("#company_id_create");
     var userIdCreate = $("#user_id_create");
@@ -42,12 +48,19 @@
     var statusIdEdit = $("#status_id_edit");
 
     var offerItemStockIdCreate = $("#offer_item_stock_id_create");
+    var newOfferItemStockIdCreate = $("#new_offer_item_stock_id_create");
     var offerItemUnitIdCreate = $("#offer_item_unit_id_create");
+    var newOfferItemUnitIdCreate = $("#new_offer_item_unit_id_create");
 
     var offerItemAmountCreate = $("#offer_item_amount_create");
     var offerItemUnitPriceCreate = $("#offer_item_unit_price_create");
     var offerItemVatRateCreate = $("#offer_item_vat_rate_create");
     var offerItemDiscountRateCreate = $("#offer_item_discount_rate_create");
+
+    var newOfferItemAmountCreate = $("#new_offer_item_amount_create");
+    var newOfferItemUnitPriceCreate = $("#new_offer_item_unit_price_create");
+    var newOfferItemVatRateCreate = $("#new_offer_item_vat_rate_create");
+    var newOfferItemDiscountRateCreate = $("#new_offer_item_discount_rate_create");
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
@@ -193,6 +206,63 @@
             {data: 'vat_rate', name: 'vat_rate'},
             {data: 'vat_total', name: 'vat_total'},
             {data: 'grand_total', name: 'grand_total'},
+        ],
+
+        responsive: true,
+        stateSave: true,
+        select: 'single'
+    });
+
+    var newOfferItems = $('#newOfferItems').DataTable({
+        language: {
+            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
+            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
+            loadingRecords: "Kayıtlar Yükleniyor.",
+            zeroRecords: "Tablo Boş",
+            search: "Arama:",
+            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
+            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
+            sProcessing: "Yükleniyor...",
+            paginate: {
+                first: "İlk",
+                previous: "Önceki",
+                next: "Sonraki",
+                last: "Son"
+            },
+            select: {
+                rows: {
+                    "_": "%d kayıt seçildi",
+                    "0": "",
+                    "1": "1 kayıt seçildi"
+                }
+            },
+            buttons: {
+                print: {
+                    title: 'Yazdır'
+                }
+            }
+        },
+
+        dom: 'rtipl',
+
+        columnDefs: [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+
+        order: [
+            [
+                0,
+                "desc"
+            ]
         ],
 
         responsive: true,
@@ -346,6 +416,24 @@
         $("#offer_item_grand_total_create").val(grand_total);
     }
 
+    function calculateNewOfferItemInputs() {
+        var amount = newOfferItemAmountCreate.val();
+        var unit_price = newOfferItemUnitPriceCreate.val();
+        var vat_rate = newOfferItemVatRateCreate.val();
+        var discount_rate = newOfferItemDiscountRateCreate.val();
+
+        var subtotalWithoutDiscount = amount * unit_price;
+        var discount_total = subtotalWithoutDiscount * discount_rate / 100;
+        var subtotal = subtotalWithoutDiscount - discount_total;
+        var vat_total = subtotal * vat_rate / 100;
+        var grand_total = subtotal + vat_total;
+
+        $("#new_offer_item_vat_total_create").val(vat_total);
+        $("#new_offer_item_discount_total_create").val(discount_total);
+        $("#new_offer_item_subtotal_create").val(subtotal);
+        $("#new_offer_item_grand_total_create").val(grand_total);
+    }
+
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
@@ -360,6 +448,7 @@
         statusIdCreate.selectpicker('refresh');
         payTypeIdCreate.selectpicker('refresh');
         deliveryTypeIdCreate.selectpicker('refresh');
+        newOfferItems.rows().remove().draw();
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -602,11 +691,15 @@
             },
             success: function (stocks) {
                 offerItemStockIdCreate.empty();
+                newOfferItemStockIdCreate.empty();
                 offerItemStockIdCreate.append(`<option value="" selected hidden disabled></option>`);
+                newOfferItemStockIdCreate.append(`<option value="" selected hidden disabled></option>`);
                 $.each(stocks, function (index) {
                     offerItemStockIdCreate.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
+                    newOfferItemStockIdCreate.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
                 });
                 offerItemStockIdCreate.selectpicker('refresh');
+                newOfferItemStockIdCreate.selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -623,11 +716,15 @@
             },
             success: function (unitTypes) {
                 offerItemUnitIdCreate.empty();
+                newOfferItemUnitIdCreate.empty();
                 offerItemUnitIdCreate.append(`<option value="" selected hidden disabled></option>`);
+                newOfferItemUnitIdCreate.append(`<option value="" selected hidden disabled></option>`);
                 $.each(unitTypes, function (index) {
                     offerItemUnitIdCreate.append(`<option value="${unitTypes[index].id}">${unitTypes[index].name}</option>`);
+                    newOfferItemUnitIdCreate.append(`<option value="${unitTypes[index].id}">${unitTypes[index].name}</option>`);
                 });
                 offerItemUnitIdCreate.selectpicker('refresh');
+                newOfferItemUnitIdCreate.selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -694,6 +791,15 @@
         var currency = $("#currency_create").val();
         var status_id = $("#status_id_create").val();
 
+        var items = [];
+
+        var selectedRows = newOfferItems.rows();
+        if (selectedRows.count() > 0) {
+            $.each(selectedRows.data(), function (index) {
+                items.push(selectedRows.data()[index]);
+            });
+        }
+
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
         } else if (relation_type == null || relation_type === '' || relation_id == null || relation_id === '') {
@@ -713,6 +819,7 @@
                 currency_type: currency_type,
                 currency: currency,
                 status_id: status_id,
+                items: items
             }, 'Yeni Teklif Başarıyla Oluşturuldu', 'Teklif Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
@@ -769,7 +876,6 @@
                     $("#edit_rightbar_toggle").click();
                 }
                 offers.ajax.reload().draw();
-                console.log(response)
             },
             error: function (error) {
                 toastr.success(errorMessage);
@@ -819,6 +925,8 @@
             offers.rows().deselect();
         }
     });
+
+    ////////////////////////////////////////////////////////////////////////////////////////
 
     offerItems.on('select', function (e) {
         var selectedRows = offerItems.rows({selected: true});
@@ -955,6 +1063,118 @@
                     toastr.error('Mal/Hizmet Eklenirken Sistemsel Bir Hata Oluştu!');
                 }
             });
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    newOfferItems.on('select', function (e) {
+        var selectedRows = newOfferItems.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            newOfferItemDeleteIcon.show();
+        } else {
+            newOfferItemDeleteIcon.hide();
+        }
+    });
+
+    newOfferItems.on('deselect', function (e) {
+        newOfferItemDeleteIcon.hide();
+    });
+
+    newOfferItemDeleteIcon.click(function () {
+        var selectedRows = newOfferItems.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            newOfferItems.rows('.selected').remove().draw();
+        }
+    });
+
+    newOfferItemCreateIcon.click(function () {
+        NewOfferCreateOfferItemForm.trigger('reset');
+        newOfferItemStockIdCreate.selectpicker('refresh');
+        newOfferItemUnitIdCreate.selectpicker('refresh');
+        newOfferItemAmountCreate.val(1);
+        newOfferItemDiscountRateCreate.val(0);
+        $("#NewOfferCreateOfferItemModal").modal('show');
+    });
+
+    newOfferItemStockIdCreate.change(function () {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.show') }}',
+            data: {
+                id: $(this).val()
+            },
+            success: function (stock) {
+                newOfferItemUnitPriceCreate.val(stock.unit_price);
+                $("#new_offer_item_unit_id_create").val(stock.unit_type_id).selectpicker('refresh');
+                newOfferItemVatRateCreate.val(stock.wholesale_vat);
+                calculateNewOfferItemInputs();
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    newOfferItemAmountCreate.change(function () {
+        calculateNewOfferItemInputs();
+    });
+
+    newOfferItemUnitPriceCreate.change(function () {
+        calculateNewOfferItemInputs();
+    });
+
+    newOfferItemVatRateCreate.change(function () {
+        calculateNewOfferItemInputs();
+    });
+
+    newOfferItemDiscountRateCreate.change(function () {
+        calculateNewOfferItemInputs();
+    });
+
+    NewOfferCreateOfferItemButton.click(function () {
+        var stock_id = $("#new_offer_item_stock_id_create").val();
+        var stock_name = $("#new_offer_item_stock_id_create").find("option:selected").text();
+        var amount = $("#new_offer_item_amount_create").val();
+        var unit_id = $("#new_offer_item_unit_id_create").val();
+        var unit_name = $("#new_offer_item_unit_id_create").find("option:selected").text();
+        var unit_price = $("#new_offer_item_unit_price_create").val();
+        var vat_rate = $("#new_offer_item_vat_rate_create").val();
+        var vat_total = $("#new_offer_item_vat_total_create").val();
+        var discount_rate = $("#new_offer_item_discount_rate_create").val();
+        var discount_total = $("#new_offer_item_discount_total_create").val();
+        var subtotal = $("#new_offer_item_subtotal_create").val();
+        var grand_total = $("#new_offer_item_grand_total_create").val();
+        var description = $("#new_offer_item_description_create").val();
+
+        if (stock_id == null || stock_id === '') {
+            toastr.warning('Mal/Hizmet Seçilmesi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Miktar Boş Olamaz!');
+        } else if (unit_id == null || unit_id === '') {
+            toastr.warning('Birim Seçilmesi Zorunludur!');
+        } else if (unit_price == null || unit_price === '') {
+            toastr.warning('Birim Fiyat Boş Olamaz!');
+        } else if (vat_rate == null || vat_rate === '') {
+            toastr.warning('KDV Oranı Boş Olamaz!');
+        } else if (discount_rate == null || discount_rate === '') {
+            toastr.warning('İskonto Oranı Boş Olamaz!');
+        } else {
+            newOfferItems.row.add([
+                stock_id,
+                unit_id,
+                stock_name,
+                amount,
+                unit_name,
+                unit_price,
+                discount_rate,
+                discount_total,
+                subtotal,
+                vat_rate,
+                vat_total,
+                grand_total
+            ]).draw(false);
+            $("#NewOfferCreateOfferItemModal").modal('hide');
         }
     });
 </script>

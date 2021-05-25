@@ -7,7 +7,7 @@
 
                         @Authority(2)
                         <div class="col-xl-4">
-                            <a href="{{ route('user.index') }}" class="card card-custom card-stretch gutter-b">
+                            <a href="{{ route('mobile.user.index') }}" class="card card-custom card-stretch gutter-b">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-dark-75 svg-icon-3x ml-n1">
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -26,7 +26,7 @@
 
                         @Authority(7)
                         <div class="col-xl-4">
-                            <a href="{{ route('role.index') }}" class="card card-custom card-stretch gutter-b">
+                            <a href="{{ route('mobile.role.index') }}" class="card card-custom card-stretch gutter-b">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-dark-75 svg-icon-3x ml-n1">
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

@@ -1,0 +1,108 @@
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="id_edit">
+                    <input type="hidden" id="company_id_edit" value="{{ $opportunity->company_id }}">
+                    <input type="hidden" id="relation_type_edit" value="App\Models\Opportunity">
+                    <input type="hidden" id="relation_id_edit" value="{{ $opportunity->id }}">
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="user_id_edit">Temsilci Seçimi</label>
+                            <select id="user_id_edit" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="subject_edit">Konu</label>
+                            <input type="text" id="subject_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="date_edit">Tarih</label>
+                            <input type="date" id="date_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="status_id_edit">Durum</label>
+                            <select id="status_id_edit" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="cargo_company_id_edit">Kargo Firması</label>
+                            <select id="cargo_company_id_edit" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="cargo_tracking_number_edit">Kargo Takip Numarası</label>
+                            <input type="text" id="cargo_tracking_number_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="bus_company_edit">Otobüs Firması</label>
+                            <input type="text" id="bus_company_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="car_plate_edit">Araç Plakası</label>
+                            <input type="text" id="car_plate_edit" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-8">
+                        <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="offerItemCreateIcon"></i></h5>
+                    </div>
+                    <div class="col-xl-4 text-right">
+                        <i class="fa fa-trash text-danger cursor-pointer" id="offerItemDeleteIcon" style="display: none"></i>
+                    </div>
+                </div>
+                <div class="row mt-6">
+                    <input type="hidden" id="offer_item_id_edit">
+                    <div class="col-xl-12">
+                        <table class="table table-bordered table-hover" id="offerItems">
+                            <thead>
+                            <tr>
+                                <th>Mal/Hizmet</th>
+                                <th>Miktar</th>
+                                <th>Birim</th>
+                                <th>Birim Fiyat</th>
+                                <th>İskonto Oranı</th>
+                                <th>İskonto Tutarı</th>
+                                <th>Mal/Hizmet Tutarı</th>
+                                <th>KDV Oranı</th>
+                                <th>KDV Tutarı</th>
+                                <th>Genel Toplam</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="UpdateButton">Güncelle</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+            </div>
+        </div>
+    </div>
+</div>

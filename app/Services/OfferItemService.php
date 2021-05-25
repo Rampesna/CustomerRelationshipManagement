@@ -43,4 +43,36 @@ class OfferItemService
 
         return $this->offerItem;
     }
+
+    public function saveWithData(
+        $offerId,
+        $stockId,
+        $unitId,
+        $unitPrice,
+        $amount,
+        $vatRate,
+        $vatTotal,
+        $discountRate,
+        $discountTotal,
+        $subtotal,
+        $grandTotal,
+        $description = null
+    )
+    {
+        $this->offerItem->offer_id = $offerId;
+        $this->offerItem->stock_id = $stockId;
+        $this->offerItem->unit_id = $unitId;
+        $this->offerItem->unit_price = $unitPrice;
+        $this->offerItem->amount = $amount;
+        $this->offerItem->vat_rate = $vatRate;
+        $this->offerItem->vat_total = $vatTotal;
+        $this->offerItem->discount_rate = $discountRate;
+        $this->offerItem->discount_total = $discountTotal;
+        $this->offerItem->subtotal = $subtotal;
+        $this->offerItem->grand_total = $grandTotal;
+        $this->offerItem->description = $description;
+        $this->offerItem->save();
+
+        return $this->offerItem;
+    }
 }

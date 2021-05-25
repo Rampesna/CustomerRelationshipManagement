@@ -123,6 +123,19 @@
         select: 'single'
     });
 
+    samples.on('select', function (e, dt, type, indexes) {
+        var selectedRows = samples.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            var id = selectedRows.data()[0].id.replace('#', '');
+            $("#id_edit").val(id);
+            $("#EditButton").show();
+        } else {
+            $("#EditButton").hide();
+        }
+    }).on('deselect', function (e, dt, type, indexes) {
+        $("#EditButton").hide();
+    });
+
     var sampleItems = $('#sampleItems').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -184,134 +197,6 @@
         select: 'single'
     });
 
-    var CreateRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'create_rightbar_close',
-                toggleBy: 'create_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
-        }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('CreateRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    CreateRightBar.init();
-
-    var EditRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'edit_rightbar_close',
-                toggleBy: 'edit_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
-        }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('EditRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    EditRightBar.init();
-
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
@@ -323,12 +208,11 @@
         relationIdCreate.selectpicker('refresh');
         statusIdCreate.selectpicker('refresh');
         cargoCompanyIdCreate.selectpicker('refresh');
-        $("#create_rightbar_toggle").trigger('click');
+        $("#CreateModal").modal('show');
     }
 
     function edit() {
-        $("#edit_rightbar_toggle").trigger('click');
-        $("#EditRightbar").hide();
+        $("#EditModal").modal('show');
         sampleItems.ajax.reload().draw();
         sampleItemDeleteIcon.hide();
         var id = $("#id_edit").val();
@@ -351,17 +235,11 @@
                 $("#cargo_tracking_number_edit").val(sample.cargo_tracking_number);
                 $("#bus_company_edit").val(sample.bus_company);
                 $("#car_plate_edit").val(sample.car_plate);
-                $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
                 console.log(error)
             }
         });
-    }
-
-    function show() {
-        var id = $("#id_edit").val();
-        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
     }
 
     function drop() {
@@ -572,12 +450,11 @@
             success: function (response) {
                 toastr.success(successMessage);
                 if (direction === 0) {
-                    $("#create_rightbar_toggle").click();
+                    $("#CreateModal").modal('hide');
                 } else if (direction === 1) {
-                    $("#edit_rightbar_toggle").click();
+                    $("#EditModal").modal('hide');
                 }
                 samples.ajax.reload().draw();
-                console.log(response)
             },
             error: function (error) {
                 toastr.success(errorMessage);

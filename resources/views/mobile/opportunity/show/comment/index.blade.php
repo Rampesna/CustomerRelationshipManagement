@@ -5,7 +5,7 @@
 
 @section('content')
 
-    @include('pages.opportunity.show.layouts.subheader')
+    @include('mobile.opportunity.show.layouts.subheader')
 
     <div class="text-center pt-15">
         <div class="h4 text-dark-50">Bu Bölüm Henüz Yapım Aşamasında</div>

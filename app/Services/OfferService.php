@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Offer;
+use App\Models\OfferItem;
 use Illuminate\Http\Request;
 
 class OfferService
@@ -40,6 +41,26 @@ class OfferService
         $this->offer->currency = $request->currency;
         $this->offer->status_id = $request->status_id;
         $this->offer->save();
+
+        if ($request->items && count($request->items) > 0) {
+            $offerItemService = new OfferItemService;
+            foreach ($request->items as $item) {
+                $offerItemService->setOfferItem(new OfferItem);
+                $offerItemService->saveWithData(
+                    $this->offer->id,
+                    $item[0],
+                    $item[1],
+                    $item[5],
+                    $item[3],
+                    $item[9],
+                    $item[10],
+                    $item[6],
+                    $item[7],
+                    $item[8],
+                    $item[11]
+                );
+            }
+        }
 
         return $this->offer;
     }

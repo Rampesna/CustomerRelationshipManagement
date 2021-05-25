@@ -10,16 +10,20 @@
 
     <div class="row">
         <div class="col-6">
+            @Authority(14)
             <button class="btn btn-primary" onclick="create()">Yeni Oluştur</button>
+            @endAuthority
         </div>
         <div class="col-6 text-right">
             <div class="row">
                 <div class="col-6">
                     <button id="ShowButton" class="btn btn-info" onclick="show()" style="display: none">İncele</button>
                 </div>
+                @Authority(15)
                 <div class="col-6">
                     <button id="EditButton" class="btn btn-dark-75" onclick="edit()" style="display: none">Düzenle</button>
                 </div>
+                @endAuthority
             </div>
         </div>
     </div>

@@ -1,8 +1,8 @@
 <div id="CreateRightbar" style="width: 1500px" class="offcanvas offcanvas-right p-10">
     <input type="hidden" id="create_rightbar_toggle">
-    <form id="CreateForm">
-        <div class="offcanvas-content">
-            <div class="offcanvas-wrapper mb-5 scroll-pull">
+    <div class="offcanvas-content">
+        <div class="offcanvas-wrapper mb-5 scroll-pull">
+            <form id="CreateForm">
                 <div class="row">
                     <div class="col-xl-10">
                         <h5>Yeni Teklif Oluştur</h5>
@@ -100,15 +100,47 @@
                         </div>
                     </div>
                 </div>
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-xl-8">
+                <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="newOfferItemCreateIcon"></i></h5>
             </div>
-            <hr>
-            <div class="offcanvas-footer">
-                <div class="row">
-                    <div class="col-xl-12 text-right">
-                        <button type="button" class="btn btn-success" id="CreateButton">Oluştur</button>
-                    </div>
+            <div class="col-xl-4 text-right">
+                <i class="fa fa-trash text-danger cursor-pointer" id="newOfferItemDeleteIcon" style="display: none"></i>
+            </div>
+        </div>
+        <div class="row mt-6">
+            <input type="hidden" id="new_offer_item_id_edit">
+            <div class="col-xl-12">
+                <table class="table table-bordered table-hover" id="newOfferItems">
+                    <thead>
+                    <tr>
+                        <th>stockId</th>
+                        <th>unitId</th>
+                        <th>Mal/Hizmet</th>
+                        <th>Miktar</th>
+                        <th>Birim</th>
+                        <th>Birim Fiyat</th>
+                        <th>İskonto Oranı</th>
+                        <th>İskonto Tutarı</th>
+                        <th>Mal/Hizmet Tutarı</th>
+                        <th>KDV Oranı</th>
+                        <th>KDV Tutarı</th>
+                        <th>Genel Toplam</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div class="offcanvas-footer">
+            <div class="row">
+                <div class="col-xl-12 text-right">
+                    <button type="button" class="btn btn-success" id="CreateButton">Oluştur</button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>

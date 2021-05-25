@@ -1,16 +1,33 @@
-@extends('layouts.master')
+@extends('mobile.layouts.master')
 @section('title', 'Fırsat Detayları - Teklifler')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    @include('pages.opportunity.show.layouts.subheader')
-    @include('pages.opportunity.show.offer.components.create')
-    @include('pages.opportunity.show.offer.components.edit')
+    @include('mobile.opportunity.show.layouts.subheader')
+    @include('mobile.opportunity.show.offer.modals.create')
+    @include('mobile.opportunity.show.offer.modals.edit')
 
-    @include('pages.opportunity.show.offer.modals.create-offer-item')
+    @include('mobile.opportunity.show.offer.modals.create-offer-item')
 
+    <div class="row">
+        <div class="col-6">
+            @Authority(46)
+            <button class="btn btn-primary" onclick="create()">Yeni Oluştur</button>
+            @endAuthority
+        </div>
+        <div class="col-6 text-right">
+            <div class="row">
+                @Authority(47)
+                <div class="col-12">
+                    <button id="EditButton" class="btn btn-dark-75" onclick="edit()" style="display: none">Düzenle</button>
+                </div>
+                @endAuthority
+            </div>
+        </div>
+    </div>
+    <hr>
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="offersCard">
@@ -42,53 +59,12 @@
         </div>
     </div>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
-        @Authority(46)
-        <a onclick="create()" class="dropdown-item cursor-pointer">
-            <div class="row">
-                <div class="col-xl-12">
-                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Yeni Oluştur</span>
-                </div>
-            </div>
-        </a>
-        @endAuthority
-        <div id="EditingContexts">
-            <hr>
-            {{--            <a onclick="show()" class="dropdown-item cursor-pointer">--}}
-            {{--                <div class="row">--}}
-            {{--                    <div class="col-xl-12">--}}
-            {{--                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--            </a>--}}
-            @Authority(47)
-            <a onclick="edit()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-pen text-primary"></i><span class="ml-4">Düzenle</span>
-                    </div>
-                </div>
-            </a>
-            @endAuthority
-
-            @Authority(48)
-            <a onclick="drop()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>
-                    </div>
-                </div>
-            </a>
-            @endAuthority
-        </div>
-    </div>
-
 @endsection
 
 @section('page-styles')
-    @include('pages.opportunity.show.offer.components.style')
+    @include('mobile.opportunity.show.offer.components.style')
 @stop
 
 @section('page-script')
-    @include('pages.opportunity.show.offer.components.script')
+    @include('mobile.opportunity.show.offer.components.script')
 @stop

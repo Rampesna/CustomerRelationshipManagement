@@ -5,7 +5,7 @@
 
 @section('content')
 
-    Mobile Dashboard
+
 
 @endsection
 

@@ -130,6 +130,19 @@
         select: 'single'
     });
 
+    offers.on('select', function (e, dt, type, indexes) {
+        var selectedRows = offers.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            var id = selectedRows.data()[0].id.replace('#', '');
+            $("#id_edit").val(id);
+            $("#EditButton").show();
+        } else {
+            $("#EditButton").hide();
+        }
+    }).on('deselect', function (e, dt, type, indexes) {
+        $("#EditButton").hide();
+    });
+
     var offerItems = $('#offerItems').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -198,134 +211,6 @@
         select: 'single'
     });
 
-    var CreateRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'create_rightbar_close',
-                toggleBy: 'create_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
-        }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('CreateRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    CreateRightBar.init();
-
-    var EditRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'edit_rightbar_close',
-                toggleBy: 'edit_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
-        }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('EditRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    EditRightBar.init();
-
     function calculateOfferItemInputs() {
         var amount = offerItemAmountCreate.val();
         var unit_price = offerItemUnitPriceCreate.val();
@@ -357,15 +242,17 @@
         statusIdCreate.selectpicker('refresh');
         payTypeIdCreate.selectpicker('refresh');
         deliveryTypeIdCreate.selectpicker('refresh');
-        $("#create_rightbar_toggle").trigger('click');
+        $("#CreateModal").modal('show');
     }
 
     function edit() {
-        $("#edit_rightbar_toggle").trigger('click');
-        $("#EditRightbar").hide();
+        $("#EditModal").modal('show');
         offerItems.ajax.reload().draw();
         offerItemDeleteIcon.hide();
         var id = $("#id_edit").val();
+
+
+        console.log(id)
 
         $.ajax({
             type: 'get',
@@ -374,6 +261,7 @@
                 id: id
             },
             success: function (offer) {
+                console.log(offer)
                 $("#company_id_edit").val(offer.company_id).selectpicker('refresh');
                 getUsers({{ $opportunity->company_id }});
                 userIdEdit.val(offer.user_id).selectpicker('refresh');
@@ -385,7 +273,6 @@
                 $("#currency_type_edit").val(offer.currency_type).selectpicker('refresh');
                 $("#currency").val(offer.currency);
                 $("#status_id_edit").val(offer.status_id).selectpicker('refresh');
-                $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
                 console.log(error)
@@ -621,12 +508,11 @@
             success: function (response) {
                 toastr.success(successMessage);
                 if (direction === 0) {
-                    $("#create_rightbar_toggle").click();
+                    $("#CreateModal").modal('hide');
                 } else if (direction === 1) {
-                    $("#edit_rightbar_toggle").click();
+                    $("#EditModal").modal('hide');
                 }
                 offers.ajax.reload().draw();
-                console.log(response)
             },
             error: function (error) {
                 toastr.success(errorMessage);

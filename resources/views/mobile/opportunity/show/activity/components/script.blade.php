@@ -116,148 +116,34 @@
         select: 'single'
     });
 
-    var CreateRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'create_rightbar_close',
-                toggleBy: 'create_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
+    activities.on('select', function (e, dt, type, indexes) {
+        var selectedRows = activities.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            var id = selectedRows.data()[0].id.replace('#', '');
+            $("#id_edit").val(id);
+            $("#EditButton").show();
+        } else {
+            $("#EditButton").hide();
         }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('CreateRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    CreateRightBar.init();
-
-    var EditRightBar = function () {
-        var _element;
-        var _offcanvasObject;
-
-        var _init = function () {
-            var header = KTUtil.find(_element, '.offcanvas-header');
-            var content = KTUtil.find(_element, '.offcanvas-content');
-
-            _offcanvasObject = new KTOffcanvas(_element, {
-                overlay: true,
-                baseClass: 'offcanvas',
-                placement: 'right',
-                closeBy: 'edit_rightbar_close',
-                toggleBy: 'edit_rightbar_toggle'
-            });
-
-            KTUtil.scrollInit(content, {
-                disableForMobile: true,
-                resetHeightOnDestroy: true,
-                handleWindowResize: true,
-                height: function () {
-                    var height = parseInt(KTUtil.getViewPort().height);
-
-                    if (header) {
-                        height = height - parseInt(KTUtil.actualHeight(header));
-                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
-                    }
-
-                    if (content) {
-                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
-                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
-                    }
-
-                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
-                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
-
-                    height = height - 2;
-
-                    return height;
-                }
-            });
-        }
-
-        // Public methods
-        return {
-            init: function () {
-                _element = KTUtil.getById('EditRightbar');
-
-                if (!_element) {
-                    return;
-                }
-
-                // Initialize
-                _init();
-            },
-
-            getElement: function () {
-                return _element;
-            }
-        };
-    }();
-    EditRightBar.init();
+    }).on('deselect', function (e, dt, type, indexes) {
+        $("#ShowButton").hide();
+        $("#EditButton").hide();
+    });
 
     function create() {
         $("#CreateForm").trigger('reset');
-        companyIdCreate.val({{ $opportunity->company_id }}).selectpicker('refresh');
-        getUsers({{ $opportunity->company_id }});
-        getActivityMeetingReasons({{ $opportunity->company_id }});
-        getActivityPriorities({{ $opportunity->company_id }});
+        companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
+        getUsers(SelectedCompany.val());
+        getRelationsCreate(SelectedCompany.val());
+        getRelationsEdit(SelectedCompany.val());
+        getActivityMeetingReasons(SelectedCompany.val());
+        getActivityPriorities(SelectedCompany.val());
         userIdCreate.selectpicker('refresh');
-        $("#create_rightbar_toggle").trigger('click');
+        $("#CreateModal").modal('show');
     }
 
     function edit() {
-        $("#edit_rightbar_toggle").trigger('click');
-        $("#EditRightbar").hide();
-
+        $("#EditModal").modal('show');
         var id = $("#id_edit").val();
 
         $.ajax({
@@ -271,12 +157,12 @@
                 getUsers(activity.company_id);
                 $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
                 $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
+                getRelationsEdit(activity.relation_id, companyIdEdit.val());
                 $("#subject_edit").val(activity.subject);
                 $("#start_date_edit").val(activity.start_date);
                 $("#end_date_edit").val(activity.end_date);
                 $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
                 $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
-                $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
                 console.log(error)
@@ -286,7 +172,7 @@
 
     function show() {
         var id = $("#id_edit").val();
-        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+        window.open('{{ route('mobile.opportunity.show') }}/' + id + '/index', '_blank');
     }
 
     function drop() {
@@ -317,6 +203,98 @@
                 console.log(error)
             }
         });
+    }
+
+    function getRelationsCreate(company_id) {
+        var relation_type = relationTypeCreate.val();
+
+        if (relation_type === 'App\\Models\\Opportunity') {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('ajax.opportunity.index') }}',
+                data: {
+                    company_id: company_id
+                },
+                success: function (opportunities) {
+                    relationIdCreate.empty();
+                    $.each(opportunities, function (index) {
+                        relationIdCreate.append(`<option value="${opportunities[index].id}">${opportunities[index].name ?? ''}</option>`);
+                    });
+                    relationIdCreate.selectpicker('refresh');
+                },
+                error: function (error) {
+                    toastr.error('Fırsatlar Yüklenirken Bir Hata Oluştu');
+                    console.log(error);
+                }
+            });
+        } else if (relation_type === 'App\\Models\\Customer') {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('ajax.customer.index') }}',
+                data: {
+                    company_id: company_id
+                },
+                success: function (customers) {
+                    relationIdCreate.empty();
+                    $.each(customers, function (index) {
+                        relationIdCreate.append(`<option value="${customers[index].id}">${customers[index].title ?? ''}</option>`);
+                    });
+                    relationIdCreate.selectpicker('refresh');
+                },
+                error: function (error) {
+                    toastr.error('Müşteriler Yüklenirken Bir Hata Oluştu');
+                    console.log(error);
+                }
+            });
+        } else {
+            toastr.warning('Bağlantı Türünde Bir Hata Var!');
+        }
+    }
+
+    function getRelationsEdit(id, company_id) {
+        var relation_type = relationTypeEdit.val();
+
+        if (relation_type === 'App\\Models\\Opportunity') {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('ajax.opportunity.index') }}',
+                data: {
+                    company_id: company_id
+                },
+                success: function (opportunities) {
+                    relationIdEdit.empty();
+                    $.each(opportunities, function (index) {
+                        relationIdEdit.append(`<option ${id && id === opportunities[index].id ? 'selected' : null} value="${opportunities[index].id}">${opportunities[index].name ?? ''}</option>`);
+                    });
+                    relationIdEdit.selectpicker('refresh');
+                },
+                error: function (error) {
+                    toastr.error('Fırsatlar Yüklenirken Bir Hata Oluştu');
+                    console.log(error);
+                }
+            });
+        } else if (relation_type === 'App\\Models\\Customer') {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('ajax.customer.index') }}',
+                data: {
+                    company_id: company_id
+                },
+                success: function (customers) {
+                    relationIdEdit.empty();
+                    $.each(customers, function (index) {
+                        relationIdEdit.append(`<option ${id && id === customers[index].id ? 'selected' : null} value="${customers[index].id}">${customers[index].title ?? ''}</option>`);
+                    });
+                    relationIdEdit.selectpicker('refresh');
+                },
+                error: function (error) {
+                    toastr.error('Müşteriler Yüklenirken Bir Hata Oluştu');
+                    console.log(error);
+                }
+            });
+        } else {
+            toastr.warning('Bağlantı Türünde Bir Hata Var!');
+        }
     }
 
     function getActivityMeetingReasons(company_id) {
@@ -365,9 +343,42 @@
         });
     }
 
-    getUsers({{ $opportunity->company_id }});
-    getActivityMeetingReasons({{ $opportunity->company_id }});
-    getActivityPriorities({{ $opportunity->company_id }});
+    getUsers(SelectedCompany.val());
+    getRelationsCreate(SelectedCompany.val());
+    getRelationsEdit(SelectedCompany.val());
+    getActivityMeetingReasons(SelectedCompany.val());
+    getActivityPriorities(SelectedCompany.val());
+
+    SelectedCompany.change(function () {
+        getUsers($(this).val());
+        getRelationsCreate($(this).val());
+        getRelationsEdit(SelectedCompany.val());
+        getActivityMeetingReasons(SelectedCompany.val());
+        getActivityPriorities(SelectedCompany.val());
+        activities.ajax.reload().draw();
+    });
+
+    relationTypeCreate.change(function () {
+        getRelationsCreate(companyIdCreate.val());
+    });
+
+    relationTypeEdit.change(function () {
+        getRelationsEdit(null, companyIdEdit.val());
+    });
+
+    companyIdCreate.change(function () {
+        getUsers($(this).val());
+        getRelationsCreate($(this).val());
+        getActivityMeetingReasons($(this).val());
+        getActivityPriorities($(this).val());
+    });
+
+    companyIdEdit.change(function () {
+        getUsers($(this).val());
+        getRelationsEdit(null, $(this).val());
+        getActivityMeetingReasons($(this).val());
+        getActivityPriorities($(this).val());
+    });
 
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
@@ -451,12 +462,11 @@
             success: function (response) {
                 toastr.success(successMessage);
                 if (direction === 0) {
-                    $("#create_rightbar_toggle").click();
+                    $("#CreateModal").modal('hide');
                 } else if (direction === 1) {
-                    $("#edit_rightbar_toggle").click();
+                    $("#EditModal").modal('hide');
                 }
                 activities.ajax.reload().draw();
-                console.log(response)
             },
             error: function (error) {
                 toastr.success(errorMessage);
@@ -474,15 +484,6 @@
         } else {
             $("#EditingContexts").hide();
         }
-
-        var top = e.pageY - 10;
-        var left = e.pageX - 10;
-
-        $("#context-menu").css({
-            display: "block",
-            top: top,
-            left: left
-        });
 
         return false;
     }).on("click", function () {

@@ -11,13 +11,17 @@
 
     <div class="row">
         <div class="col-6">
+            @Authority(46)
             <button class="btn btn-primary" onclick="create()">Yeni Oluştur</button>
+            @endAuthority
         </div>
         <div class="col-6 text-right">
             <div class="row">
+                @Authority(47)
                 <div class="col-12">
                     <button id="EditButton" class="btn btn-dark-75" onclick="edit()" style="display: none">Düzenle</button>
                 </div>
+                @endAuthority
             </div>
         </div>
     </div>
