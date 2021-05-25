@@ -17,6 +17,16 @@
         'Aralık',
     ];
 
+    var offerSubtotalInput = $("#offerSubtotalInput");
+    var offerDiscountTotalInput = $("#offerDiscountTotalInput");
+    var offerVatTotalInput = $("#offerVatTotalInput");
+    var offerGrandTotalInput = $("#offerGrandTotalInput");
+
+    var newOfferSubtotalInput = $("#newOfferSubtotalInput");
+    var newOfferDiscountTotalInput = $("#newOfferDiscountTotalInput");
+    var newOfferVatTotalInput = $("#newOfferVatTotalInput");
+    var newOfferGrandTotalInput = $("#newOfferGrandTotalInput");
+
     var SelectedCompany = $("#SelectedCompany");
 
     var CreateOfferItemForm = $("#CreateOfferItemForm");
@@ -193,6 +203,26 @@
                 return $.extend({}, d, {
                     offer_id: $("#id_edit").val()
                 });
+            },
+            complete: function (response) {
+                var subtotal = 0;
+                var discount_total = 0;
+                var vat_total = 0;
+                var grand_total = 0;
+
+                $.each(response.responseJSON.data, function (index) {
+                    subtotal = subtotal + response.responseJSON.data[index].subtotal;
+                    discount_total = discount_total + response.responseJSON.data[index].discount_total;
+                    vat_total = vat_total + response.responseJSON.data[index].vat_total;
+                    grand_total = grand_total + response.responseJSON.data[index].grand_total;
+                });
+
+                var currencyType = $("#currency_type_edit").find("option:selected").val();
+
+                offerSubtotalInput.val(parseFloat(subtotal).toFixed(2) + " " + currencyType);
+                offerDiscountTotalInput.val(parseFloat(discount_total).toFixed(2) + " " + currencyType);
+                offerVatTotalInput.val(parseFloat(vat_total).toFixed(2) + " " + currencyType);
+                offerGrandTotalInput.val(parseFloat(grand_total).toFixed(2) + " " + currencyType);
             }
         },
         columns: [
@@ -434,6 +464,41 @@
         $("#new_offer_item_grand_total_create").val(grand_total);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    $("#currency_type_create").change(function () {
+        calculateNewOfferItemTotals();
+    });
+
+    $("#currency_type_edit").change(function () {
+        offerItems.ajax.reload().draw();
+    });
+
+    function calculateNewOfferItemTotals() {
+        var selectedRows = newOfferItems.rows();
+
+        var subtotal = 0;
+        var discount_total = 0;
+        var vat_total = 0;
+        var grand_total = 0;
+
+        $.each(selectedRows.data(), function (index) {
+            subtotal = subtotal + parseFloat(selectedRows.data()[index][8]);
+            discount_total = discount_total + parseFloat(selectedRows.data()[index][7]);
+            vat_total = vat_total + parseFloat(selectedRows.data()[index][10]);
+            grand_total = grand_total + parseFloat(selectedRows.data()[index][11]);
+        });
+
+        var currencyType = $("#currency_type_create").find("option:selected").val();
+
+        newOfferSubtotalInput.val(subtotal.toFixed(2) + " " + currencyType);
+        newOfferDiscountTotalInput.val(discount_total.toFixed(2) + " " + currencyType);
+        newOfferVatTotalInput.val(vat_total.toFixed(2) + " " + currencyType);
+        newOfferGrandTotalInput.val(grand_total.toFixed(2) + " " + currencyType);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
     function create() {
         $("#CreateForm").trigger('reset');
         companyIdCreate.val(SelectedCompany.val()).selectpicker('refresh');
@@ -449,16 +514,15 @@
         payTypeIdCreate.selectpicker('refresh');
         deliveryTypeIdCreate.selectpicker('refresh');
         newOfferItems.rows().remove().draw();
+        calculateNewOfferItemTotals();
         $("#create_rightbar_toggle").trigger('click');
     }
 
     function edit() {
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
-        offerItems.ajax.reload().draw();
         offerItemDeleteIcon.hide();
         var id = $("#id_edit").val();
-
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.offer.show') }}',
@@ -478,6 +542,7 @@
                 $("#currency_type_edit").val(offer.currency_type).selectpicker('refresh');
                 $("#currency_edit").val(offer.currency);
                 $("#status_id_edit").val(offer.status_id).selectpicker('refresh');
+                offerItems.ajax.reload().draw();
                 $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
@@ -1086,6 +1151,7 @@
         if (selectedRows.count() > 0) {
             newOfferItems.rows('.selected').remove().draw();
         }
+        calculateNewOfferItemTotals();
     });
 
     newOfferItemCreateIcon.click(function () {
@@ -1175,6 +1241,7 @@
                 grand_total
             ]).draw(false);
             $("#NewOfferCreateOfferItemModal").modal('hide');
+            calculateNewOfferItemTotals();
         }
     });
 </script>

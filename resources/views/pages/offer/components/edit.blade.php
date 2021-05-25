@@ -132,6 +132,42 @@
             </div>
         </div>
         <hr>
+        <div class="row">
+            <div class="col-xl-8"></div>
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="offerSubtotalInput">Mal/Hizmet Tutarı</label>
+                                    <input type="text" id="offerSubtotalInput" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="offerDiscountTotalInput">İskonto Tutarı</label>
+                                    <input type="text" id="offerDiscountTotalInput" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="offerVatTotalInput">KDV Tutarı</label>
+                                    <input type="text" id="offerVatTotalInput" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="offerGrandTotalInput">Genel Toplam</label>
+                                    <input type="text" id="offerGrandTotalInput" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="offcanvas-footer">
             <div class="row">
                 <div class="col-xl-12 text-right">
