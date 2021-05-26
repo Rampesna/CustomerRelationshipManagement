@@ -115,6 +115,7 @@ Route::prefix('priceList')->group(function () {
     Route::get('datatable', [PriceListController::class, 'datatable'])->name('ajax.priceList.datatable');
     Route::get('show', [PriceListController::class, 'show'])->name('ajax.priceList.show');
     Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
+    Route::post('copy', [PriceListController::class, 'copy'])->name('ajax.priceList.copy');
 
     Route::prefix('priceListItem')->group(function () {
         Route::get('index', [PriceListItemController::class, 'index'])->name('ajax.priceListItem.index');

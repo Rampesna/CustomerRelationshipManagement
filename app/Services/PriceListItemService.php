@@ -38,4 +38,24 @@ class PriceListItemService
 
         return $this->priceListItem;
     }
+
+    public function saveWithData(
+        $priceListId,
+        $stockId,
+        $unitPrice,
+        $vatRate,
+        $currencyType,
+        $currency = null
+    )
+    {
+        $this->priceListItem->price_list_id = $priceListId;
+        $this->priceListItem->stock_id = $stockId;
+        $this->priceListItem->unit_price = $unitPrice;
+        $this->priceListItem->vat_rate = $vatRate;
+        $this->priceListItem->currency_type = $currencyType;
+        $this->priceListItem->currency = $currency;
+        $this->priceListItem->save();
+
+        return $this->priceListItem;
+    }
 }

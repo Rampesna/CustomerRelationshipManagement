@@ -56,4 +56,11 @@ class PriceListController extends Controller
         $priceListService->setPriceList($request->id ? PriceList::find($request->id) : new PriceList);
         $priceListService->save($request);
     }
+
+    public function copy(Request $request)
+    {
+        $priceListService = new PriceListService;
+        $priceListService->setPriceList(new PriceList);
+        $priceListService->copy($request);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\PriceList;
+use App\Models\PriceListItem;
 use Illuminate\Http\Request;
 
 class PriceListService
@@ -37,5 +38,24 @@ class PriceListService
         $this->priceList->save();
 
         return $this->priceList;
+    }
+
+    public function copy(Request $request)
+    {
+        $oldPriceList = PriceList::find($request->old_id);
+        $newPriceList = $this->save($request);
+
+        foreach ($oldPriceList->items as $oldPriceListItem) {
+            $priceListItemService = new PriceListItemService;
+            $priceListItemService->setPriceListItem(new PriceListItem);
+            $priceListItemService->saveWithData(
+                $newPriceList->id,
+                $oldPriceListItem->stock_id,
+                $oldPriceListItem->unit_price,
+                $oldPriceListItem->vat_rate,
+                $oldPriceListItem->currency_type,
+                $oldPriceListItem->currency
+            );
+        }
     }
 }

@@ -9,6 +9,8 @@
     @include('pages.priceList.components.edit')
 
     @include('pages.priceList.modals.create-price-list-item')
+    @include('pages.priceList.modals.edit-price-list-item')
+    @include('pages.priceList.modals.copy')
 
     <div class="row">
         <div class="col-xl-12">
@@ -65,6 +67,16 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <i class="fas fa-pen text-primary"></i><span class="ml-4">Düzenle</span>
+                    </div>
+                </div>
+            </a>
+            @endAuthority
+
+            @Authority(57)
+            <a onclick="copy()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="far fa-copy text-dark-75"></i><span class="ml-4">Kopyasını Oluştur</span>
                     </div>
                 </div>
             </a>

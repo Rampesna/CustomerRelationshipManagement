@@ -6,12 +6,18 @@
 @section('content')
 
     @include('pages.opportunity.show.layouts.subheader')
+    @include('pages.opportunity.show.index.modals.edit')
 
     <div class="row mt-15">
         <div class="col-xl-6 col-12">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mt-3 mb-0">{{ @$opportunity->name ?? '--' }}</h6>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mt-3 mb-0">{{ @$opportunity->name ?? '--' }}</h6>
+                        @Authority(15)
+                        <button id="editOpportunity" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditModal" onclick="edit()">Düzenle</button>
+                        @endAuthority
+                    </div>
                     <span>{{ $opportunity->date ? date('d.m.Y', strtotime($opportunity->date)) : '__.__.____' }}</span>
                     <br>
                     <span>{{ @$opportunity->customer->title ?? '--' }}</span>

@@ -20,7 +20,7 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    return 1;
+    return \App\Models\PriceList::find(1)->items();
 });
 
 Auth::routes();

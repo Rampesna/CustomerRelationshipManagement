@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Helper\General;
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use App\Services\CustomerService;
@@ -34,12 +35,19 @@ class ManagerController extends Controller
         editColumn('gender', function ($manager) {
             return $manager->gender == 1 ? 'Erkek' : 'Kadın';
         })->
+        editColumn('email', function ($manager) {
+            return '<a href="mailto:' . $manager->email . '">' . $manager->email . '</a>';
+        })->
+        editColumn('phone_number', function ($manager) {
+            return '<a href="tel:' . '+' . @$manager->customer->country->code . @General::clearPhoneNumber($manager->phone_number) . '">' . '+' . @$manager->customer->country->code . ' ' . @$manager->phone_number . '</a>';
+        })->
         editColumn('department_id', function ($manager) {
             return $manager->department_id ? @$manager->department->name : '';
         })->
         editColumn('title_id', function ($manager) {
             return $manager->title_id ? @$manager->title->name : '';
         })->
+        rawColumns(['phone_number', 'email'])->
         make(true);
     }
 

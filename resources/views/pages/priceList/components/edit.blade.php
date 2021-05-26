@@ -69,10 +69,17 @@
 
             <div class="row">
                 <div class="col-xl-8">
-                    <h5>Malzemeler<i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="priceListItemCreateIcon"></i></h5>
+                    <h5>Malzemeler
+                        <i class="ml-2 fa fa-plus-circle text-success cursor-pointer" id="priceListItemCreateIcon"></i>
+                    </h5>
                 </div>
                 <div class="col-xl-4 text-right">
-                    <i class="fa fa-trash text-danger cursor-pointer" id="priceListItemDeleteIcon" style="display: none"></i>
+                    <button type="button" class="btn btn-sm btn-icon btn-danger" id="priceListItemDeleteIcon" style="display: none">
+                        <i class="fa fa-trash fa-sm text-white"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-icon btn-info" id="priceListItemEditIcon" style="display: none">
+                        <i class="fa fa-pen fa-sm text-white"></i>
+                    </button>
                 </div>
             </div>
             <div class="row mt-6">

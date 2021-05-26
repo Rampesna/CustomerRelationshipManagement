@@ -21,8 +21,10 @@
 
     var CreatePriceListItemForm = $("#CreatePriceListItemForm");
     var CreatePriceListItemButton = $("#CreatePriceListItemButton");
+    var UpdatePriceListItemButton = $("#UpdatePriceListItemButton");
 
     var priceListItemDeleteIcon = $("#priceListItemDeleteIcon");
+    var priceListItemEditIcon = $("#priceListItemEditIcon");
     var priceListItemCreateIcon = $("#priceListItemCreateIcon");
 
     var companyIdCreate = $("#company_id_create");
@@ -34,10 +36,11 @@
     var statusIdEdit = $("#status_id_edit");
 
     var priceListItemStockIdCreate = $("#price_list_item_stock_id_create");
-    var priceListItemUnitIdCreate = $("#price_list_item_unit_id_create");
+    var priceListItemStockIdEdit = $("#price_list_item_stock_id_edit");
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var CopyButton = $("#CopyButton");
 
     var priceLists = $('#priceLists').DataTable({
         language: {
@@ -320,6 +323,7 @@
         $("#EditRightbar").hide();
         priceListItems.ajax.reload().draw();
         priceListItemDeleteIcon.hide();
+        priceListItemEditIcon.hide();
         var id = $("#id_edit").val();
 
         $.ajax({
@@ -344,6 +348,11 @@
                 console.log(error)
             }
         });
+    }
+
+    function copy() {
+        $("#CopyForm").trigger('reset');
+        $("#CopyModal").modal('show');
     }
 
     function drop() {
@@ -408,11 +417,14 @@
             },
             success: function (stocks) {
                 priceListItemStockIdCreate.empty();
+                priceListItemStockIdEdit.empty();
                 priceListItemStockIdCreate.append(`<option value="" selected hidden disabled></option>`);
                 $.each(stocks, function (index) {
                     priceListItemStockIdCreate.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
+                    priceListItemStockIdEdit.append(`<option value="${stocks[index].id}">${stocks[index].name}</option>`);
                 });
                 priceListItemStockIdCreate.selectpicker('refresh');
+                priceListItemStockIdEdit.selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -497,6 +509,61 @@
         }
     });
 
+    CopyButton.click(function () {
+        $("#CopyModal").modal('hide');
+        var old_id = $("#id_edit").val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.priceList.show') }}',
+            data: {
+                id: old_id
+            },
+            success: function (priceList) {
+                var old_id = priceList.id;
+                var auth_user_id = '{{ auth()->user()->id() }}';
+                var company_id = priceList.company_id;
+                var user_id = priceList.user_id;
+                var name = $("#name_copy").val();
+                var description = priceList.description;
+                var start_date = priceList.start_date;
+                var end_date = priceList.end_date;
+                var status_id = priceList.status_id;
+
+                if (name == null || name === '') {
+                    toastr.warning('Yeni Fiyat Listesinin Adı Boş Olamaz!');
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('ajax.priceList.copy') }}',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            old_id: old_id,
+                            auth_user_id: auth_user_id,
+                            company_id: company_id,
+                            user_id: user_id,
+                            name: name,
+                            description: description,
+                            start_date: start_date,
+                            end_date: end_date,
+                            status_id: status_id,
+                        },
+                        success: function () {
+                            toastr.success('Fiyat Listesi Başarıyla Kopyalandı');
+                            priceLists.ajax.reload().draw();
+                        },
+                        error: function (error) {
+                            toastr.error('Fiyat Listesi Kopyalanırken Bir Hata Oluştu!');
+                            console.log(error)
+                        }
+                    });
+                }
+            },
+            error: function () {
+
+            }
+        });
+    });
+
     function savePriceList(data, successMessage, errorMessage, direction) {
         $.ajax({
             type: 'post',
@@ -510,7 +577,6 @@
                     $("#edit_rightbar_toggle").click();
                 }
                 priceLists.ajax.reload().draw();
-                console.log(response)
             },
             error: function (error) {
                 toastr.success(errorMessage);
@@ -565,15 +631,18 @@
         var selectedRows = priceListItems.rows({selected: true});
         if (selectedRows.count() > 0) {
             priceListItemDeleteIcon.show();
+            priceListItemEditIcon.show();
             $("#price_list_item_id_edit").val(selectedRows.data()[0].id.replace('#', ''));
         } else {
             priceListItemDeleteIcon.hide();
+            priceListItemEditIcon.hide();
             $("#EditingContexts").hide();
         }
     });
 
     priceListItems.on('deselect', function (e) {
         priceListItemDeleteIcon.hide();
+        priceListItemEditIcon.hide();
     });
 
     priceListItemDeleteIcon.click(function () {
@@ -599,7 +668,6 @@
     priceListItemCreateIcon.click(function () {
         CreatePriceListItemForm.trigger('reset');
         priceListItemStockIdCreate.selectpicker('refresh');
-        priceListItemUnitIdCreate.selectpicker('refresh');
         $("#CreatePriceListItemModal").modal('show');
     });
 
@@ -611,9 +679,50 @@
                 id: $(this).val()
             },
             success: function (stock) {
-                $("#price_list_item_unit_price_create").val(stock.unit_type_id);
+                $("#price_list_item_unit_price_create").val(stock.unit_price);
                 $("#price_list_item_vat_rate_create").val(stock.retrail_vat);
                 $("#price_list_item_currency_type_create").val(stock.currency_type).selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    priceListItemEditIcon.click(function () {
+        var id = $("#price_list_item_id_edit").val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.priceListItem.show') }}',
+            data: {
+                id: id
+            },
+            success: function (priceListItem) {
+                $("#price_list_item_stock_id_edit").val(priceListItem.stock_id).selectpicker('refresh');
+                $("#price_list_item_unit_price_edit").val(priceListItem.unit_price);
+                $("#price_list_item_vat_rate_edit").val(priceListItem.vat_rate);
+                $("#price_list_item_currency_type_edit").val(priceListItem.currency_type).selectpicker('refresh');
+                $("#EditPriceListItemModal").modal('show');
+            },
+            error: function (error) {
+                toastr.error('Kalem Verisi Alınırken Bir Hata Oluştu!');
+                console.log(error);
+            }
+        });
+
+    });
+
+    priceListItemStockIdEdit.change(function () {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.stock.show') }}',
+            data: {
+                id: $(this).val()
+            },
+            success: function (stock) {
+                $("#price_list_item_unit_price_edit").val(stock.unit_price);
+                $("#price_list_item_vat_rate_edit").val(stock.retrail_vat);
+                $("#price_list_item_currency_type_edit").val(stock.currency_type).selectpicker('refresh');
             },
             error: function () {
 
@@ -635,26 +744,62 @@
         } else if (unit_price == null || unit_price === '') {
             toastr.warning('Birim Fiyat Boş Olamaz!');
         } else {
-            $.ajax({
-                type: 'post',
-                url: '{{ route('ajax.priceListItem.save') }}',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    price_list_id: price_list_id,
-                    stock_id: stock_id,
-                    unit_price: unit_price,
-                    vat_rate: vat_rate,
-                    currency_type: currency_type,
-                },
-                success: function () {
-                    $("#CreatePriceListItemModal").modal('hide');
-                    priceListItems.ajax.reload().draw();
-                },
-                error: function (error) {
-                    console.log(error)
-                    toastr.error('Mal/Hizmet Eklenirken Sistemsel Bir Hata Oluştu!');
-                }
-            });
+            savePriceListItem({
+                _token: '{{ csrf_token() }}',
+                price_list_id: price_list_id,
+                stock_id: stock_id,
+                unit_price: unit_price,
+                vat_rate: vat_rate,
+                currency_type: currency_type,
+            }, 'Yeni Mal/Hizmet Başarıyla Eklendi', 'Mal/Hizmet Eklenirken Sistemsel Bir Hata Oluştu!', 0);
         }
     });
+
+    UpdatePriceListItemButton.click(function () {
+        var id = $("#price_list_item_id_edit").val();
+        var price_list_id = $("#id_edit").val();
+        var stock_id = $("#price_list_item_stock_id_edit").val();
+        var unit_price = $("#price_list_item_unit_price_edit").val();
+        var vat_rate = $("#price_list_item_vat_rate_edit").val();
+        var currency_type = $("#price_list_item_currency_type_edit").val();
+
+        if (price_list_id == null || price_list_id === '') {
+            toastr.error('Fiyat Listesi Seçiminde Sistemsel Bi Hata Oluştu! Yöneticiniz İle İletişime Geçin.');
+        } else if (stock_id == null || stock_id === '') {
+            toastr.warning('Mal/Hizmet Seçilmesi Zorunludur!');
+        } else if (unit_price == null || unit_price === '') {
+            toastr.warning('Birim Fiyat Boş Olamaz!');
+        } else {
+            savePriceListItem({
+                _token: '{{ csrf_token() }}',
+                id: id,
+                price_list_id: price_list_id,
+                stock_id: stock_id,
+                unit_price: unit_price,
+                vat_rate: vat_rate,
+                currency_type: currency_type,
+            }, 'Mal/Hizmet Başarıyla Güncellendi', 'Mal/Hizmet Güncellenirken Sistemsel Bir Hata Oluştu!', 1);
+        }
+    });
+
+    function savePriceListItem(data, successMessage, errorMessage, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.priceListItem.save') }}',
+            data: data,
+            success: function () {
+                toastr.success(successMessage);
+                if (direction === 0) {
+                    $("#CreatePriceListItemModal").modal('hide');
+                } else if (direction === 1) {
+                    $("#EditPriceListItemModal").modal('hide');
+                }
+                priceListItems.ajax.reload().draw();
+            },
+            error: function (error) {
+                toastr.success(errorMessage);
+                console.log(error)
+            }
+        });
+    }
 </script>
