@@ -114,6 +114,7 @@
         columns: [
             {data: 'id', name: 'id'},
             {data: 'customer_id', name: 'customer_id'},
+            {data: 'name', name: 'name'},
             {data: 'company_id', name: 'company_id'},
             {data: 'date', name: 'date'},
             {data: 'priority_id', name: 'priority_id'},

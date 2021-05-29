@@ -7,6 +7,7 @@
 
     @include('pages.user.components.create')
     @include('pages.user.components.edit')
+    @include('pages.user.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">

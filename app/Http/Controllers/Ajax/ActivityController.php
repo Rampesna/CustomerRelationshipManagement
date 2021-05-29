@@ -74,4 +74,8 @@ class ActivityController extends Controller
         $activityService->save($request);
     }
 
+    public function drop(Request $request)
+    {
+        Activity::find($request->id)->delete();
+    }
 }

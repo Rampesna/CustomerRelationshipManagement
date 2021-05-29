@@ -69,4 +69,9 @@ class SampleController extends Controller
         $sampleService->setSample($request->id ? Sample::find($request->id) : new Sample);
         $sampleService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Sample::find($request->id)->delete();
+    }
 }

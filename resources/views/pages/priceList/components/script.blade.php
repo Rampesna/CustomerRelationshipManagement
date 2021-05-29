@@ -41,6 +41,7 @@
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var CopyButton = $("#CopyButton");
+    var DeleteButton = $("#DeleteButton");
 
     var priceLists = $('#priceLists').DataTable({
         language: {
@@ -356,7 +357,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getUsers(company_id) {
@@ -560,6 +561,27 @@
             },
             error: function () {
 
+            }
+        });
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.priceList.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                priceLists.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
             }
         });
     });

@@ -164,4 +164,8 @@ class OpportunityController extends Controller
         $opportunityService->save($request);
     }
 
+    public function drop(Request $request)
+    {
+        Opportunity::find($request->id)->delete();
+    }
 }

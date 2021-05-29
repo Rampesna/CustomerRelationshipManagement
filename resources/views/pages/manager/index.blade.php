@@ -8,6 +8,8 @@
     @include('pages.manager.components.create')
     @include('pages.manager.components.edit')
 
+    @include('pages.manager.modals.delete')
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="managersCard">

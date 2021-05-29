@@ -37,6 +37,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var customers = $('#customers').DataTable({
         language: {
@@ -300,7 +301,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getCountries() {
@@ -612,6 +613,27 @@
                 reference_id: reference_id,
             }, 'Müşteri Başarıyla Güncellendi', 'Müşteri Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.customer.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                customers.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveCustomer(data, successMessage, errorMessage, direction) {

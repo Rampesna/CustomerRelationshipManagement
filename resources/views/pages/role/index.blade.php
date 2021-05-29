@@ -7,6 +7,7 @@
 
     @include('pages.role.components.create')
     @include('pages.role.components.edit')
+    @include('pages.role.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">

@@ -27,6 +27,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var users = $('#users').DataTable({
         language: {
@@ -264,7 +265,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getCompanies() {
@@ -418,6 +419,27 @@
             });
 
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.user.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                users.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveUser(data, successMessage, errorMessage, direction) {

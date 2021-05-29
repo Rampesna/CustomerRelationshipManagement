@@ -39,4 +39,9 @@ class CommentController extends Controller
         $commentService->setComment($request->id ? Comment::find($request->id) : new Comment);
         $commentService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Comment::find($request->id)->delete();
+    }
 }

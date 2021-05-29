@@ -41,4 +41,9 @@ class SocialController extends Controller
         $socialService->setSocial($request->id ? Social::find($request->id) : new Social);
         $socialService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Social::find($request->id)->delete();
+    }
 }

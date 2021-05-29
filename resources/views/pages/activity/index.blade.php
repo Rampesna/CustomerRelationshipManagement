@@ -8,6 +8,8 @@
     @include('pages.activity.components.create')
     @include('pages.activity.components.edit')
 
+    @include('pages.activity.modals.delete')
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="activitiesCard">

@@ -35,6 +35,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var activities = $('#activities').DataTable({
         language: {
@@ -295,7 +296,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getUsers(company_id) {
@@ -571,6 +572,27 @@
                 priority_id: priority_id
             }, 'Aktivite Başarıyla Güncellendi', 'Aktivite Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.activity.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                activities.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveActivity(data, successMessage, errorMessage, direction) {

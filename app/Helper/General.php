@@ -22,9 +22,9 @@ class General
         }
 
         return [
-            'code' => '',
-            'ForexSelling' => '',
-            'ForexBuying' => ''
+            'code' => 'TRY',
+            'ForexSelling' => 1,
+            'ForexBuying' => 1
         ];
     }
 

@@ -64,4 +64,9 @@ class ManagerController extends Controller
         $managerService->setManager($request->id ? Manager::find($request->id) : new Manager);
         $managerService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Manager::find($request->id)->delete();
+    }
 }

@@ -7,6 +7,7 @@
 
     @include('pages.stock.components.create')
     @include('pages.stock.components.edit')
+    @include('pages.stock.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">

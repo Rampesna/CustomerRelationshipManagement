@@ -32,4 +32,9 @@ class RoleController extends Controller
         $roleService->setRole($request->id ? Role::find($request->id) : new Role);
         $roleService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Role::find($request->id)->delete();
+    }
 }

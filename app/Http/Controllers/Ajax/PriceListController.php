@@ -57,6 +57,11 @@ class PriceListController extends Controller
         $priceListService->save($request);
     }
 
+    public function drop(Request $request)
+    {
+        PriceList::find($request->id)->delete();
+    }
+
     public function copy(Request $request)
     {
         $priceListService = new PriceListService;

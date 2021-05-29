@@ -74,6 +74,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var offers = $('#offers').DataTable({
         language: {
@@ -467,7 +468,22 @@
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     $("#currency_type_create").change(function () {
+        $("#currency_create").attr('disabled', true);
         calculateNewOfferItemTotals();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.offer.getCurrency') }}',
+            data: {
+                currency_code: $(this).val()
+            },
+            success: function (response) {
+                $("#currency_create").val(response.ForexSelling);
+                $("#currency_create").attr('disabled', false);
+            },
+            error: function () {
+
+            }
+        });
     });
 
     $("#currency_type_edit").change(function () {
@@ -557,7 +573,24 @@
     }
 
     function drop() {
+        $("#DeleteModal").modal('show');
+    }
 
+    function downloadPDF() {
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.offer.downloadPDF') }}',
+            data: {
+                id: id
+            },
+            success: function (response) {
+                console.log(response)
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
     }
 
     function getUsers(company_id) {
@@ -926,6 +959,27 @@
                 status_id: status_id,
             }, 'Teklif Başarıyla Güncellendi', 'Teklif Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.offer.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                offers.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveOffer(data, successMessage, errorMessage, direction) {

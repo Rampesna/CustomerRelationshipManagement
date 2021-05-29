@@ -7,6 +7,7 @@
 
     @include('pages.opportunity.components.create')
     @include('pages.opportunity.components.edit')
+    @include('pages.opportunity.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">
@@ -17,6 +18,7 @@
                         <tr>
                             <th>#</th>
                             <th>Müşteri</th>
+                            <th>Fırsat Müşterisi</th>
                             <th>Firma</th>
                             <th>Tarih</th>
                             <th>Öncelik</th>
@@ -27,6 +29,7 @@
                         <tr>
                             <th>#</th>
                             <th>Müşteri</th>
+                            <th>Fırsat Müşterisi</th>
                             <th>Firma</th>
                             <th>Tarih</th>
                             <th>Öncelik</th>

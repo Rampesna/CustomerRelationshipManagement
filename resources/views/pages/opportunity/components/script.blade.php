@@ -46,6 +46,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var opportunities = $('#opportunities').DataTable({
         language: {
@@ -114,6 +115,7 @@
         columns: [
             {data: 'id', name: 'id'},
             {data: 'customer_id', name: 'customer_id'},
+            {data: 'name', name: 'name'},
             {data: 'company_id', name: 'company_id'},
             {data: 'date', name: 'date'},
             {data: 'priority_id', name: 'priority_id'},
@@ -315,6 +317,7 @@
                 $("#capacity_edit").val(opportunity.capacity);
                 $("#capacity_type_id_edit").val(opportunity.capacity_type_id).selectpicker('refresh');
                 $("#status_id_edit").val(opportunity.status_id).selectpicker('refresh');
+                $("#description_edit").val(opportunity.description);
             },
             error: function (error) {
                 console.log(error)
@@ -328,7 +331,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getCountries() {
@@ -796,6 +799,27 @@
                 status_id: status_id,
             }, 'Fırsat Başarıyla Güncellendi', 'Fırsat Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.opportunity.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                opportunities.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveOpportunity(data, successMessage, errorMessage, direction) {

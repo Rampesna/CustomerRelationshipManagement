@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Customer;
+use App\Models\Offer;
+use App\Models\Opportunity;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpportunityController;
@@ -20,7 +25,13 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    return \App\Models\PriceList::find(1)->items();
+    return view('emails.test', [
+
+    ]);
+});
+
+Route::get('mailTest', function () {
+    return view('emails.offer');
 });
 
 Auth::routes();

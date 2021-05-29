@@ -40,6 +40,11 @@ class UserController extends Controller
         $userService->save($request);
     }
 
+    public function drop(Request $request)
+    {
+        User::find($request->id)->delete();
+    }
+
     public function emailControl(Request $request)
     {
         return response()->json(is_null($request->except_id ? User::where('email', $request->email)->where('id', '<>', $request->except_id)->first() : User::where('email', $request->email)->first()) ? false : true);

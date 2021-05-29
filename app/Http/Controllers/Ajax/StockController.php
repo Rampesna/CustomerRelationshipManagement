@@ -53,4 +53,9 @@ class StockController extends Controller
         $stockService->setStock($request->id ? Stock::find($request->id) : new Stock);
         $stockService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Stock::find($request->id)->delete();
+    }
 }

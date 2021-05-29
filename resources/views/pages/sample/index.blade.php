@@ -9,6 +9,7 @@
     @include('pages.sample.components.edit')
 
     @include('pages.sample.modals.create-sample-item')
+    @include('pages.sample.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">

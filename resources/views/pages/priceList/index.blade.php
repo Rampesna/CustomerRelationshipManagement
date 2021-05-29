@@ -11,6 +11,7 @@
     @include('pages.priceList.modals.create-price-list-item')
     @include('pages.priceList.modals.edit-price-list-item')
     @include('pages.priceList.modals.copy')
+    @include('pages.priceList.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">

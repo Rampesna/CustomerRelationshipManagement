@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Helper\General;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Offer;
+use App\Models\Opportunity;
 use App\Services\OfferService;
-use App\Services\SampleService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OfferController extends Controller
 {
@@ -70,5 +73,31 @@ class OfferController extends Controller
         $offerService = new OfferService;
         $offerService->setOffer($request->id ? Offer::find($request->id) : new Offer);
         $offerService->save($request);
+    }
+
+    public function drop(Request $request)
+    {
+        Offer::find($request->id)->delete();
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        $offer = Offer::find($request->id);
+
+        $data = [
+            'opportunity' => $offer->relation_type == 'App\\Models\\Opportunity' ? Opportunity::find($offer->relation_id) : null,
+            'customer' => $offer->relation_type == 'App\\Models\\Customer' ? Customer::find($offer->relation_id) : null,
+            'offer' => $offer,
+            'items' => $offer->items
+        ];
+
+        $pdf = PDF::loadView('emails.offer', $data, [], 'UTF-8');
+        $pdf->save(public_path('offers/' . $offer->id . '.pdf'), 'UTF-8');
+        return response()->download(public_path('offers/' . $offer->id . '.pdf'));
+    }
+
+    public function getCurrency(Request $request)
+    {
+        return General::getCurrency($request->currency_code);
     }
 }

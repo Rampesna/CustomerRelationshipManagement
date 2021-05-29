@@ -830,4 +830,22 @@
             });
         }
     });
+
+    $("#currency_type_create").change(function () {
+        $("#currency_create").attr('disabled', true);
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.offer.getCurrency') }}',
+            data: {
+                currency_code: $(this).val()
+            },
+            success: function (response) {
+                $("#currency_create").val(response.ForexSelling);
+                $("#currency_create").attr('disabled', false);
+            },
+            error: function () {
+
+            }
+        });
+    });
 </script>

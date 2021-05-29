@@ -9,6 +9,7 @@
     @include('pages.offer.components.edit')
     @include('pages.offer.modals.create-offer-item')
     @include('pages.offer.modals.new-offer-create-offer-item')
+    @include('pages.offer.modals.delete')
 
     <div class="row">
         <div class="col-xl-12">
@@ -73,6 +74,14 @@
                 </div>
             </a>
             @endAuthority
+
+            <a onclick="downloadPDF()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-download text-success"></i><span class="ml-4">İndir</span>
+                    </div>
+                </div>
+            </a>
 
             @Authority(48)
             <a onclick="drop()" class="dropdown-item cursor-pointer">

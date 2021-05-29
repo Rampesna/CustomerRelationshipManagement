@@ -157,4 +157,9 @@ class CustomerController extends Controller
         $customerService->setCustomer($request->id ? Customer::find($request->id) : new Customer);
         $customerService->save($request);
     }
+
+    public function drop(Request $request)
+    {
+        Customer::find($request->id)->delete();
+    }
 }

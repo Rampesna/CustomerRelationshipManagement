@@ -40,6 +40,7 @@ Route::prefix('opportunity')->group(function () {
     Route::get('datatable', [OpportunityController::class, 'datatable'])->name('ajax.opportunity.datatable');
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
     Route::post('save', [OpportunityController::class, 'save'])->name('ajax.opportunity.save');
+    Route::delete('drop', [OpportunityController::class, 'drop'])->name('ajax.opportunity.drop');
 
     Route::get('offersDatatable', [OpportunityController::class, 'offersDatatable'])->name('ajax.opportunity.offersDatatable');
     Route::get('activitiesDatatable', [OpportunityController::class, 'activitiesDatatable'])->name('ajax.opportunity.activitiesDatatable');
@@ -52,6 +53,7 @@ Route::prefix('activity')->group(function () {
     Route::get('getRelations', [ActivityController::class, 'getRelations'])->name('ajax.activity.getRelations');
     Route::get('show', [ActivityController::class, 'show'])->name('ajax.activity.show');
     Route::post('save', [ActivityController::class, 'save'])->name('ajax.activity.save');
+    Route::delete('drop', [ActivityController::class, 'drop'])->name('ajax.activity.drop');
 });
 
 Route::prefix('customer')->group(function () {
@@ -59,6 +61,7 @@ Route::prefix('customer')->group(function () {
     Route::get('datatable', [CustomerController::class, 'datatable'])->name('ajax.customer.datatable');
     Route::get('show', [CustomerController::class, 'show'])->name('ajax.customer.show');
     Route::post('save', [CustomerController::class, 'save'])->name('ajax.customer.save');
+    Route::delete('drop', [CustomerController::class, 'drop'])->name('ajax.customer.drop');
 
     Route::get('managersDatatable', [CustomerController::class, 'managersDatatable'])->name('ajax.customer.managersDatatable');
     Route::get('offersDatatable', [CustomerController::class, 'offersDatatable'])->name('ajax.customer.offersDatatable');
@@ -71,6 +74,7 @@ Route::prefix('manager')->group(function () {
     Route::get('datatable', [ManagerController::class, 'datatable'])->name('ajax.manager.datatable');
     Route::get('show', [ManagerController::class, 'show'])->name('ajax.manager.show');
     Route::post('save', [ManagerController::class, 'save'])->name('ajax.manager.save');
+    Route::delete('drop', [ManagerController::class, 'drop'])->name('ajax.manager.drop');
 });
 
 Route::prefix('sample')->group(function () {
@@ -78,6 +82,7 @@ Route::prefix('sample')->group(function () {
     Route::get('datatable', [SampleController::class, 'datatable'])->name('ajax.sample.datatable');
     Route::get('show', [SampleController::class, 'show'])->name('ajax.sample.show');
     Route::post('save', [SampleController::class, 'save'])->name('ajax.sample.save');
+    Route::delete('drop', [SampleController::class, 'drop'])->name('ajax.sample.drop');
 
     Route::prefix('sampleItem')->group(function () {
         Route::get('index', [SampleItemController::class, 'index'])->name('ajax.sampleItem.index');
@@ -93,6 +98,10 @@ Route::prefix('offer')->group(function () {
     Route::get('datatable', [OfferController::class, 'datatable'])->name('ajax.offer.datatable');
     Route::get('show', [OfferController::class, 'show'])->name('ajax.offer.show');
     Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
+    Route::delete('drop', [OfferController::class, 'drop'])->name('ajax.offer.drop');
+    Route::get('downloadPDF', [OfferController::class, 'downloadPDF'])->name('ajax.offer.downloadPDF');
+
+    Route::get('getCurrency', [OfferController::class, 'getCurrency'])->name('ajax.offer.getCurrency');
 
     Route::prefix('offerItem')->group(function () {
         Route::get('index', [OfferItemController::class, 'index'])->name('ajax.offerItem.index');
@@ -108,6 +117,7 @@ Route::prefix('stock')->group(function () {
     Route::get('datatable', [StockController::class, 'datatable'])->name('ajax.stock.datatable');
     Route::get('show', [StockController::class, 'show'])->name('ajax.stock.show');
     Route::post('save', [StockController::class, 'save'])->name('ajax.stock.save');
+    Route::delete('drop', [StockController::class, 'drop'])->name('ajax.stock.drop');
 });
 
 Route::prefix('priceList')->group(function () {
@@ -115,6 +125,7 @@ Route::prefix('priceList')->group(function () {
     Route::get('datatable', [PriceListController::class, 'datatable'])->name('ajax.priceList.datatable');
     Route::get('show', [PriceListController::class, 'show'])->name('ajax.priceList.show');
     Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
+    Route::delete('drop', [PriceListController::class, 'drop'])->name('ajax.priceList.drop');
     Route::post('copy', [PriceListController::class, 'copy'])->name('ajax.priceList.copy');
 
     Route::prefix('priceListItem')->group(function () {
@@ -138,6 +149,7 @@ Route::prefix('social')->group(function () {
     Route::get('datatable', [SocialController::class, 'datatable'])->name('ajax.social.datatable');
     Route::get('show', [SocialController::class, 'show'])->name('ajax.social.show');
     Route::post('save', [SocialController::class, 'save'])->name('ajax.social.save');
+    Route::delete('drop', [SocialController::class, 'drop'])->name('ajax.social.drop');
 });
 
 Route::prefix('comment')->group(function () {
@@ -145,15 +157,15 @@ Route::prefix('comment')->group(function () {
     Route::get('datatable', [CommentController::class, 'datatable'])->name('ajax.comment.datatable');
     Route::get('show', [CommentController::class, 'show'])->name('ajax.comment.show');
     Route::post('save', [CommentController::class, 'save'])->name('ajax.comment.save');
+    Route::delete('drop', [CommentController::class, 'drop'])->name('ajax.comment.drop');
 });
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::prefix('user')->group(function () {
     Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
     Route::get('datatable', [UserController::class, 'datatable'])->name('ajax.user.datatable');
     Route::get('show', [UserController::class, 'show'])->name('ajax.user.show');
     Route::post('save', [UserController::class, 'save'])->name('ajax.user.save');
+    Route::delete('drop', [UserController::class, 'drop'])->name('ajax.user.drop');
 
     Route::get('emailControl', [UserController::class, 'emailControl'])->name('ajax.user.emailControl');
 });
@@ -163,7 +175,12 @@ Route::prefix('role')->group(function () {
     Route::get('datatable', [RoleController::class, 'datatable'])->name('ajax.role.datatable');
     Route::get('show', [RoleController::class, 'show'])->name('ajax.role.show');
     Route::post('save', [RoleController::class, 'save'])->name('ajax.role.save');
+    Route::delete('drop', [RoleController::class, 'drop'])->name('ajax.role.drop');
 });
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 Route::prefix('permission')->group(function () {
     Route::get('index', [PermissionController::class, 'index'])->name('ajax.permission.index');
