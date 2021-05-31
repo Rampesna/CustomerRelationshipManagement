@@ -24,15 +24,15 @@ class OpportunityController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(Opportunity::with([])->where('company_id', $request->company_id))->
         filterColumn('customer_id', function ($opportunities, $keyword) {
             return $opportunities->whereIn('customer_id', Customer::where('title', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         filterColumn('company_id', function ($opportunities, $keyword) {
             return $opportunities->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('priority_id', function ($opportunities, $keyword) use ($request) {
+            return $opportunities->whereIn('priority_id', Definition::where('company_id', $request->company_id)->where('name', 'Fırsat Öncelik Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         filterColumn('user_id', function ($opportunities, $keyword) {
             return $opportunities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));

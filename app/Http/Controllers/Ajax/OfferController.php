@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Helper\General;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Customer;
+use App\Models\Definition;
 use App\Models\Offer;
 use App\Models\Opportunity;
+use App\Models\User;
 use App\Services\OfferService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -21,10 +24,19 @@ class OfferController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(Offer::with([])->where('company_id', $request->company_id))->
+        filterColumn('relation_type', function ($offers, $data) {
+            return $data == "All" ? $offers : $offers->where('relation_type', $data);
+        })->
+        filterColumn('company_id', function ($offers, $keyword) {
+            return $offers->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('user_id', function ($offers, $keyword) {
+            return $offers->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('status_id', function ($managers, $keyword) use ($request) {
+            return $managers->whereIn('status_id', Definition::where('company_id', $request->company_id)->where('name', 'Teklif Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         editColumn('id', function ($offer) {
             return '#' . $offer->id;
         })->

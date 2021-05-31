@@ -78,7 +78,7 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
 
         order: [
             [
@@ -87,12 +87,47 @@
             ]
         ],
 
+        buttons: [
+            {
+                extend: 'collection',
+                text: '<i class="fa fa-download"></i> Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                    }
+                ]
+            },
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Yazdır'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fa fa-columns"></i> Sütunlar'
+            },
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    opportunities.search('').columns().search('').ajax.reload().draw();
+                }
+            }
+        ],
+
         initComplete: function () {
             var r = $('#opportunities tfoot tr');
             $('#opportunities thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
+                if (index === 4) {
+                    input.setAttribute("type", "date");
+                }
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -113,7 +148,7 @@
             },
         },
         columns: [
-            {data: 'id', name: 'id'},
+            {data: 'id', name: 'id', width: '5%'},
             {data: 'customer_id', name: 'customer_id'},
             {data: 'name', name: 'name'},
             {data: 'company_id', name: 'company_id'},
@@ -124,6 +159,7 @@
 
         responsive: true,
         stateSave: true,
+        colReorder: true,
         select: 'single'
     });
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Definition;
 use App\Models\Offer;
 use App\Models\PriceList;
 use App\Services\OfferService;
@@ -20,10 +22,19 @@ class PriceListController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(PriceList::with([])->where('company_id', $request->company_id))->
+        filterColumn('start_date', function ($priceLists, $date) {
+            return $priceLists->where('start_date', '>=', $date);
+        })->
+        filterColumn('end_date', function ($priceLists, $date) {
+            return $priceLists->where('end_date', '<=', $date);
+        })->
+        filterColumn('company_id', function ($priceLists, $keyword) {
+            return $priceLists->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('status_id', function ($stocks, $keyword) use ($request) {
+            return $stocks->whereIn('status_id', Definition::where('company_id', $request->company_id)->where('name', 'Fiyat Listesi Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         editColumn('id', function ($priceList) {
             return '#' . $priceList->id;
         })->

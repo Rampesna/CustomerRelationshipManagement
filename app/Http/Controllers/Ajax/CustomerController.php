@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Helper\General;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Company;
+use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Definition;
 use App\Models\Manager;
 use App\Models\Offer;
 use App\Models\Sample;
@@ -21,12 +25,30 @@ class CustomerController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(Customer::with([])->where('company_id', $request->company_id))->
+        filterColumn('company_id', function ($customers, $keyword) {
+            return $customers->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('country_id', function ($customers, $keyword) {
+            return $customers->whereIn('country_id', Country::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('class_id', function ($customers, $keyword) use ($request) {
+            return $customers->whereIn('class_id', Definition::where('company_id', $request->company_id)->where('name', 'Müşteri Sınıfları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('type_id', function ($customers, $keyword) use ($request) {
+            return $customers->whereIn('type_id', Definition::where('company_id', $request->company_id)->where('name', 'Müşteri Türleri')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('reference_id', function ($customers, $keyword) use ($request) {
+            return $customers->whereIn('reference_id', Definition::where('company_id', $request->company_id)->where('name', 'Müşteri Referansları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         editColumn('id', function ($customer) {
             return '#' . $customer->id;
+        })->
+        editColumn('phone_number', function ($customer) {
+            return '<a href="tel:' . '+' . @$customer->country->code . @General::clearPhoneNumber($customer->phone_number) . '">' . '+' . @$customer->country->code . ' ' . @$customer->phone_number . '</a>';
+        })->
+        editColumn('email', function ($customer) {
+            return '<a href="mailto:' . $customer->email . '">' . $customer->email . '</a>';
         })->
         editColumn('company_id', function ($customer) {
             return $customer->company_id ? @$customer->company->name : '';
@@ -43,6 +65,10 @@ class CustomerController extends Controller
         editColumn('country_id', function ($customer) {
             return $customer->country_id ? @$customer->country->name : '';
         })->
+        rawColumns([
+            'phone_number',
+            'email'
+        ])->
         make(true);
     }
 

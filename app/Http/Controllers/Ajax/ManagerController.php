@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Helper\General;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use App\Models\Definition;
 use App\Models\Manager;
 use App\Services\CustomerService;
 use App\Services\ManagerService;
@@ -23,6 +25,18 @@ class ManagerController extends Controller
         setlocale(LC_TIME, 'Turkish');
 
         return Datatables::of(Manager::with([]))->
+        filterColumn('customer_id', function ($managers, $keyword) {
+            return $managers->whereIn('customer_id', Customer::where('title', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('gender', function ($managers, $gender) {
+            return $gender == 2 ? $managers : $managers->where('gender', $gender);
+        })->
+        filterColumn('department_id', function ($managers, $keyword) use ($request) {
+            return $managers->whereIn('department_id', Definition::where('company_id', $request->company_id)->where('name', 'Yetkili Departmanları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('title_id', function ($managers, $keyword) use ($request) {
+            return $managers->whereIn('title_id', Definition::where('company_id', $request->company_id)->where('name', 'Yetkili Ünvanları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         editColumn('id', function ($manager) {
             return '#' . $manager->id;
         })->

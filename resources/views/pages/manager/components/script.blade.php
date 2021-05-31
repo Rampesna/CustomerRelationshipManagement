@@ -61,7 +61,7 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
 
         order: [
             [
@@ -70,12 +70,63 @@
             ]
         ],
 
+        buttons: [
+            {
+                extend: 'collection',
+                text: '<i class="fa fa-download"></i> Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                    }
+                ]
+            },
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Yazdır'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fa fa-columns"></i> Sütunlar'
+            },
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    managers.search('').columns().search('').ajax.reload().draw();
+                }
+            }
+        ],
+
         initComplete: function () {
             var r = $('#managers tfoot tr');
             $('#managers thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
+
+                if (index === 5) {
+                    input = document.createElement('select');
+                    var option = document.createElement("option");
+                    option.setAttribute("value", 2);
+                    option.innerHTML = "Tümü";
+                    input.appendChild(option);
+
+                    option = document.createElement("option");
+                    option.setAttribute("value", 1);
+                    option.innerHTML = "Erkek";
+                    input.appendChild(option);
+
+                    option = document.createElement("option");
+                    option.setAttribute("value", 0);
+                    option.innerHTML = "Kadın";
+                    input.appendChild(option);
+                }
+
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -108,6 +159,7 @@
 
         responsive: true,
         stateSave: true,
+        colReorder: true,
         select: 'single'
     });
 

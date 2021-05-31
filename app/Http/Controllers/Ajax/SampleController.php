@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Definition;
 use App\Models\Sample;
-use App\Services\CustomerService;
-use App\Services\ManagerService;
+use App\Models\User;
 use App\Services\SampleService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,12 +20,18 @@ class SampleController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(Sample::with([])->where('company_id', $request->company_id))->
-        editColumn('id', function ($sample) {
-            return '#' . $sample->id;
+        filterColumn('relation_type', function ($samples, $data) {
+            return $data == "All" ? $samples : $samples->where('relation_type', $data);
+        })->
+        filterColumn('company_id', function ($samples, $keyword) {
+            return $samples->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('user_id', function ($samples, $keyword) {
+            return $samples->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('status_id', function ($samples, $keyword) use ($request) {
+            return $samples->whereIn('status_id', Definition::where('company_id', $request->company_id)->where('name', 'Numune Aşama Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         editColumn('relation_type', function ($activity) {
             return @$activity->relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (

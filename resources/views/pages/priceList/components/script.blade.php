@@ -73,7 +73,7 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
 
         order: [
             [
@@ -82,12 +82,49 @@
             ]
         ],
 
+        buttons: [
+            {
+                extend: 'collection',
+                text: '<i class="fa fa-download"></i> Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                    }
+                ]
+            },
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Yazdır'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fa fa-columns"></i> Sütunlar'
+            },
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    priceLists.search('').columns().search('').ajax.reload().draw();
+                }
+            }
+        ],
+
         initComplete: function () {
             var r = $('#priceLists tfoot tr');
             $('#priceLists thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
+
+                if (index === 2 || index === 3) {
+                    input.setAttribute("type", "date");
+                }
+
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -108,7 +145,7 @@
             },
         },
         columns: [
-            {data: 'id', name: 'id'},
+            {data: 'id', name: 'id', width: '5%'},
             {data: 'name', name: 'name'},
             {data: 'start_date', name: 'start_date'},
             {data: 'end_date', name: 'end_date'},
@@ -118,6 +155,7 @@
 
         responsive: true,
         stateSave: true,
+        colReorder: true,
         select: 'single'
     });
 

@@ -60,13 +60,45 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
 
         order: [
             [
                 0,
                 "desc"
             ]
+        ],
+
+        buttons: [
+            {
+                extend: 'collection',
+                text: '<i class="fa fa-download"></i> Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                    }
+                ]
+            },
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Yazdır'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fa fa-columns"></i> Sütunlar'
+            },
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    managers.search('').columns().search('').ajax.reload().draw();
+                }
+            }
         ],
 
         initComplete: function () {
@@ -106,6 +138,7 @@
 
         responsive: true,
         stateSave: true,
+        colReorder: true,
         select: 'single'
     });
 

@@ -76,7 +76,7 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
 
         order: [
             [
@@ -85,12 +85,72 @@
             ]
         ],
 
+        buttons: [
+            {
+                extend: 'collection',
+                text: '<i class="fa fa-download"></i> Dışa Aktar',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                    }
+                ]
+            },
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Yazdır'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fa fa-columns"></i> Sütunlar'
+            },
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    samples.search('').columns().search('').ajax.reload().draw();
+                }
+            }
+        ],
+
         initComplete: function () {
             var r = $('#samples tfoot tr');
             $('#samples thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
+
+                if (index === 2) {
+                    input = document.createElement('select');
+                    var option = document.createElement("option");
+                    option.setAttribute("value", "All");
+                    option.innerHTML = "Tümü";
+                    input.appendChild(option);
+
+                    option = document.createElement("option");
+                    option.setAttribute("value", "App\\Models\\Opportunity");
+                    option.innerHTML = "Fırsat";
+                    input.appendChild(option);
+
+                    option = document.createElement("option");
+                    option.setAttribute("value", "App\\Models\\Customer");
+                    option.innerHTML = "Müşteri";
+                    input.appendChild(option);
+                } else if (index === 3) {
+                    input = null;
+                    $(input).appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                    return;
+                } else if (index === 4) {
+                    input.setAttribute("type", "date");
+                }
+
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -123,6 +183,7 @@
 
         responsive: true,
         stateSave: true,
+        colReorder: true,
         select: 'single'
     });
 

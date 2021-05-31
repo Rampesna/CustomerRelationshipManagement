@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Company;
+use App\Models\Customer;
+use App\Models\Definition;
 use App\Models\Opportunity;
+use App\Models\User;
 use App\Services\ActivityService;
 use App\Services\OpportunityService;
 use Illuminate\Http\Request;
@@ -19,12 +23,30 @@ class ActivityController extends Controller
 
     public function datatable(Request $request)
     {
-        setlocale(LC_ALL, 'tr_TR.UTF-8');
-        setlocale(LC_TIME, 'Turkish');
-
         return Datatables::of(Activity::with([])->where('company_id', $request->company_id))->
+        filterColumn('relation_type', function ($activities, $data) {
+            return $data == "All" ? $activities : $activities->where('relation_type', $data);
+        })->
+        filterColumn('company_id', function ($activities, $keyword) {
+            return $activities->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('user_id', function ($activities, $keyword) {
+            return $activities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('start_date', function ($activities, $date) {
+            return $activities->where('start_date', '>=', $date);
+        })->
+        filterColumn('end_date', function ($activities, $date) {
+            return $activities->where('end_date', '<=', $date);
+        })->
         editColumn('id', function ($activity) {
             return '#' . $activity->id;
+        })->
+        filterColumn('meet_reason_id', function ($activities, $keyword) use ($request) {
+            return $activities->whereIn('meet_reason_id', Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Görüşme Nedenleri')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('priority_id', function ($activities, $keyword) use ($request) {
+            return $activities->whereIn('priority_id', Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Öncelik Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         editColumn('relation_type', function ($activity) {
             return @$activity->relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (
