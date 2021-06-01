@@ -23,6 +23,7 @@ use App\Http\Controllers\Ajax\CountryController;
 use App\Http\Controllers\Ajax\ProvinceController;
 use App\Http\Controllers\Ajax\DistrictController;
 use App\Http\Controllers\Ajax\DefinitionController;
+use App\Http\Controllers\Ajax\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,6 +177,11 @@ Route::prefix('role')->group(function () {
     Route::get('show', [RoleController::class, 'show'])->name('ajax.role.show');
     Route::post('save', [RoleController::class, 'save'])->name('ajax.role.save');
     Route::delete('drop', [RoleController::class, 'drop'])->name('ajax.role.drop');
+});
+
+Route::prefix('profile')->group(function () {
+    Route::post('updateProfile', [ProfileController::class, 'updateProfile'])->name('ajax.profile.updateProfile');
+    Route::post('updatePassword', [ProfileController::class, 'updatePassword'])->name('ajax.profile.updatePassword');
 });
 
 

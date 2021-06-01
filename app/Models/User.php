@@ -31,6 +31,11 @@ class User extends Authenticatable
         return $this->name;
     }
 
+    public function phoneNumber()
+    {
+        return $this->phone_number;
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);

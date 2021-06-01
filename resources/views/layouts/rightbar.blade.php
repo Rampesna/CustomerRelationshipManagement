@@ -40,22 +40,13 @@
                     <a href="#" data-toggle="modal" data-target="#LogoutModal" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">
                         Çıkış Yap
                     </a>
+                    <a href="{{ route('profile.index') }}" class="btn btn-sm btn-light-dark-75 font-weight-bolder py-2 px-5">
+                        Profili Düzenle
+                    </a>
 
                 </div>
             </div>
         </div>
-        <!--end::Header-->
-        <!--begin::Separator-->
         <div class="separator separator-dashed mt-8 mb-5"></div>
-        <!--end::Separator-->
-        <!--begin::Nav-->
-        <div class="navi navi-spacer-x-0 p-0">
-            <!--begin::Item-->
-
-        </div>
-
-        <div class="separator separator-dashed my-7"></div>
-
     </div>
-    <!--end::Content-->
 </div>

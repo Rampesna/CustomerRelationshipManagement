@@ -37,4 +37,21 @@ class UserService
 
         return $this->user;
     }
+
+    public function updateProfile(Request $request)
+    {
+        $this->user->name = $request->name;
+        $this->user->phone_number = $request->phone_number;
+        $this->user->save();
+
+        return $this->user;
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->user->password = bcrypt($request->password);
+        $this->user->save();
+
+        return $this->user;
+    }
 }

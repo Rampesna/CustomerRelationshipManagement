@@ -1,11 +1,6 @@
 <?php
 
-use App\Models\Customer;
-use App\Models\Offer;
-use App\Models\Opportunity;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpportunityController;
@@ -19,6 +14,9 @@ use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\DefinitionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 
 Route::get('password', function () {
     return bcrypt(123456);
@@ -131,5 +129,26 @@ Route::middleware(['auth', 'MobileDetect'])->group(function () {
             return redirect()->route('role.index');
         });
         Route::get('index', [RoleController::class, 'index'])->name('role.index')->middleware('Authority:8');
+    });
+
+    Route::prefix('country')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('country.index');
+        });
+        Route::get('index', [CountryController::class, 'index'])->name('country.index')->middleware('Authority:1');
+    });
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('profile.index');
+        });
+        Route::get('index', [ProfileController::class, 'index'])->name('profile.index')->middleware('Authority:1');
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('report.index');
+        });
+        Route::get('index', [ReportController::class, 'index'])->name('report.index')->middleware('Authority:1');
     });
 });
