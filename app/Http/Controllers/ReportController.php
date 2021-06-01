@@ -10,4 +10,13 @@ class ReportController extends Controller
     {
         return view('pages.report.index');
     }
+
+    public function show(Request $request)
+    {
+        try {
+            return view('pages.report.reports.' . $request->report . '.index');
+        } catch (\Exception $exception) {
+            return abort(404);
+        }
+    }
 }

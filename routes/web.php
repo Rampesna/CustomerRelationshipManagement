@@ -150,5 +150,6 @@ Route::middleware(['auth', 'MobileDetect'])->group(function () {
             return redirect()->route('report.index');
         });
         Route::get('index', [ReportController::class, 'index'])->name('report.index')->middleware('Authority:1');
+        Route::get('show/{report?}', [ReportController::class, 'show'])->name('report.show')->middleware('Authority:1');
     });
 });
