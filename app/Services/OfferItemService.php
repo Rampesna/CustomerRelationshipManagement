@@ -39,6 +39,8 @@ class OfferItemService
         $this->offerItem->subtotal = $request->subtotal;
         $this->offerItem->grand_total = $request->grand_total;
         $this->offerItem->description = $request->description;
+        $this->offerItem->created_by = $request->id ? $this->offerItem->created_by : $request->auth_user_id;
+        $this->offerItem->last_updated_by = $request->auth_user_id;
         $this->offerItem->save();
 
         return $this->offerItem;

@@ -37,6 +37,8 @@ class ActivityService
         $this->activity->end_date = $request->end_date;
         $this->activity->meet_reason_id = $request->meet_reason_id;
         $this->activity->priority_id = $request->priority_id;
+        $this->activity->created_by = $request->id ? $this->activity->created_by : $request->auth_user_id;
+        $this->activity->last_updated_by = $request->auth_user_id;
         $this->activity->save();
 
         return $this->activity;

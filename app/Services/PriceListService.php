@@ -35,6 +35,8 @@ class PriceListService
         $this->priceList->start_date = $request->start_date;
         $this->priceList->end_date = $request->end_date;
         $this->priceList->status_id = $request->status_id;
+        $this->priceList->created_by = $request->id ? $this->priceList->created_by : $request->auth_user_id;
+        $this->priceList->last_updated_by = $request->auth_user_id;
         $this->priceList->save();
 
         return $this->priceList;

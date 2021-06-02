@@ -31,6 +31,8 @@ class SampleItemService
         $this->sampleItem->stock_id = $request->stock_id;
         $this->sampleItem->amount = $request->amount;
         $this->sampleItem->unit_id = $request->unit_id;
+        $this->sampleItem->created_by = $request->id ? $this->sampleItem->created_by : $request->auth_user_id;
+        $this->sampleItem->last_updated_by = $request->auth_user_id;
         $this->sampleItem->save();
 
         return $this->sampleItem;

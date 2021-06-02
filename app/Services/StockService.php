@@ -40,6 +40,8 @@ class StockService
         $this->stock->type_id = $request->type_id;
         $this->stock->status_id = $request->status_id;
         $this->stock->amount = $request->amount;
+        $this->stock->created_by = $request->id ? $this->stock->created_by : $request->auth_user_id;
+        $this->stock->last_updated_by = $request->auth_user_id;
         $this->stock->save();
 
         return $this->stock;

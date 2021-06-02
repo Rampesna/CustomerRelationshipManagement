@@ -36,6 +36,7 @@ class FileService
         $this->file->name = $request->file('file')->getClientOriginalName();
         $this->file->mime_type = $request->file('file')->getClientMimeType();
         $this->file->path = $path;
+        $this->file->created_by = $request->id ? $this->file->created_by : $request->auth_user_id;
         try {
             $request->file('file')->move($path, $request->file('file')->getClientOriginalName());
             $this->file->save();

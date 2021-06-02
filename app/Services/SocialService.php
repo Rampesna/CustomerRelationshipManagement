@@ -30,6 +30,8 @@ class SocialService
         $this->social->relation_type = $request->relation_type;
         $this->social->relation_id = $request->relation_id;
         $this->social->link = $request->link;
+        $this->social->created_by = $request->id ? $this->social->created_by : $request->auth_user_id;
+        $this->social->last_updated_by = $request->auth_user_id;
         $this->social->save();
 
         return $this->social;

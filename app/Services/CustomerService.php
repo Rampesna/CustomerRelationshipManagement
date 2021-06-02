@@ -42,6 +42,8 @@ class CustomerService
         $this->customer->class_id = $request->class_id;
         $this->customer->type_id = $request->type_id;
         $this->customer->reference_id = $request->reference_id;
+        $this->customer->created_by = $request->id ? $this->customer->created_by : $request->auth_user_id;
+        $this->customer->last_updated_by = $request->auth_user_id;
         $this->customer->save();
 
         return $this->customer;

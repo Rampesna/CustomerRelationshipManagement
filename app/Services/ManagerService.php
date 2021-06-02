@@ -35,6 +35,8 @@ class ManagerService
         $this->manager->birth_date = $request->birth_date;
         $this->manager->department_id = $request->department_id;
         $this->manager->title_id = $request->title_id;
+        $this->manager->created_by = $request->id ? $this->manager->created_by : $request->auth_user_id;
+        $this->manager->last_updated_by = $request->auth_user_id;
         $this->manager->save();
 
         return $this->manager;

@@ -38,6 +38,8 @@ class SampleService
         $this->sample->cargo_tracking_number = $request->cargo_tracking_number;
         $this->sample->bus_company = $request->bus_company;
         $this->sample->car_plate = $request->car_plate;
+        $this->sample->created_by = $request->id ? $this->sample->created_by : $request->auth_user_id;
+        $this->sample->last_updated_by = $request->auth_user_id;
         $this->sample->save();
 
         return $this->sample;

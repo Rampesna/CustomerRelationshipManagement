@@ -34,6 +34,8 @@ class PriceListItemService
         $this->priceListItem->vat_rate = $request->vat_rate;
         $this->priceListItem->currency_type = $request->currency_type;
         $this->priceListItem->currency = $request->currency;
+        $this->priceListItem->created_by = $request->id ? $this->priceListItem->created_by : $request->auth_user_id;
+        $this->priceListItem->last_updated_by = $request->auth_user_id;
         $this->priceListItem->save();
 
         return $this->priceListItem;
