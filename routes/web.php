@@ -18,6 +18,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TargetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 
@@ -155,6 +156,13 @@ Route::middleware(['auth', 'MobileDetect'])->group(function () {
             return redirect()->route('profile.index');
         });
         Route::get('index', [ProfileController::class, 'index'])->name('profile.index')->middleware('Authority:1');
+    });
+
+    Route::prefix('target')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('target.index');
+        });
+        Route::get('index', [TargetController::class, 'index'])->name('target.index')->middleware('Authority:1');
     });
 
     Route::prefix('report')->group(function () {
