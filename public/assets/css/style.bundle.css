@@ -52915,7 +52915,7 @@ code {
   .timeline.timeline-5:before {
     content: '';
     position: absolute;
-    left: 70px;
+    left: 140px;
     width: 4px;
     top: 0;
     bottom: 0;
@@ -52932,7 +52932,7 @@ code {
     .timeline.timeline-5 .timeline-item:last-child {
       margin-bottom: 0; }
     .timeline.timeline-5 .timeline-item .timeline-label {
-      width: 50px;
+      width: 120px;
       -ms-flex-negative: 0;
       flex-shrink: 0;
       font-size: 1rem;

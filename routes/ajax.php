@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Ajax\DashboardController;
 use App\Http\Controllers\Ajax\OpportunityController;
 use App\Http\Controllers\Ajax\ActivityController;
 use App\Http\Controllers\Ajax\CustomerController;
@@ -35,6 +36,10 @@ use App\Http\Controllers\Ajax\ProfileController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('index', [DashboardController::class, 'index'])->name('ajax.dashboard.index');
+});
 
 Route::prefix('opportunity')->group(function () {
     Route::get('index', [OpportunityController::class, 'index'])->name('ajax.opportunity.index');
