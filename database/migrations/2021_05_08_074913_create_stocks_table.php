@@ -28,6 +28,8 @@ class CreateStocksTable extends Migration
             $table->bigInteger('type_id')->nullable()->unsigned();
             $table->bigInteger('status_id')->nullable()->unsigned();
             $table->double('amount')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

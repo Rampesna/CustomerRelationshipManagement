@@ -41,6 +41,8 @@ class CreateOpportunitiesTable extends Migration
             $table->double('capacity')->nullable();
             $table->bigInteger('capacity_type_id')->nullable();
             $table->bigInteger('status_id')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

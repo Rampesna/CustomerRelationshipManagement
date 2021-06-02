@@ -22,6 +22,8 @@ class CreatePriceListsTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->bigInteger('status_id')->nullable()->unsigned();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

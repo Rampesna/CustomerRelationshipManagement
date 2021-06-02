@@ -21,6 +21,8 @@ class CreatePriceListItemsTable extends Migration
             $table->double('vat_rate')->unsigned()->nullable();
             $table->string('currency_type')->nullable();
             $table->double('currency')->unsigned()->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

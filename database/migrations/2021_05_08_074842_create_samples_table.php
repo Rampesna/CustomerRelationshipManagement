@@ -26,6 +26,8 @@ class CreateSamplesTable extends Migration
             $table->string('cargo_tracking_number')->nullable();
             $table->string('bus_company')->nullable();
             $table->string('car_plate')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

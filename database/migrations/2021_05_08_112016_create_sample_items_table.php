@@ -19,6 +19,8 @@ class CreateSampleItemsTable extends Migration
             $table->bigInteger('stock_id')->unsigned()->nullable();
             $table->double('amount')->unsigned()->nullable();
             $table->bigInteger('unit_id')->unsigned()->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

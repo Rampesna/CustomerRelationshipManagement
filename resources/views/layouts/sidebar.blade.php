@@ -223,8 +223,8 @@
                     <h4 class="menu-text">SİSTEM</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                <li class="menu-item {{ request()->segment(1) === 'report' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
-                    <a href="{{ route('dashboard.index') }}" class="menu-link">
+                <li class="menu-item {{ request()->segment(1) === 'setting' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                    <a href="{{ route('setting.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

@@ -30,6 +30,8 @@ class CreateCustomersTable extends Migration
             $table->bigInteger('class_id')->nullable()->unsigned();
             $table->bigInteger('type_id')->nullable()->unsigned();
             $table->bigInteger('reference_id')->nullable()->unsigned();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

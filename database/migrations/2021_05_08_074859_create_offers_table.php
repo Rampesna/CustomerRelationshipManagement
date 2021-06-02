@@ -27,6 +27,8 @@ class CreateOffersTable extends Migration
             $table->string('currency_type')->nullable();
             $table->double('currency')->nullable()->unsigned();
             $table->bigInteger('status_id')->nullable()->unsigned();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

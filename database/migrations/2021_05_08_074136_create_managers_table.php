@@ -23,6 +23,8 @@ class CreateManagersTable extends Migration
             $table->date('birth_date')->nullable();
             $table->bigInteger('department_id')->nullable()->unsigned();
             $table->bigInteger('title_id')->nullable()->unsigned();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -27,6 +27,8 @@ class CreateOfferItemsTable extends Migration
             $table->double('subtotal')->unsigned()->nullable();
             $table->double('grand_total')->unsigned()->nullable();
             $table->text('description')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('last_updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

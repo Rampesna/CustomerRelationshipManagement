@@ -17,6 +17,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 
 Route::get('password', function () {
     return bcrypt(123456);
@@ -151,5 +152,13 @@ Route::middleware(['auth', 'MobileDetect'])->group(function () {
         });
         Route::get('index', [ReportController::class, 'index'])->name('report.index')->middleware('Authority:1');
         Route::get('show/{report?}', [ReportController::class, 'show'])->name('report.show')->middleware('Authority:1');
+    });
+
+    Route::prefix('setting')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('setting.index');
+        });
+        Route::get('index', [SettingController::class, 'index'])->name('setting.index')->middleware('Authority:1');
+        Route::get('show/{setting?}', [SettingController::class, 'show'])->name('setting.show')->middleware('Authority:1');
     });
 });

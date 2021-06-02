@@ -20,6 +20,7 @@ class CreateFilesTable extends Migration
             $table->string('name')->nullable();
             $table->string('mime_type')->nullable();
             $table->string('path')->nullable();
+            $table->bigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
