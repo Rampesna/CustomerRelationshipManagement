@@ -100,6 +100,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="form-group">
+                        <label for="description_edit">Açıklamalar</label>
+                        <textarea id="description_edit" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
         <hr>
         <div class="row">

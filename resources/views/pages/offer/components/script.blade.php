@@ -619,6 +619,7 @@
                 $("#currency_type_edit").val(offer.currency_type).selectpicker('refresh');
                 $("#currency_edit").val(offer.currency);
                 $("#status_id_edit").val(offer.status_id).selectpicker('refresh');
+                $("#description_edit").val(offer.description);
                 offerItems.ajax.reload().draw();
                 $("#EditRightbar").fadeIn(250);
             },
@@ -639,19 +640,21 @@
 
     function downloadPDF() {
         var id = $("#id_edit").val();
-        $.ajax({
-            type: 'get',
-            url: '{{ route('ajax.offer.downloadPDF') }}',
-            data: {
-                id: id
-            },
-            success: function (response) {
-                console.log(response)
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        });
+        window.location.href = '{{ route('ajax.offer.downloadPDF') }}?id=' + id;
+
+        {{--$.ajax({--}}
+        {{--    type: 'get',--}}
+        {{--    url: '{{ route('ajax.offer.downloadPDF') }}',--}}
+        {{--    data: {--}}
+        {{--        id: id--}}
+        {{--    },--}}
+        {{--    success: function (response) {--}}
+        {{--        console.log(response)--}}
+        {{--    },--}}
+        {{--    error: function (error) {--}}
+        {{--        console.log(error)--}}
+        {{--    }--}}
+        {{--});--}}
     }
 
     function getUsers(company_id) {
@@ -949,6 +952,7 @@
         var currency_type = $("#currency_type_create").val();
         var currency = $("#currency_create").val();
         var status_id = $("#status_id_create").val();
+        var description = $("#description_create").val();
 
         var items = [];
 
@@ -978,6 +982,7 @@
                 currency_type: currency_type,
                 currency: currency,
                 status_id: status_id,
+                description: description,
                 items: items
             }, 'Yeni Teklif Başarıyla Oluşturuldu', 'Teklif Oluşturulurken Bir Hata Oluştu!', 0);
         }
@@ -997,6 +1002,7 @@
         var currency_type = $("#currency_type_edit").val();
         var currency = $("#currency_edit").val();
         var status_id = $("#status_id_edit").val();
+        var description = $("#description_edit").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -1018,6 +1024,7 @@
                 currency_type: currency_type,
                 currency: currency,
                 status_id: status_id,
+                description: description,
             }, 'Teklif Başarıyla Güncellendi', 'Teklif Güncellenirken Bir Hata Oluştu!', 1);
         }
     });

@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Definition;
 use App\Models\Offer;
 use App\Models\Opportunity;
+use App\Models\Setting;
 use App\Models\User;
 use App\Services\OfferService;
 use Illuminate\Http\Request;
@@ -94,18 +95,16 @@ class OfferController extends Controller
 
     public function downloadPDF(Request $request)
     {
-        $offer = Offer::find($request->id);
-
-        $data = [
-            'opportunity' => $offer->relation_type == 'App\\Models\\Opportunity' ? Opportunity::find($offer->relation_id) : null,
-            'customer' => $offer->relation_type == 'App\\Models\\Customer' ? Customer::find($offer->relation_id) : null,
+        $offer = Offer::with([
+            'relation',
+            'items'
+        ])->find($request->id);
+        $pdf = PDF::loadView('emails.offer', [
             'offer' => $offer,
-            'items' => $offer->items
-        ];
-
-        $pdf = PDF::loadView('emails.offer', $data, [], 'UTF-8');
+            'fixedOfferNotes' => Definition::where('company_id', $offer->company_id)->where('name', 'Sabit Teklif Notları')->first()->definitions ?? []
+        ], [], 'UTF-8');
         $pdf->save(public_path('offers/' . $offer->id . '.pdf'), 'UTF-8');
-        return response()->download(public_path('offers/' . $offer->id . '.pdf'));
+        return response()->download(public_path('offers/' . $offer->id . '.pdf'), '#' . $offer->id . ' Numaralı Teklif.pdf');
     }
 
     public function getCurrency(Request $request)
