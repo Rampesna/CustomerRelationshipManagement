@@ -57,7 +57,17 @@
             }
         },
 
-        dom: 'rtipl',
+        dom: 'Brtipl',
+
+        buttons: [
+            {
+                text: '<i class="fas fa-undo"></i> Yenile',
+                action: function (e, dt, node, config) {
+                    $('table input').val('');
+                    definitions.search('').columns().search('').ajax.reload().draw();
+                }
+            }
+        ],
 
         order: [
             [
