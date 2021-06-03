@@ -77,6 +77,8 @@
         }
     });
 
+    var SelectedCompany = $("#SelectedCompany");
+
     var opportunityDateSpan = $("#opportunityDateSpan");
     var opportunityCreatedAndTargetSpan = $("#opportunityCreatedAndTargetSpan");
     var opportunityRateSpan = $("#opportunityRateSpan");
@@ -90,23 +92,26 @@
     var lastActivities = $("#lastActivities");
 
     function index() {
+        console.log(SelectedCompany.val())
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.dashboard.index') }}',
-            data: {},
+            data: {
+                company_id: SelectedCompany.val()
+            },
             success: function (response) {
                 console.log(response)
 
                 opportunityDateSpan.html(response.opportunity.date);
                 opportunityCreatedAndTargetSpan.html(`${response.opportunity.created}/${response.opportunity.target}`);
-                opportunityRateSpan.html(`${response.opportunity.target === 0 ? '100' : (response.opportunity.created * 100 / response.opportunity.target)}%`);
+                opportunityRateSpan.html(`${parseFloat(response.opportunity.target === 0 ? '100' : (response.opportunity.created * 100 / response.opportunity.target)).toFixed(2)}%`);
                 opportunityRateProgressBar.css({
                     width: `${response.opportunity.target === 0 ? '100' : (response.opportunity.created * 100 / response.opportunity.target)}%`
                 });
 
                 activityDateSpan.html(response.activity.date);
                 activityCreatedAndTargetSpan.html(`${response.activity.created}/${response.activity.target}`);
-                activityRateSpan.html(`${response.activity.target === 0 ? '100' : (response.activity.created * 100 / response.activity.target)}%`);
+                activityRateSpan.html(`${parseFloat(response.activity.target === 0 ? '100' : (response.activity.created * 100 / response.activity.target)).toFixed(2)}%`);
                 activityRateProgressBar.css({
                     width: `${response.opportunity.target === 0 ? '100' : (response.opportunity.created * 100 / response.opportunity.target)}%`
                 });
@@ -119,7 +124,9 @@
                         <div class="timeline-badge">
                             <i class="fa fa-genderless text-success icon-xxl"></i>
                         </div>
-                        <div class="timeline-content text-dark-50">(${response.activity.lastActivities[index].relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (response.activity.lastActivities[index].relation_type == 'App\\Models\\Customer' ? 'Müşteri' : '')}) - ${response.activity.lastActivities[index].subject}</div>
+                        <div class="timeline-content text-dark-50">
+                            (${response.activity.lastActivities[index].relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (response.activity.lastActivities[index].relation_type == 'App\\Models\\Customer' ? 'Müşteri' : '')}) - ${response.activity.lastActivities[index].subject}
+                        </div>
                     </div>
                     `);
                 });
@@ -132,4 +139,12 @@
     }
 
     index();
+
+    SelectedCompany.change(function () {
+        index();
+    });
+
+    setInterval(function () {
+        index();
+    }, 5000);
 </script>

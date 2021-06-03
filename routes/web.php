@@ -27,18 +27,12 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    setlocale(LC_TIME, 'Turkish');
-
-    return response()->json([
-        'opportunity' => [
-            'date' => strftime("%B %Y"),
-            'created' => Opportunity::whereBetween('created_at', [
-                date('Y-m-01 00:00:00'),
-                date('Y-m-01 23:59:59')
-            ])->count(),
-            'target' => Target::where('year', date('Y'))->where('month', date('m'))->where('type', 'opportunity')->first()->target ?? 0
-        ]
-    ]);
+    return $target = Target::where('type', 'opportunity')->
+    where('company_id', 1)->
+    where('year', date('Y', strtotime('2021-02')))->
+    where('month', date('m', strtotime('2021-02')))->
+    where('id', '<>', 1)->
+    first();
 });
 
 Route::get('mailTest', function () {

@@ -25,6 +25,7 @@ use App\Http\Controllers\Ajax\ProvinceController;
 use App\Http\Controllers\Ajax\DistrictController;
 use App\Http\Controllers\Ajax\DefinitionController;
 use App\Http\Controllers\Ajax\ProfileController;
+use App\Http\Controllers\Ajax\TargetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -187,6 +188,14 @@ Route::prefix('role')->group(function () {
 Route::prefix('profile')->group(function () {
     Route::post('updateProfile', [ProfileController::class, 'updateProfile'])->name('ajax.profile.updateProfile');
     Route::post('updatePassword', [ProfileController::class, 'updatePassword'])->name('ajax.profile.updatePassword');
+});
+
+Route::prefix('target')->group(function () {
+    Route::get('index', [TargetController::class, 'index'])->name('ajax.target.index');
+    Route::get('datatable', [TargetController::class, 'datatable'])->name('ajax.target.datatable');
+    Route::get('show', [TargetController::class, 'show'])->name('ajax.target.show');
+    Route::post('save', [TargetController::class, 'save'])->name('ajax.target.save');
+    Route::delete('drop', [TargetController::class, 'drop'])->name('ajax.target.drop');
 });
 
 
