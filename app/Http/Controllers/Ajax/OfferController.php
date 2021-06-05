@@ -99,7 +99,7 @@ class OfferController extends Controller
             'relation',
             'items'
         ])->find($request->id);
-        $pdf = PDF::loadView('emails.offer', [
+        $pdf = PDF::loadView('documents.offer', [
             'offer' => $offer,
             'fixedOfferNotes' => Definition::where('company_id', $offer->company_id)->where('name', 'Sabit Teklif Notları')->first()->definitions ?? []
         ], [], 'UTF-8');

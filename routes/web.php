@@ -1,8 +1,11 @@
 <?php
 
+use App\Mail\LoginMail;
 use App\Models\Opportunity;
+use App\Models\Setting;
 use App\Models\Target;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpportunityController;
@@ -27,17 +30,19 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    return $target = Target::where('type', 'opportunity')->
-    where('company_id', 1)->
-    where('year', date('Y', strtotime('2021-02')))->
-    where('month', date('m', strtotime('2021-02')))->
-    where('id', '<>', 1)->
-    first();
+//    return auth()->user();
+//    \App\Helper\General::setMailConfig();
+//    \Illuminate\Support\Facades\Mail::to('talha.can@ayssoft.com')->send(new \App\Mail\OfferMail([
+//        'subject' => 'Dynamic Mailing Test 1'
+//    ]));
+//    if (($setting = Setting::find(1))->send_login_mail == 1) {
+//        Mail::to($setting->mail_recipient)->send(new LoginMail(auth()->user()));
+//    }
 });
 
-Route::get('mailTest', function () {
-    return view('emails.offer');
-});
+//Route::get('mailTest', function () {
+//    return view('emails.offer');
+//});
 
 Auth::routes();
 

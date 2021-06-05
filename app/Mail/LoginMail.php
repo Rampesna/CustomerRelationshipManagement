@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Test2 extends Mailable
+class LoginMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +16,12 @@ class Test2 extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    protected $user;
+
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,6 +31,9 @@ class Test2 extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.test');
+        return $this->subject('CRM Giriş Kontrolü')->
+        markdown('emails.login', [
+            'user' => $this->user
+        ]);
     }
 }

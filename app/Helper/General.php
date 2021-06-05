@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use App\Models\Setting;
+
 class General
 {
     public static function getCurrency($currencyCode)
@@ -31,5 +33,25 @@ class General
     public static function clearPhoneNumber($phoneNumber)
     {
         return str_replace('(', '', str_replace(')', '', str_replace('-', '', str_replace(' ', '', $phoneNumber))));
+    }
+
+    public static function setMailConfig()
+    {
+        $settings = Setting::find(1);
+        $mailConfig = [
+            'transport' => 'smtp',
+            'host' => $settings->mail_host,
+            'port' => $settings->mail_port,
+            'encryption' => $settings->mail_encryption,
+            'username' => $settings->mail_username,
+            'password' => $settings->mail_password,
+            'from' => [
+                'address' => $settings->mail_from_email,
+                'name' => $settings->mail_from_name
+            ],
+            'timeout' => null
+        ];
+
+        config(['mail.mailers.smtp' => $mailConfig]);
     }
 }

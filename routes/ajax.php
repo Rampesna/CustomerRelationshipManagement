@@ -26,6 +26,7 @@ use App\Http\Controllers\Ajax\DistrictController;
 use App\Http\Controllers\Ajax\DefinitionController;
 use App\Http\Controllers\Ajax\ProfileController;
 use App\Http\Controllers\Ajax\TargetController;
+use App\Http\Controllers\Ajax\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -220,6 +221,11 @@ Route::prefix('province')->group(function () {
 
 Route::prefix('district')->group(function () {
     Route::get('index', [DistrictController::class, 'index'])->name('ajax.district.index');
+});
+
+Route::prefix('setting')->group(function () {
+    Route::get('show', [SettingController::class, 'show'])->name('ajax.setting.show');
+    Route::post('updateMailSettings', [SettingController::class, 'updateMailSettings'])->name('ajax.setting.updateMailSettings');
 });
 
 Route::prefix('definition')->group(function () {
