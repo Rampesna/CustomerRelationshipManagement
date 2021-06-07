@@ -501,7 +501,7 @@
                 type_id: type_id,
                 status_id: status_id,
                 amount: amount,
-            }, 'Müşteri Başarıyla Güncellendi', 'Müşteri Güncellenirken Bir Hata Oluştu!', 1);
+            }, 'Stok Başarıyla Güncellendi', 'Stok Güncellenirken Bir Hata Oluştu!', 1);
         }
     });
 
@@ -513,11 +513,20 @@
             url: '{{ route('ajax.stock.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
-                id: id
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
             },
-            success: function () {
-                toastr.success('Başarıyla Silindi');
-                stocks.ajax.reload().draw();
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    stocks.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
             },
             error: function (error) {
                 console.log(error);

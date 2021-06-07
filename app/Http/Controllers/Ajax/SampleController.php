@@ -33,6 +33,9 @@ class SampleController extends Controller
         filterColumn('status_id', function ($samples, $keyword) use ($request) {
             return $samples->whereIn('status_id', Definition::where('company_id', $request->company_id)->where('name', 'Numune Aşama Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
+        editColumn('id', function ($sample) {
+            return '#' . $sample->id;
+        })->
         editColumn('relation_type', function ($activity) {
             return @$activity->relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (
             @$activity->relation_type == 'App\\Models\\Customer' ? 'Müşteri' : (
@@ -79,6 +82,26 @@ class SampleController extends Controller
 
     public function drop(Request $request)
     {
-        Sample::find($request->id)->delete();
+        $sample = Sample::find($request->id);
+        if ($sample->created_by == $request->auth_user_id) {
+            $sample->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Numune Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $sample->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Numune Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

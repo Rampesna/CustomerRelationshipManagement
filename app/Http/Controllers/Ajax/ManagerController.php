@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Definition;
 use App\Models\Manager;
-use App\Services\CustomerService;
+use App\Models\User;
 use App\Services\ManagerService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -81,6 +81,26 @@ class ManagerController extends Controller
 
     public function drop(Request $request)
     {
-        Manager::find($request->id)->delete();
+        $manager = Manager::find($request->id);
+        if ($manager->created_by == $request->auth_user_id) {
+            $manager->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Yetkili Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $manager->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Yetkili Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

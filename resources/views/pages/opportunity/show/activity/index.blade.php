@@ -9,6 +9,8 @@
     @include('pages.opportunity.show.activity.components.create')
     @include('pages.opportunity.show.activity.components.edit')
 
+    @include('pages.opportunity.show.activity.modals.delete')
+
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="activitiesCard">

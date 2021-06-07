@@ -90,7 +90,27 @@ class OfferController extends Controller
 
     public function drop(Request $request)
     {
-        Offer::find($request->id)->delete();
+        $offer = Offer::find($request->id);
+        if ($offer->created_by == $request->auth_user_id) {
+            $offer->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Teklif Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $offer->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Teklif Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 
     public function downloadPDF(Request $request)

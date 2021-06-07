@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Definition;
 use App\Models\Stock;
+use App\Models\User;
 use App\Services\StockService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -63,6 +64,26 @@ class StockController extends Controller
 
     public function drop(Request $request)
     {
-        Stock::find($request->id)->delete();
+        $stock = Stock::find($request->id);
+        if ($stock->created_by == $request->auth_user_id) {
+            $stock->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Stok Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $stock->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Stok Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

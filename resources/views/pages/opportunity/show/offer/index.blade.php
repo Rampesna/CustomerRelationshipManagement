@@ -10,6 +10,7 @@
     @include('pages.opportunity.show.offer.components.edit')
 
     @include('pages.opportunity.show.offer.modals.create-offer-item')
+    @include('pages.opportunity.show.offer.modals.delete')
 
     <div class="row mt-15">
         <div class="col-xl-12">

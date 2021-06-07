@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Company;
-use App\Models\Customer;
 use App\Models\Definition;
-use App\Models\Opportunity;
 use App\Models\User;
 use App\Services\ActivityService;
-use App\Services\OpportunityService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -98,6 +95,26 @@ class ActivityController extends Controller
 
     public function drop(Request $request)
     {
-        Activity::find($request->id)->delete();
+        $activity = Activity::find($request->id);
+        if ($activity->created_by == $request->auth_user_id) {
+            $activity->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Aktivite Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $activity->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Aktivite Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

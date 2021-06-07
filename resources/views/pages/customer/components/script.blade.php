@@ -656,11 +656,20 @@
             url: '{{ route('ajax.customer.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
-                id: id
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
             },
-            success: function () {
-                toastr.success('Başarıyla Silindi');
-                customers.ajax.reload().draw();
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    customers.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
             },
             error: function (error) {
                 console.log(error);

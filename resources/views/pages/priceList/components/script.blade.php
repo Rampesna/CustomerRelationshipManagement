@@ -611,11 +611,20 @@
             url: '{{ route('ajax.priceList.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
-                id: id
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
             },
-            success: function () {
-                toastr.success('Başarıyla Silindi');
-                priceLists.ajax.reload().draw();
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    priceLists.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
             },
             error: function (error) {
                 console.log(error);

@@ -9,6 +9,8 @@
     @include('pages.customer.show.activity.components.create')
     @include('pages.customer.show.activity.components.edit')
 
+    @include('pages.customer.show.activity.modals.delete')
+
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="activitiesCard">

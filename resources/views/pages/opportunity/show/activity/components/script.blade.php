@@ -35,6 +35,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var activities = $('#activities').DataTable({
         language: {
@@ -300,16 +301,21 @@
                 id: id
             },
             success: function (activity) {
-                $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
-                getUsers(activity.company_id);
-                $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
-                $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
-                $("#subject_edit").val(activity.subject);
-                $("#start_date_edit").val(activity.start_date);
-                $("#end_date_edit").val(activity.end_date);
-                $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
-                $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
-                $("#EditRightbar").fadeIn(250);
+                if (activity.created_by == '{{ auth()->user()->id() }}' || ({{ auth()->user()->authority(65) }})) {
+                    $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
+                    getUsers(activity.company_id);
+                    $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
+                    $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
+                    $("#subject_edit").val(activity.subject);
+                    $("#start_date_edit").val(activity.start_date);
+                    $("#end_date_edit").val(activity.end_date);
+                    $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
+                    $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
+                    $("#EditRightbar").fadeIn(250);
+                } else {
+                    toastr.warning('Başka Kullanıcılara Ait Aktiviteleri Düzenleme Yetkiniz Bulunmuyor!');
+                    $("#edit_rightbar_toggle").trigger('click');
+                }
             },
             error: function (error) {
                 console.log(error)
@@ -323,7 +329,7 @@
     }
 
     function drop() {
-
+        $("#DeleteModal").modal('show');
     }
 
     function getUsers(company_id) {
@@ -474,6 +480,36 @@
                 priority_id: priority_id
             }, 'Aktivite Başarıyla Güncellendi', 'Aktivite Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.activity.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
+            },
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    activities.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveActivity(data, successMessage, errorMessage, direction) {

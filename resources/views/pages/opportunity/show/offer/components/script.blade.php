@@ -51,6 +51,7 @@
 
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
 
     var offers = $('#offers').DataTable({
         language: {
@@ -426,6 +427,10 @@
         });
     }
 
+    function drop() {
+        $("#DeleteModal").modal('show');
+    }
+
     function getUsers(company_id) {
         $.ajax({
             async: false,
@@ -644,6 +649,36 @@
                 status_id: status_id,
             }, 'Teklif Başarıyla Güncellendi', 'Teklif Güncellenirken Bir Hata Oluştu!', 1);
         }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.offer.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
+            },
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    offers.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
     });
 
     function saveOffer(data, successMessage, errorMessage, direction) {

@@ -845,11 +845,20 @@
             url: '{{ route('ajax.opportunity.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
+                auth_user_id: '{{ auth()->user()->id() }}',
                 id: id
             },
-            success: function () {
-                toastr.success('Başarıyla Silindi');
-                opportunities.ajax.reload().draw();
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    opportunities.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
             },
             error: function (error) {
                 console.log(error);

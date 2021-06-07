@@ -12,6 +12,7 @@ use App\Models\Definition;
 use App\Models\Manager;
 use App\Models\Offer;
 use App\Models\Sample;
+use App\Models\User;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -186,6 +187,26 @@ class CustomerController extends Controller
 
     public function drop(Request $request)
     {
-        Customer::find($request->id)->delete();
+        $customer = Customer::find($request->id);
+        if ($customer->created_by == $request->auth_user_id) {
+            $customer->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Müşteri Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $customer->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Müşteri Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

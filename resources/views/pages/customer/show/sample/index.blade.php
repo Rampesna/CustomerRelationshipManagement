@@ -10,6 +10,7 @@
     @include('pages.customer.show.sample.components.edit')
 
     @include('pages.customer.show.sample.modals.create-sample-item')
+    @include('pages.customer.show.sample.modals.delete')
 
     <div class="row mt-15">
         <div class="col-xl-12">

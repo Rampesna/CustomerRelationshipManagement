@@ -166,6 +166,26 @@ class OpportunityController extends Controller
 
     public function drop(Request $request)
     {
-        Opportunity::find($request->id)->delete();
+        $opportunity = Opportunity::find($request->id);
+        if ($opportunity->created_by == $request->auth_user_id) {
+            $opportunity->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Fırsat Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $opportunity->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Fırsat Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 }

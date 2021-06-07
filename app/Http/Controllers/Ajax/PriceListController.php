@@ -7,6 +7,8 @@ use App\Models\Company;
 use App\Models\Definition;
 use App\Models\Offer;
 use App\Models\PriceList;
+use App\Models\Stock;
+use App\Models\User;
 use App\Services\OfferService;
 use App\Services\PriceListService;
 use App\Services\SampleService;
@@ -70,7 +72,27 @@ class PriceListController extends Controller
 
     public function drop(Request $request)
     {
-        PriceList::find($request->id)->delete();
+        $priceList = PriceList::find($request->id);
+        if ($priceList->created_by == $request->auth_user_id) {
+            $priceList->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Fiyat Listesi Başarıyla Silindi'
+            ], 200);
+        } else {
+            if (User::find($request->auth_user_id)->authority(64)) {
+                $priceList->delete();
+                return response()->json([
+                    'type' => 'success',
+                    'message' => 'Fiyat Listesi Başarıyla Silindi'
+                ], 200);
+            } else {
+                return response()->json([
+                    'type' => 'warning',
+                    'message' => 'Başka Kullanıcıya Ait Verileri Silme Yetkiniz Bulunmuyor!'
+                ], 200);
+            }
+        }
     }
 
     public function copy(Request $request)

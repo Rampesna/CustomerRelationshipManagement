@@ -10,6 +10,7 @@
     @include('pages.opportunity.show.sample.components.edit')
 
     @include('pages.opportunity.show.sample.modals.create-sample-item')
+    @include('pages.opportunity.show.sample.modals.delete')
 
     <div class="row mt-15">
         <div class="col-xl-12">

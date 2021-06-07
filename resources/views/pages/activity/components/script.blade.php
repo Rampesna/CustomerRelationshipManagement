@@ -331,17 +331,22 @@
                 id: id
             },
             success: function (activity) {
-                $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
-                getUsers(activity.company_id);
-                $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
-                $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
-                getRelationsEdit(activity.relation_id, companyIdEdit.val());
-                $("#subject_edit").val(activity.subject);
-                $("#start_date_edit").val(activity.start_date);
-                $("#end_date_edit").val(activity.end_date);
-                $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
-                $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
-                $("#EditRightbar").fadeIn(250);
+                if (activity.created_by == '{{ auth()->user()->id() }}' || ({{ auth()->user()->authority(65) }})) {
+                    $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
+                    getUsers(activity.company_id);
+                    $("#user_id_edit").val(activity.user_id).selectpicker('refresh');
+                    $("#relation_type_edit").val(activity.relation_type).selectpicker('refresh');
+                    getRelationsEdit(activity.relation_id, companyIdEdit.val());
+                    $("#subject_edit").val(activity.subject);
+                    $("#start_date_edit").val(activity.start_date);
+                    $("#end_date_edit").val(activity.end_date);
+                    $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
+                    $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
+                    $("#EditRightbar").fadeIn(250);
+                } else {
+                    toastr.warning('Başka Kullanıcılara Ait Aktiviteleri Düzenleme Yetkiniz Bulunmuyor!');
+                    $("#edit_rightbar_toggle").trigger('click');
+                }
             },
             error: function (error) {
                 console.log(error)
@@ -641,11 +646,20 @@
             url: '{{ route('ajax.activity.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
-                id: id
+                auth_user_id: '{{ auth()->user()->id() }}',
+                id: id,
             },
-            success: function () {
-                toastr.success('Başarıyla Silindi');
-                activities.ajax.reload().draw();
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    activities.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
             },
             error: function (error) {
                 console.log(error);
