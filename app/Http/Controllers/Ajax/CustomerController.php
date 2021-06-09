@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Helper\General;
+use App\Http\Controllers\Api\Crm;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Company;
@@ -65,6 +66,13 @@ class CustomerController extends Controller
         })->
         editColumn('country_id', function ($customer) {
             return $customer->country_id ? @$customer->country->name : '';
+        })->
+        editColumn('balance', function ($customer) {
+            try {
+                return number_format((new Crm)->getMusteriTicariProgramBakiye($customer->code), 2) . ' TL';
+            } catch (\Exception $exception) {
+                return '--';
+            }
         })->
         rawColumns([
             'phone_number',

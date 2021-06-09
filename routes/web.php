@@ -30,14 +30,22 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-//    return auth()->user();
-//    \App\Helper\General::setMailConfig();
-//    \Illuminate\Support\Facades\Mail::to('talha.can@ayssoft.com')->send(new \App\Mail\OfferMail([
-//        'subject' => 'Dynamic Mailing Test 1'
-//    ]));
-//    if (($setting = Setting::find(1))->send_login_mail == 1) {
-//        Mail::to($setting->mail_recipient)->send(new LoginMail(auth()->user()));
+//    $customers = (new \App\Http\Controllers\Api\Crm)->getMusteriTicari('MikroDB_V16_17')['Response'];
+//    foreach ($customers as $customer) {
+//        $newCustomer = new \App\Models\Customer;
+//        $newCustomer->guid = $customer['cari_Guid'] ?? '';
+//        $newCustomer->code = $customer['cari_kod'] ?? '';
+//        $newCustomer->company_id = 1;
+//        $newCustomer->title = $customer['cari_unvan1'] ?? '';
+//        $newCustomer->tax_office = $customer['cari_vdaire_adi'] ?? '';
+//        $newCustomer->tax_number = $customer['cari_vdaire_no'] ?? '';
+//        $newCustomer->email = $customer['cari_EMail'] ?? '';
+//        $newCustomer->phone_number = $customer['cari_CepTel'] ?? '';
+//        $newCustomer->website = $customer['cari_wwwadresi'] ?? '';
+//        $newCustomer->save();
 //    }
+//
+//    return 'OK';
 });
 
 //Route::get('mailTest', function () {

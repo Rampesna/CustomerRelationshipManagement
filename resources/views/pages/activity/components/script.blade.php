@@ -342,6 +342,7 @@
                     $("#end_date_edit").val(activity.end_date);
                     $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
                     $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
+                    $("#description_edit").val(activity.description);
                     $("#EditRightbar").fadeIn(250);
                 } else {
                     toastr.warning('Başka Kullanıcılara Ait Aktiviteleri Düzenleme Yetkiniz Bulunmuyor!');
@@ -576,6 +577,7 @@
         var end_date = $("#end_date_create").val();
         var meet_reason_id = $("#meet_reason_id_create").val();
         var priority_id = $("#priority_id_create").val();
+        var description = $("#description_create").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -594,7 +596,8 @@
                 start_date: start_date,
                 end_date: end_date,
                 meet_reason_id: meet_reason_id,
-                priority_id: priority_id
+                priority_id: priority_id,
+                description: description
             }, 'Yeni Aktivite Başarıyla Oluşturuldu', 'Aktivite Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
@@ -612,6 +615,7 @@
         var end_date = $("#end_date_edit").val();
         var meet_reason_id = $("#meet_reason_id_edit").val();
         var priority_id = $("#priority_id_edit").val();
+        var description = $("#description_edit").val();
 
         if (id == null || id === '') {
             toastr.error('Aktivite Seçiminde Sistemsel Bir Hata Oluştu!');
@@ -633,7 +637,8 @@
                 start_date: start_date,
                 end_date: end_date,
                 meet_reason_id: meet_reason_id,
-                priority_id: priority_id
+                priority_id: priority_id,
+                description: description,
             }, 'Aktivite Başarıyla Güncellendi', 'Aktivite Güncellenirken Bir Hata Oluştu!', 1);
         }
     });

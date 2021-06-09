@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-xl-12">
                         <div class="form-group">
-                            <label for="notes_edit">Açıklamalar</label>
-                            <textarea class="form-control" rows="4" id="notes_edit"></textarea>
+                            <label for="description_edit">Açıklamalar</label>
+                            <textarea class="form-control" rows="4" id="description_edit"></textarea>
                         </div>
                     </div>
                 </div>

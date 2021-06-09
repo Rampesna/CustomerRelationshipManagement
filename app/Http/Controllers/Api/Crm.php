@@ -12,60 +12,60 @@ class Crm extends Base
 
     // api/Mikro/getTicariProgramFinansalHareketler?Id=İ10103085&VeriTabani=MikroDB_V16_17
 
-    public function getMusteriTicari($db)
+    public function getMusteriTicari($db = 'MikroDB_V16_17')
     {
         $endpoint = "getMusteriTicari";
         $params = [
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
     }
 
-    public function getStoklarTicari($db)
+    public function getStoklarTicari($db = 'MikroDB_V16_17')
     {
         $endpoint = "getStoklarTicari";
         $params = [
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
     }
 
-    public function getTicariProgramSiparisHareketler($id, $db)
+    public function getTicariProgramSiparisHareketler($id, $db = 'MikroDB_V16_17')
     {
         $endpoint = "getTicariProgramSiparisHareketler";
         $params = [
             'Id' => $id,
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], [])['Response'] ?? [];
     }
 
-    public function getMusteriTicariProgramBakiye($id, $db)
+    public function getMusteriTicariProgramBakiye($id, $db = 'MikroDB_V16_17')
     {
         $endpoint = "getMusteriTicariProgramBakiye";
         $params = [
             'Id' => $id,
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], [])['Response'][0]["Tutar"] ?? 0;
     }
 
-    public function getTicariProgramFinansalHareketler($id, $db)
+    public function getTicariProgramFinansalHareketler($id, $db = 'MikroDB_V16_17')
     {
         $endpoint = "getTicariProgramFinansalHareketler";
         $params = [
             'Id' => $id,
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], [])['Response'] ?? [];
     }
 
-    public function getTicariProgramFaturaHareketler($id, $db)
+    public function getTicariProgramFaturaHareketler($id, $db = 'MikroDB_V16_17')
     {
         $endpoint = "getTicariProgramFaturaHareketler";
         $params = [
             'Id' => $id,
-            'VeriTabani' => $db
+            'VeriTabani' => $db = 'MikroDB_V16_17'
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
     }

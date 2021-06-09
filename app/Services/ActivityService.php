@@ -32,7 +32,7 @@ class ActivityService
         $this->activity->relation_id = $request->relation_id;
         $this->activity->relation_type = $request->relation_type;
         $this->activity->subject = $request->subject;
-        $this->activity->notes = $request->notes;
+        $this->activity->description = $request->description;
         $this->activity->start_date = $request->start_date;
         $this->activity->end_date = $request->end_date;
         $this->activity->meet_reason_id = $request->meet_reason_id;

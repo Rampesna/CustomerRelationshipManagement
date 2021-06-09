@@ -118,6 +118,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Açıklamalar</h6>
+                </div>
+                <div class="card-body">
+                    <p>{!! $opportunity->description !!}</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
