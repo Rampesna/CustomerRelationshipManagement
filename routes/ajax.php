@@ -229,6 +229,7 @@ Route::prefix('district')->group(function () {
 Route::prefix('setting')->group(function () {
     Route::get('show', [SettingController::class, 'show'])->name('ajax.setting.show');
     Route::post('updateMailSettings', [SettingController::class, 'updateMailSettings'])->name('ajax.setting.updateMailSettings');
+    Route::post('updateSystemSettings', [SettingController::class, 'updateSystemSettings'])->name('ajax.setting.updateSystemSettings');
 });
 
 Route::prefix('definition')->group(function () {

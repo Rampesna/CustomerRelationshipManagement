@@ -23,4 +23,11 @@ class SettingController extends Controller
         $settingService->setSetting(Setting::where('company_id', $request->company_id)->first());
         $settingService->updateMailSettings($request);
     }
+
+    public function updateSystemSettings(Request $request)
+    {
+        $settingService = new SettingService;
+        $settingService->setSetting(Setting::where('company_id', $request->company_id)->first());
+        $settingService->updateSystemSettings($request);
+    }
 }

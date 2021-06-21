@@ -40,6 +40,19 @@ class SettingService
         $this->setting->save();
     }
 
+    public function updateSystemSettings(Request $request)
+    {
+        $this->setting->send_opportunity_email = $request->send_opportunity_email;
+        $this->setting->send_activity_email = $request->send_activity_email;
+        $this->setting->send_customer_email = $request->send_customer_email;
+        $this->setting->send_manager_email = $request->send_manager_email;
+        $this->setting->send_sample_email = $request->send_sample_email;
+        $this->setting->send_offer_email = $request->send_offer_email;
+        $this->setting->send_stock_email = $request->send_stock_email;
+        $this->setting->send_pricelist_email = $request->send_pricelist_email;
+        $this->setting->save();
+    }
+
     public function checkMailSendingSetting($setting)
     {
         return $this->setting->$setting;
