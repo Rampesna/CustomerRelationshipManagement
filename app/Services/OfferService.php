@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Definition;
 use App\Models\Offer;
 use App\Models\OfferItem;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class OfferService
@@ -65,5 +67,14 @@ class OfferService
         }
 
         return $this->offer;
+    }
+
+    public function createPdfFile()
+    {
+        $pdf = PDF::loadView('documents.offer', [
+            'offer' => $this->offer,
+            'fixedOfferNotes' => Definition::where('company_id', $this->offer->company_id)->where('name', 'Sabit Teklif Notları')->first()->definitions ?? []
+        ], [], 'UTF-8');
+        $pdf->save(public_path('offers/' . $this->offer->id . '.pdf'), 'UTF-8');
     }
 }

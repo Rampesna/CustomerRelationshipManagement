@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Helper\General;
 use App\Http\Controllers\Controller;
+use App\Mail\OfferMail;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Definition;
@@ -13,6 +14,7 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Services\OfferService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -78,7 +80,9 @@ class OfferController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Offer::find($request->id), 200);
+        return response()->json(Offer::with([
+            'relation'
+        ])->find($request->id), 200);
     }
 
     public function save(Request $request)
@@ -115,16 +119,29 @@ class OfferController extends Controller
 
     public function downloadPDF(Request $request)
     {
-        $offer = Offer::with([
+        $offerService = new OfferService;
+        $offerService->setOffer(Offer::with([
             'relation',
             'items'
-        ])->find($request->id);
-        $pdf = PDF::loadView('documents.offer', [
-            'offer' => $offer,
-            'fixedOfferNotes' => Definition::where('company_id', $offer->company_id)->where('name', 'Sabit Teklif Notları')->first()->definitions ?? []
-        ], [], 'UTF-8');
-        $pdf->save(public_path('offers/' . $offer->id . '.pdf'), 'UTF-8');
-        return response()->download(public_path('offers/' . $offer->id . '.pdf'), '#' . $offer->id . ' Numaralı Teklif.pdf');
+        ])->find($request->id));
+        $offerService->createPdfFile();
+        return response()->download(public_path('offers/' . $offerService->getOffer()->id . '.pdf'), '#' . $offerService->getOffer()->id . ' Numaralı Teklif.pdf');
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $offerService = new OfferService;
+        $offerService->setOffer(Offer::with([
+            'relation',
+            'items'
+        ])->find($request->id));
+        $offerService->createPdfFile();
+
+        General::setMailConfig();
+        Mail::to($request->email)->send(new OfferMail([
+            'subject' => 'Teklif Detayları',
+            'offer' => $offerService->getOffer()
+        ]));
     }
 
     public function getCurrency(Request $request)

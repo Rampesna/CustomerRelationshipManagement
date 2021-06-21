@@ -75,6 +75,7 @@
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
+    var SendEmailButton = $("#SendEmailButton");
 
     var offers = $('#offers').DataTable({
         language: {
@@ -640,22 +641,54 @@
 
     function downloadPDF() {
         var id = $("#id_edit").val();
+        toastr.info('Dosya Hazırlanıyor Lütfen Bekleyin...');
         window.location.href = '{{ route('ajax.offer.downloadPDF') }}?id=' + id;
-
-        {{--$.ajax({--}}
-        {{--    type: 'get',--}}
-        {{--    url: '{{ route('ajax.offer.downloadPDF') }}',--}}
-        {{--    data: {--}}
-        {{--        id: id--}}
-        {{--    },--}}
-        {{--    success: function (response) {--}}
-        {{--        console.log(response)--}}
-        {{--    },--}}
-        {{--    error: function (error) {--}}
-        {{--        console.log(error)--}}
-        {{--    }--}}
-        {{--});--}}
     }
+
+    function sendEmailModal() {
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.offer.show') }}',
+            data: {
+                id: id
+            },
+            success: function (offer) {
+                $("#SendEmailModal").modal('show');
+                $("#send_email").val(offer.relation.email ?? '');
+            },
+            error: function (error) {
+                toastr.error('Teklif Detayları Alınırken Sistemsel Bir Hata Oluştu!');
+                console.log(error);
+            }
+        });
+    }
+
+    SendEmailButton.click(function () {
+        var id = $("#id_edit").val();
+        var email = $("#send_email").val();
+        $("#SendEmailModal").modal('hide');
+        $("#loader").fadeIn(250);
+        toastr.info('Mail Gönderiliyor...');
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.offer.sendEmail') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id,
+                email: email
+            },
+            success: function (response) {
+                toastr.success('Mail Başarıyla Gönderildi.');
+                $("#loader").fadeOut(250);
+            },
+            error: function (error) {
+                toastr.error('Mail Gönderilirken Sistemsel Bir Hata Oluştu!');
+                console.log(error);
+                $("#loader").fadeOut(250);
+            }
+        });
+    });
 
     function getUsers(company_id) {
         $.ajax({

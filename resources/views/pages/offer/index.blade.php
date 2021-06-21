@@ -10,6 +10,7 @@
     @include('pages.offer.modals.create-offer-item')
     @include('pages.offer.modals.new-offer-create-offer-item')
     @include('pages.offer.modals.delete')
+    @include('pages.offer.modals.send-email')
 
     <div class="row">
         <div class="col-xl-12">
@@ -79,6 +80,14 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <i class="fas fa-download text-success"></i><span class="ml-4">İndir</span>
+                    </div>
+                </div>
+            </a>
+
+            <a onclick="sendEmailModal()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-envelope-open text-info"></i><span class="ml-4">Mail Gönder</span>
                     </div>
                 </div>
             </a>

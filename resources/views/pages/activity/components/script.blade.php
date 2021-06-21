@@ -331,7 +331,7 @@
                 id: id
             },
             success: function (activity) {
-                if (activity.created_by == '{{ auth()->user()->id() }}' || ({{ auth()->user()->authority(65) ? 1 : 0 }})) {
+                if (activity.created_by == '{{ auth()->user()->id() }}' || {{ auth()->user()->authority(65) ? 1 : 0 }}) {
                     $("#company_id_edit").val(activity.company_id).selectpicker('refresh');
                     getUsers(activity.company_id);
                     $("#user_id_edit").val(activity.user_id).selectpicker('refresh');

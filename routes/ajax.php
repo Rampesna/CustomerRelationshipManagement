@@ -108,6 +108,7 @@ Route::prefix('offer')->group(function () {
     Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
     Route::delete('drop', [OfferController::class, 'drop'])->name('ajax.offer.drop');
     Route::get('downloadPDF', [OfferController::class, 'downloadPDF'])->name('ajax.offer.downloadPDF');
+    Route::post('sendEmail', [OfferController::class, 'sendEmail'])->name('ajax.offer.sendEmail');
 
     Route::get('getCurrency', [OfferController::class, 'getCurrency'])->name('ajax.offer.getCurrency');
 
