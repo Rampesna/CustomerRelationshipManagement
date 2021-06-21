@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Definition;
 use App\Models\PriceList;
 use App\Models\PriceListItem;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class PriceListService
@@ -59,5 +61,13 @@ class PriceListService
                 $oldPriceListItem->currency
             );
         }
+    }
+
+    public function createPdfFile()
+    {
+        $pdf = PDF::loadView('documents.priceList', [
+            'priceList' => $this->priceList,
+        ], [], 'UTF-8');
+        $pdf->save(public_path('priceLists/' . $this->priceList->id . '.pdf'), 'UTF-8');
     }
 }

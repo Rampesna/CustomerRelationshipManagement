@@ -12,6 +12,7 @@
     @include('pages.priceList.modals.edit-price-list-item')
     @include('pages.priceList.modals.copy')
     @include('pages.priceList.modals.delete')
+    @include('pages.priceList.modals.send-email')
 
     <div class="row">
         <div class="col-xl-12">
@@ -82,6 +83,22 @@
                 </div>
             </a>
             @endAuthority
+
+            <a onclick="downloadPDF()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-download text-success"></i><span class="ml-4">İndir</span>
+                    </div>
+                </div>
+            </a>
+
+            <a onclick="sendEmailModal()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-envelope-open text-info"></i><span class="ml-4">Mail Gönder</span>
+                    </div>
+                </div>
+            </a>
 
             @Authority(58)
             <a onclick="drop()" class="dropdown-item cursor-pointer">

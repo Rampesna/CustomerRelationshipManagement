@@ -136,6 +136,8 @@ Route::prefix('priceList')->group(function () {
     Route::post('save', [PriceListController::class, 'save'])->name('ajax.priceList.save');
     Route::delete('drop', [PriceListController::class, 'drop'])->name('ajax.priceList.drop');
     Route::post('copy', [PriceListController::class, 'copy'])->name('ajax.priceList.copy');
+    Route::get('downloadPDF', [PriceListController::class, 'downloadPDF'])->name('ajax.priceList.downloadPDF');
+    Route::post('sendEmail', [PriceListController::class, 'sendEmail'])->name('ajax.priceList.sendEmail');
 
     Route::prefix('priceListItem')->group(function () {
         Route::get('index', [PriceListItemController::class, 'index'])->name('ajax.priceListItem.index');

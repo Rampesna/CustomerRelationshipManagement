@@ -42,6 +42,7 @@
     var UpdateButton = $("#UpdateButton");
     var CopyButton = $("#CopyButton");
     var DeleteButton = $("#DeleteButton");
+    var SendEmailButton = $("#SendEmailButton");
 
     var priceLists = $('#priceLists').DataTable({
         language: {
@@ -397,6 +398,43 @@
     function drop() {
         $("#DeleteModal").modal('show');
     }
+
+    function downloadPDF() {
+        var id = $("#id_edit").val();
+        toastr.info('Dosya Hazırlanıyor Lütfen Bekleyin...');
+        window.location.href = '{{ route('ajax.priceList.downloadPDF') }}?id=' + id;
+    }
+
+    function sendEmailModal() {
+        $("#SendEmailModal").modal('show');
+        $("#send_email").val('');
+    }
+
+    SendEmailButton.click(function () {
+        var id = $("#id_edit").val();
+        var email = $("#send_email").val();
+        $("#SendEmailModal").modal('hide');
+        $("#loader").fadeIn(250);
+        toastr.info('Mail Gönderiliyor...');
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.priceList.sendEmail') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id,
+                email: email
+            },
+            success: function () {
+                toastr.success('Mail Başarıyla Gönderildi.');
+                $("#loader").fadeOut(250);
+            },
+            error: function (error) {
+                toastr.error('Mail Gönderilirken Sistemsel Bir Hata Oluştu!');
+                console.log(error);
+                $("#loader").fadeOut(250);
+            }
+        });
+    });
 
     function getUsers(company_id) {
         $.ajax({

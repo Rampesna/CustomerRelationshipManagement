@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Helper\General;
 use App\Http\Controllers\Controller;
+use App\Mail\PriceListMail;
 use App\Models\Company;
 use App\Models\Definition;
-use App\Models\Offer;
 use App\Models\PriceList;
-use App\Models\Stock;
 use App\Models\User;
-use App\Services\OfferService;
 use App\Services\PriceListService;
-use App\Services\SampleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class PriceListController extends Controller
@@ -100,5 +99,30 @@ class PriceListController extends Controller
         $priceListService = new PriceListService;
         $priceListService->setPriceList(new PriceList);
         $priceListService->copy($request);
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        $priceListService = new PriceListService;
+        $priceListService->setPriceList(PriceList::with([
+            'items'
+        ])->find($request->id));
+        $priceListService->createPdfFile();
+        return response()->download(public_path('priceLists/' . $priceListService->getPriceList()->id . '.pdf'), '#' . $priceListService->getPriceList()->id . ' Numaralı Fiyat Listesi.pdf');
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $priceListService = new PriceListService;
+        $priceListService->setPriceList(PriceList::with([
+            'items'
+        ])->find($request->id));
+        $priceListService->createPdfFile();
+
+        General::setMailConfig();
+        Mail::to($request->email)->send(new PriceListMail([
+            'subject' => 'Fiyat Listesi',
+            'priceList' => $priceListService->getPriceList()
+        ]));
     }
 }
