@@ -137,7 +137,7 @@ class OfferController extends Controller
         ])->find($request->id));
         $offerService->createPdfFile();
 
-        General::setMailConfig();
+        General::setMailConfig($offerService->getOffer()->company_id);
         Mail::to($request->email)->send(new OfferMail([
             'subject' => 'Teklif Detayları',
             'offer' => $offerService->getOffer()

@@ -7,7 +7,6 @@
 
     @include('pages.customer.components.create')
     @include('pages.customer.components.edit')
-
     @include('pages.customer.modals.delete')
 
     <div class="row">

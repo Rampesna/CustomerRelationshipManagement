@@ -29,13 +29,6 @@ class LoginSuccessful
      */
     public function handle($event)
     {
-        try {
-            General::setMailConfig();
-            if (($setting = Setting::find(1))->send_login_mail == 1) {
-                Mail::to($setting->mail_recipient)->send(new LoginMail(auth()->user()));
-            }
-        } catch (\Exception $exception) {
-
-        }
+        //
     }
 }

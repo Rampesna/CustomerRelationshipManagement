@@ -35,9 +35,9 @@ class General
         return str_replace('(', '', str_replace(')', '', str_replace('-', '', str_replace(' ', '', $phoneNumber))));
     }
 
-    public static function setMailConfig()
+    public static function setMailConfig($companyId)
     {
-        $settings = Setting::find(1);
+        $settings = Setting::where('company_id', $companyId)->first();
         $mailConfig = [
             'transport' => 'smtp',
             'host' => $settings->mail_host,

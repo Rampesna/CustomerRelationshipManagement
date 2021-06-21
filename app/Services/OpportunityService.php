@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Events\SendEmailEvent;
 use App\Models\Opportunity;
 use App\Models\OpportunityActivity;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OpportunityService
 {
@@ -61,6 +64,13 @@ class OpportunityService
         $opportunityActivityService = new OpportunityActivityService;
         $opportunityActivityService->setOpportunityActivity(new OpportunityActivity);
         $opportunityActivityService->save($request->auth_user_id, $this->opportunity->id, $request->status_id);
+
+        if (!$request->id) {
+            event(new SendEmailEvent([
+                'setting' => Setting::where('company_id', $this->opportunity->company_id)->first(),
+                'opportunity' => $this->opportunity
+            ]));
+        }
 
         return $this->opportunity;
     }

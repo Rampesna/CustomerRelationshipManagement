@@ -39,4 +39,9 @@ class SettingService
         $this->setting->mail_recipient = $request->mail_recipient;
         $this->setting->save();
     }
+
+    public function checkMailSendingSetting($setting)
+    {
+        return $this->setting->$setting;
+    }
 }

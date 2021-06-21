@@ -119,7 +119,7 @@ class PriceListController extends Controller
         ])->find($request->id));
         $priceListService->createPdfFile();
 
-        General::setMailConfig();
+        General::setMailConfig($priceListService->getPriceList()->company_id);
         Mail::to($request->email)->send(new PriceListMail([
             'subject' => 'Fiyat Listesi',
             'priceList' => $priceListService->getPriceList()
