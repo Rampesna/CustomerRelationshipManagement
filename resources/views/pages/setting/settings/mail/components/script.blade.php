@@ -1,5 +1,7 @@
 <script>
 
+    var SelectedCompany = $("#SelectedCompany");
+
     var UpdateButton = $("#UpdateButton");
 
     var mailHost = $("#mail_host");
@@ -15,7 +17,9 @@
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.setting.show') }}',
-            data: {},
+            data: {
+                company_id: SelectedCompany.val()
+            },
             success: function (settings) {
                 mailHost.val(settings.mail_host);
                 mailPort.val(settings.mail_port);
@@ -41,6 +45,7 @@
             url: '{{ route('ajax.setting.updateMailSettings') }}',
             data: {
                 _token: '{{ csrf_token() }}',
+                company_id: SelectedCompany.val(),
                 mail_host: mailHost.val(),
                 mail_port: mailPort.val(),
                 mail_encryption: mailEncryption.val(),
@@ -58,5 +63,9 @@
                 console.log(error);
             }
         });
+    });
+
+    SelectedCompany.change(function () {
+        getSettings();
     });
 </script>

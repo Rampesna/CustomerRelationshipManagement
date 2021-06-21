@@ -11,9 +11,20 @@ class SettingService
 {
     public $setting;
 
-    public function __construct()
+    /**
+     * @return Setting
+     */
+    public function getSetting(): Setting
     {
-        $this->setting = Setting::find(1);
+        return $this->setting;
+    }
+
+    /**
+     * @param Setting $setting
+     */
+    public function setSetting(Setting $setting): void
+    {
+        $this->setting = $setting;
     }
 
     public function updateMailSettings(Request $request)

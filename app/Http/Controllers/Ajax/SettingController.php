@@ -14,11 +14,13 @@ class SettingController extends Controller
 {
     public function show(Request $request)
     {
-        return response()->json(Setting::find(1));
+        return response()->json(Setting::where('company_id', $request->company_id)->first());
     }
 
     public function updateMailSettings(Request $request)
     {
-        (new SettingService)->updateMailSettings($request);
+        $settingService = new SettingService;
+        $settingService->setSetting(Setting::where('company_id', $request->company_id)->first());
+        $settingService->updateMailSettings($request);
     }
 }
