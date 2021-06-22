@@ -42,6 +42,7 @@ class OfferService
         $this->offer->currency_type = $request->currency_type;
         $this->offer->currency = $request->currency;
         $this->offer->status_id = $request->status_id;
+        $this->offer->calendar = $request->calendar;
         $this->offer->created_by = $request->id ? $this->offer->created_by : $request->auth_user_id;
         $this->offer->last_updated_by = $request->auth_user_id;
         $this->offer->save();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Meeting;
 use App\Models\Note;
+use App\Models\Offer;
 use App\Models\Opportunity;
 use App\Models\Target;
 use App\Models\User;
@@ -59,7 +60,26 @@ class DashboardController extends Controller
                 orWhere(function ($between) use ($request) {
                     $between->where('start_date', '>=', $request->start_date)->where('end_date', '<=', $request->end_date);
                 });
-            })->get())->merge(User::find($request->auth_user_id)->meetings)->unique('id')->all()
+            })->get())->merge(User::find($request->auth_user_id)->meetings()->where('company_id', $request->company_id)->get())->unique('id')->all(),
+            'opportunities' => Opportunity::where('company_id', $request->company_id)->where('calendar', 1)->whereBetween('date', [
+                date('Y-m-01 00:00:00', strtotime($request->start_date)),
+                date('Y-m-t 23:59:59', strtotime($request->end_date))
+            ])->get(),
+            'activities' => Activity::where('company_id', $request->company_id)->where('calendar', 1)->where(function ($dates) use ($request) {
+                $dates->where(function ($forStartDate) use ($request) {
+                    $forStartDate->where('start_date', '<=', $request->start_date)->where('end_date', '>=', $request->start_date);
+                })->
+                orWhere(function ($forEndDate) use ($request) {
+                    $forEndDate->where('start_date', '<=', $request->end_date)->where('end_date', '>=', $request->end_date);
+                })->
+                orWhere(function ($between) use ($request) {
+                    $between->where('start_date', '>=', $request->start_date)->where('end_date', '<=', $request->end_date);
+                });
+            })->get(),
+            'offers' => Offer::where('company_id', $request->company_id)->where('calendar', 1)->whereBetween('created_at', [
+                date('Y-m-01 00:00:00', strtotime($request->start_date)),
+                date('Y-m-t 23:59:59', strtotime($request->end_date))
+            ])->get()
         ], 200);
     }
 }

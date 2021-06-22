@@ -81,7 +81,13 @@
                         </div>
                     </div>
                     <div class="col-xl-4">
-
+                        <div class="form-group">
+                            <label for="calendar_create">Takvimde Gösterilsin</label>
+                            <select id="calendar_create" class="form-control">
+                                <option value="0">Hayır</option>
+                                <option value="1">Evet</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-xl-12">
                         <div class="form-group">

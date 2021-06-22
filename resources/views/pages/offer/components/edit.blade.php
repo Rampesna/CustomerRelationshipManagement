@@ -99,6 +99,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-xl-3">
+                    <div class="form-group">
+                        <label for="calendar_edit">Takvimde Gösterilsin</label>
+                        <select id="calendar_edit" class="form-control">
+                            <option value="0">Hayır</option>
+                            <option value="1">Evet</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-12">

@@ -313,6 +313,7 @@
         capacityTypeIdCreate.selectpicker('refresh');
         accessTypeIdCreate.selectpicker('refresh');
         statusIdCreate.selectpicker('refresh');
+        $("#calendar_create").selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -354,6 +355,7 @@
                 $("#capacity_type_id_edit").val(opportunity.capacity_type_id).selectpicker('refresh');
                 $("#status_id_edit").val(opportunity.status_id).selectpicker('refresh');
                 $("#description_edit").val(opportunity.description);
+                $("#calendar_edit").val(opportunity.calendar).selectpicker('refresh');
             },
             error: function (error) {
                 console.log(error)
@@ -733,6 +735,7 @@
         var capacity = $("#capacity_create").val();
         var capacity_type_id = $("#capacity_type_id_create").val();
         var status_id = $("#status_id_create").val();
+        var calendar = $("#calendar_create").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -766,6 +769,7 @@
                 capacity: capacity,
                 capacity_type_id: capacity_type_id,
                 status_id: status_id,
+                calendar: calendar,
             }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
@@ -799,6 +803,7 @@
         var capacity = $("#capacity_edit").val();
         var capacity_type_id = $("#capacity_type_id_edit").val();
         var status_id = $("#status_id_edit").val();
+        var calendar = $("#calendar_edit").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -833,6 +838,7 @@
                 capacity: capacity,
                 capacity_type_id: capacity_type_id,
                 status_id: status_id,
+                calendar: calendar,
             }, 'Fırsat Başarıyla Güncellendi', 'Fırsat Güncellenirken Bir Hata Oluştu!', 1);
         }
     });

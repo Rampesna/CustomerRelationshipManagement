@@ -157,6 +157,24 @@ class OpportunityController extends Controller
         return response()->json(Opportunity::find($request->id), 200);
     }
 
+    public function showDetail(Request $request)
+    {
+        return response()->json(Opportunity::with([
+            'company',
+            'user',
+            'priority',
+            'accessType',
+            'country',
+            'province',
+            'district',
+            'estimatedResultType',
+            'capacityType',
+            'status',
+            'createdBy',
+            'lastUpdatedBy',
+        ])->find($request->id), 200);
+    }
+
     public function save(Request $request)
     {
         $opportunityService = new OpportunityService;

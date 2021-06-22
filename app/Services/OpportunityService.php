@@ -57,6 +57,7 @@ class OpportunityService
         $this->opportunity->capacity = $request->capacity;
         $this->opportunity->capacity_type_id = $request->capacity_type_id;
         $this->opportunity->status_id = $request->status_id;
+        $this->opportunity->calendar = $request->calendar;
         $this->opportunity->created_by = $request->id ? $this->opportunity->created_by : $request->auth_user_id;
         $this->opportunity->last_updated_by = $request->auth_user_id;
         $this->opportunity->save();

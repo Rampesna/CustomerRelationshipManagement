@@ -591,6 +591,7 @@
         statusIdCreate.selectpicker('refresh');
         payTypeIdCreate.selectpicker('refresh');
         deliveryTypeIdCreate.selectpicker('refresh');
+        $("#calendar_create").selectpicker('refresh');
         newOfferItems.rows().remove().draw();
         calculateNewOfferItemTotals();
         $("#create_rightbar_toggle").trigger('click');
@@ -621,6 +622,7 @@
                 $("#currency_edit").val(offer.currency);
                 $("#status_id_edit").val(offer.status_id).selectpicker('refresh');
                 $("#description_edit").val(offer.description);
+                $("#calendar_edit").val(offer.calendar);
                 offerItems.ajax.reload().draw();
                 $("#EditRightbar").fadeIn(250);
             },
@@ -986,6 +988,7 @@
         var currency = $("#currency_create").val();
         var status_id = $("#status_id_create").val();
         var description = $("#description_create").val();
+        var calendar = $("#calendar_create").val();
 
         var items = [];
 
@@ -1016,6 +1019,7 @@
                 currency: currency,
                 status_id: status_id,
                 description: description,
+                calendar: calendar,
                 items: items
             }, 'Yeni Teklif Başarıyla Oluşturuldu', 'Teklif Oluşturulurken Bir Hata Oluştu!', 0);
         }
@@ -1036,6 +1040,7 @@
         var currency = $("#currency_edit").val();
         var status_id = $("#status_id_edit").val();
         var description = $("#description_edit").val();
+        var calendar = $("#calendar_edit").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -1058,6 +1063,7 @@
                 currency: currency,
                 status_id: status_id,
                 description: description,
+                calendar: calendar,
             }, 'Teklif Başarıyla Güncellendi', 'Teklif Güncellenirken Bir Hata Oluştu!', 1);
         }
     });

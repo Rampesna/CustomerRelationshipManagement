@@ -64,4 +64,14 @@ class Opportunity extends Model
     {
         return $this->belongsTo(Definition::class, 'status_id', 'id');
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function lastUpdatedBy()
+    {
+        return $this->belongsTo(User::class, 'last_updated_by', 'id');
+    }
 }

@@ -9,14 +9,16 @@
 
     @include('pages.dashboard.modals.create-meeting')
     @include('pages.dashboard.modals.create-note')
-    @include('pages.dashboard.modals.create-reminder')
 
     @include('pages.dashboard.modals.edit-meeting')
     @include('pages.dashboard.modals.edit-note')
-    @include('pages.dashboard.modals.edit-reminder')
 
     @include('pages.dashboard.modals.show-note')
     @include('pages.dashboard.modals.show-meeting')
+
+    @include('pages.dashboard.modals.show-opportunity')
+    @include('pages.dashboard.modals.show-activity')
+    @include('pages.dashboard.modals.show-offer')
 
     <div class="row">
         <div class="col-xl-8">

@@ -50,6 +50,7 @@ Route::prefix('opportunity')->group(function () {
     Route::get('index', [OpportunityController::class, 'index'])->name('ajax.opportunity.index');
     Route::get('datatable', [OpportunityController::class, 'datatable'])->name('ajax.opportunity.datatable');
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
+    Route::get('showDetail', [OpportunityController::class, 'showDetail'])->name('ajax.opportunity.showDetail');
     Route::post('save', [OpportunityController::class, 'save'])->name('ajax.opportunity.save');
     Route::delete('drop', [OpportunityController::class, 'drop'])->name('ajax.opportunity.drop');
 

@@ -37,21 +37,6 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xl-4">
-                            <a href="#" id="CreateReminderModalTrigger" class="card card-custom card-stretch gutter-b" data-dismiss="modal">
-                                <div class="card-body">
-                                    <span class="svg-icon svg-icon-dark-75 svg-icon-3x ml-n1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <path d="M17,12 L18.5,12 C19.3284271,12 20,12.6715729 20,13.5 C20,14.3284271 19.3284271,15 18.5,15 L5.5,15 C4.67157288,15 4,14.3284271 4,13.5 C4,12.6715729 4.67157288,12 5.5,12 L7,12 L7.5582739,6.97553494 C7.80974924,4.71225688 9.72279394,3 12,3 C14.2772061,3 16.1902508,4.71225688 16.4417261,6.97553494 L17,12 Z" fill="#000000"/>
-                                                <rect fill="#000000" opacity="0.3" x="10" y="16" width="4" height="4" rx="2"/>
-                                            </g>
-                                        </svg>
-                                    </span>
-                                    <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Hatırlatıcı Oluştur</div>
-                                </div>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 <div class="text-center">

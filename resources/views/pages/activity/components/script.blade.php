@@ -315,6 +315,7 @@
         getActivityMeetingReasons(SelectedCompany.val());
         getActivityPriorities(SelectedCompany.val());
         userIdCreate.selectpicker('refresh');
+        $("#calendar_create").selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -343,6 +344,7 @@
                     $("#meet_reason_id_edit").val(activity.meet_reason_id).selectpicker('refresh');
                     $("#priority_id_edit").val(activity.priority_id).selectpicker('refresh');
                     $("#description_edit").val(activity.description);
+                    $("#calendar_edit").val(activity.calendar).selectpicker('refresh');
                     $("#EditRightbar").fadeIn(250);
                 } else {
                     toastr.warning('Başka Kullanıcılara Ait Aktiviteleri Düzenleme Yetkiniz Bulunmuyor!');
@@ -578,6 +580,7 @@
         var meet_reason_id = $("#meet_reason_id_create").val();
         var priority_id = $("#priority_id_create").val();
         var description = $("#description_create").val();
+        var calendar = $("#calendar_create").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -597,7 +600,8 @@
                 end_date: end_date,
                 meet_reason_id: meet_reason_id,
                 priority_id: priority_id,
-                description: description
+                description: description,
+                calendar: calendar,
             }, 'Yeni Aktivite Başarıyla Oluşturuldu', 'Aktivite Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
@@ -616,6 +620,7 @@
         var meet_reason_id = $("#meet_reason_id_edit").val();
         var priority_id = $("#priority_id_edit").val();
         var description = $("#description_edit").val();
+        var calendar = $("#calendar_edit").val();
 
         if (id == null || id === '') {
             toastr.error('Aktivite Seçiminde Sistemsel Bir Hata Oluştu!');
@@ -639,6 +644,7 @@
                 meet_reason_id: meet_reason_id,
                 priority_id: priority_id,
                 description: description,
+                calendar: calendar,
             }, 'Aktivite Başarıyla Güncellendi', 'Aktivite Güncellenirken Bir Hata Oluştu!', 1);
         }
     });
