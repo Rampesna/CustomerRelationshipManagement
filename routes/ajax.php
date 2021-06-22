@@ -16,6 +16,8 @@ use App\Http\Controllers\Ajax\PriceListController;
 use App\Http\Controllers\Ajax\FileController;
 use App\Http\Controllers\Ajax\SocialController;
 use App\Http\Controllers\Ajax\CommentController;
+use App\Http\Controllers\Ajax\NoteController;
+use App\Http\Controllers\Ajax\MeetingController;
 use App\Http\Controllers\Ajax\UserController;
 use App\Http\Controllers\Ajax\CompanyController;
 use App\Http\Controllers\Ajax\RoleController;
@@ -41,6 +43,7 @@ use App\Http\Controllers\Ajax\SettingController;
 
 Route::prefix('dashboard')->group(function () {
     Route::get('index', [DashboardController::class, 'index'])->name('ajax.dashboard.index');
+    Route::get('calendar', [DashboardController::class, 'calendar'])->name('ajax.dashboard.calendar');
 });
 
 Route::prefix('opportunity')->group(function () {
@@ -171,7 +174,20 @@ Route::prefix('comment')->group(function () {
     Route::delete('drop', [CommentController::class, 'drop'])->name('ajax.comment.drop');
 });
 
+Route::prefix('note')->group(function () {
+    Route::get('show', [NoteController::class, 'show'])->name('ajax.note.show');
+    Route::post('save', [NoteController::class, 'save'])->name('ajax.note.save');
+    Route::delete('drop', [NoteController::class, 'drop'])->name('ajax.note.drop');
+});
+
+Route::prefix('meeting')->group(function () {
+    Route::get('show', [MeetingController::class, 'show'])->name('ajax.meeting.show');
+    Route::post('save', [MeetingController::class, 'save'])->name('ajax.meeting.save');
+    Route::delete('drop', [MeetingController::class, 'drop'])->name('ajax.meeting.drop');
+});
+
 Route::prefix('user')->group(function () {
+    Route::get('all', [UserController::class, 'all'])->name('ajax.user.all');
     Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
     Route::get('datatable', [UserController::class, 'datatable'])->name('ajax.user.datatable');
     Route::get('show', [UserController::class, 'show'])->name('ajax.user.show');

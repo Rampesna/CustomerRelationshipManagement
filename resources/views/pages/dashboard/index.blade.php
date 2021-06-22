@@ -5,6 +5,19 @@
 
 @section('content')
 
+    @include('pages.dashboard.modals.modal-selector')
+
+    @include('pages.dashboard.modals.create-meeting')
+    @include('pages.dashboard.modals.create-note')
+    @include('pages.dashboard.modals.create-reminder')
+
+    @include('pages.dashboard.modals.edit-meeting')
+    @include('pages.dashboard.modals.edit-note')
+    @include('pages.dashboard.modals.edit-reminder')
+
+    @include('pages.dashboard.modals.show-note')
+    @include('pages.dashboard.modals.show-meeting')
+
     <div class="row">
         <div class="col-xl-8">
             <div class="row">
@@ -24,7 +37,7 @@
                                     <div class="text-muted font-weight-bold" id="opportunityRateSpan">--%</div>
                                 </div>
                                 <div class="progress bg-light-warning progress-xs">
-                                    <div class="progress-bar bg-warning" role="progressbar" id="opportunityRateProgressBar" style="width: 0%;"  aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" id="opportunityRateProgressBar" style="width: 0;"  aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +59,7 @@
                                     <div class="text-muted font-weight-bold" id="activityRateSpan">--%</div>
                                 </div>
                                 <div class="progress bg-light-warning progress-xs">
-                                    <div class="progress-bar bg-warning" role="progressbar" id="activityRateProgressBar" style="width: 0%;"  aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" id="activityRateProgressBar" style="width: 0;"  aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -78,48 +91,7 @@
                         </div>
                         <div class="card-body pt-0">
                             <div class="timeline timeline-5" id="lastActivities">
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">01.01.2021, 08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
-                                <div class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success icon-xxl"></i>
-                                    </div>
-                                    <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

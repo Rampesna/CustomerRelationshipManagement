@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Opportunity::class)->select('name');
     }
+
+    public function meetings()
+    {
+        return $this->belongsToMany(Meeting::class);
+    }
 }

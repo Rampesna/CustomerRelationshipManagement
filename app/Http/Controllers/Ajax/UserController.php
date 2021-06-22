@@ -11,6 +11,11 @@ use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
+    public function all(Request $request)
+    {
+        return response()->json(User::all());
+    }
+
     public function index(Request $request)
     {
         return response()->json(Company::find($request->company_id)->users);

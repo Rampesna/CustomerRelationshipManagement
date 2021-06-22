@@ -18,6 +18,175 @@
         'Aralık',
     ];
 
+    var SelectedCompany = $("#SelectedCompany");
+
+    var CreateNoteButton = $("#CreateNoteButton");
+    var CreateMeetingButton = $("#CreateMeetingButton");
+    var CreateReminderButton = $("#CreateReminderButton");
+
+    var UpdateNoteButton = $("#UpdateNoteButton");
+    var UpdateMeetingButton = $("#UpdateMeetingButton");
+    var UpdateReminderButton = $("#UpdateReminderButton");
+
+    var CreateMeetingModalTrigger = $("#CreateMeetingModalTrigger");
+    var CreateNoteModalTrigger = $("#CreateNoteModalTrigger");
+    var CreateReminderModalTrigger = $("#CreateReminderModalTrigger");
+
+    var CreateMeetingUsers = $("#create_meeting_users");
+    var EditMeetingUsers = $("#edit_meeting_users");
+
+    CreateMeetingModalTrigger.click(function () {
+        $("#create_meeting_company_id").val(SelectedCompany.val()).selectpicker('refresh');
+        $("#create_meeting_title").val('');
+        $("#create_meeting_description").val('');
+        $("#create_meeting_type").val(0).selectpicker('refresh');
+        $("#create_meeting_address").val('');
+        $("#create_meeting_users").val([]).selectpicker('refresh');
+        $("#CreateMeetingModal").modal('show');
+    });
+
+    CreateNoteModalTrigger.click(function () {
+        $("#create_note_title").val('');
+        $("#create_note_description").val('');
+        $("#create_note_global").val(0).selectpicker('refresh');
+        $("#create_note_company_id").val(SelectedCompany.val()).selectpicker('refresh');
+        $("#CreateNoteModal").modal('show');
+    });
+
+    CreateReminderModalTrigger.click(function () {
+        $("#CreateReminderModal").modal('show');
+    });
+
+    CreateNoteButton.click(function () {
+        var company_id = $("#create_note_company_id").val();
+        var user_id = '{{ auth()->user()->id() }}';
+        var title = $("#create_note_title").val();
+        var date = $("#create_note_date").val();
+        var description = $("#create_note_description").val();
+        var global = $("#create_note_global").val();
+
+        saveNote({
+            company_id: company_id,
+            user_id: user_id,
+            title: title,
+            date: date,
+            description: description,
+            global: global,
+        }, 0);
+    });
+
+    UpdateNoteButton.click(function () {
+        var id = $("#note_id_edit").val();
+        var company_id = $("#edit_note_company_id").val();
+        var user_id = '{{ auth()->user()->id() }}';
+        var title = $("#edit_note_title").val();
+        var date = $("#edit_note_date").val();
+        var description = $("#edit_note_description").val();
+        var global = $("#edit_note_global").val();
+
+        saveNote({
+            id: id,
+            company_id: company_id,
+            user_id: user_id,
+            title: title,
+            date: date,
+            description: description,
+            global: global,
+        }, 1);
+    });
+
+    function saveNote(data, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.note.save') }}',
+            data: data,
+            success: function () {
+                toastr.success('Not Başarıyla Kaydedildi');
+                if (direction === 0) {
+                    $("#CreateNoteModal").modal('hide');
+                } else if (direction === 1) {
+                    $("#EditNoteModal").modal('hide');
+                }
+                calendar.fullCalendar('refetchEvents');
+            },
+            error: function (error) {
+                toastr.success('Not Kaydedilirken Sistemsel Bir Hata Oluştu!');
+                console.log(error)
+            }
+        });
+    }
+
+    CreateMeetingButton.click(function () {
+        var company_id = $("#create_meeting_company_id").val();
+        var user_id = '{{ auth()->user()->id() }}';
+        var title = $("#create_meeting_title").val();
+        var description = $("#create_meeting_description").val();
+        var start_date = $("#create_meeting_start_date").val();
+        var end_date = $("#create_meeting_end_date").val();
+        var type = $("#create_meeting_type").val();
+        var address = $("#create_meeting_address").val();
+        var users = $("#create_meeting_users").val();
+
+        saveMeeting({
+            company_id: company_id,
+            user_id: user_id,
+            title: title,
+            description: description,
+            start_date: start_date,
+            end_date: end_date,
+            type: type,
+            address: address,
+            users: users,
+        }, 0);
+    });
+
+    UpdateMeetingButton.click(function () {
+        var id = $("#meeting_id_edit").val();
+        var company_id = $("#edit_meeting_company_id").val();
+        var user_id = '{{ auth()->user()->id() }}';
+        var title = $("#edit_meeting_title").val();
+        var description = $("#edit_meeting_description").val();
+        var start_date = $("#edit_meeting_start_date").val();
+        var end_date = $("#edit_meeting_end_date").val();
+        var type = $("#edit_meeting_type").val();
+        var address = $("#edit_meeting_address").val();
+        var users = $("#edit_meeting_users").val();
+
+        saveMeeting({
+            id: id,
+            company_id: company_id,
+            user_id: user_id,
+            title: title,
+            description: description,
+            start_date: start_date,
+            end_date: end_date,
+            type: type,
+            address: address,
+            users: users,
+        }, 1);
+    });
+
+    function saveMeeting(data, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.meeting.save') }}',
+            data: data,
+            success: function () {
+                toastr.success('Toplantı Başarıyla Kaydedildi');
+                if (direction === 0) {
+                    $("#CreateMeetingModal").modal('hide');
+                } else if (direction === 1) {
+                    $("#EditMeetingModal").modal('hide');
+                }
+                calendar.fullCalendar('refetchEvents');
+            },
+            error: function (error) {
+                toastr.success('Toplantı Kaydedilirken Sistemsel Bir Hata Oluştu!');
+                console.log(error)
+            }
+        });
+    }
+
     function reformatDate(date) {
         var formattedDate = new Date(date);
         return String(formattedDate.getDate()).padStart(2, '0') + '.' +
@@ -26,6 +195,38 @@
             String(formattedDate.getHours()).padStart(2, '0') + ':' +
             String(formattedDate.getMinutes()).padStart(2, '0') + ' ';
     }
+
+    function reformatDateForCalendar(date) {
+        var formattedDate = new Date(date);
+        return formattedDate.getFullYear() + '-' +
+            String(formattedDate.getMonth() + 1).padStart(2, '0') + '-' +
+            String(formattedDate.getDate()).padStart(2, '0') + 'T' +
+            String(formattedDate.getHours()).padStart(2, '0') + ':' +
+            String(formattedDate.getMinutes()).padStart(2, '0') + ':00';
+    }
+
+    function getUsers() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.user.all') }}',
+            data: {},
+            success: function (users) {
+                CreateMeetingUsers.empty();
+                EditMeetingUsers.empty();
+                $.each(users, function (index) {
+                    CreateMeetingUsers.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                    EditMeetingUsers.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                });
+                CreateMeetingUsers.selectpicker('refresh');
+                EditMeetingUsers.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    getUsers();
 
     var calendar = $('#calendar').fullCalendar({
         defaultView: 'month',
@@ -59,7 +260,10 @@
         },
 
         dayClick: function (date, jsEvent, view) {
-
+            $("#ModalSelector").modal('show');
+            $("#create_note_date").val(date.format('YYYY-MM-DD') + 'T12:00');
+            $("#create_meeting_start_date").val(date.format('YYYY-MM-DD') + 'T12:30');
+            $("#create_meeting_end_date").val(date.format('YYYY-MM-DD') + 'T13:30');
         },
 
         loading: function (isLoading, view) {
@@ -69,15 +273,120 @@
         },
 
         eventClick: function (calEvent, jsEvent, view) {
-
+            if (calEvent.type === 'note') {
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('ajax.note.show') }}',
+                    data: {
+                        id: calEvent.note_id
+                    },
+                    success: function (note) {
+                        if (note.user_id != '{{ auth()->user()->id() }}') {
+                            $("#show_note_title").html(note.title);
+                            $("#show_note_description").html(note.description);
+                            $("#ShowNoteModal").modal('show');
+                        } else {
+                            $("#note_id_edit").val(note.id);
+                            $("#edit_note_title").val(note.title);
+                            $("#edit_note_date").val(reformatDateForCalendar(note.date));
+                            $("#edit_note_company_id").val(note.company_id).selectpicker('refresh');
+                            $("#edit_note_global").val(note.global).selectpicker('refresh');
+                            $("#edit_note_description").val(note.description);
+                            $("#EditNoteModal").modal('show');
+                        }
+                    },
+                    error: function (error) {
+                        toastr.error('Not Detayları Alınırken Sistemsel Bir Hata Oluştu!');
+                        console.log(error);
+                    }
+                });
+            } else if (calEvent.type === 'meeting') {
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('ajax.meeting.show') }}',
+                    data: {
+                        id: calEvent.meeting_id
+                    },
+                    success: function (meeting) {
+                        console.log(meeting)
+                        if (meeting.user_id != '{{ auth()->user()->id() }}') {
+                            $("#show_meeting_title").html(meeting.title);
+                            $("#show_meeting_description").html(meeting.description);
+                            $("#ShowMeetingModal").modal('show');
+                        } else {
+                            $("#meeting_id_edit").val(meeting.id);
+                            $("#edit_meeting_company_id").val(meeting.company_id).selectpicker('refresh');
+                            $("#edit_meeting_title").val(meeting.title);
+                            $("#edit_meeting_description").val(meeting.description);
+                            $("#edit_meeting_start_date").val(reformatDateForCalendar(meeting.start_date));
+                            $("#edit_meeting_end_date").val(reformatDateForCalendar(meeting.end_date));
+                            $("#edit_meeting_type").val(meeting.type).selectpicker('refresh');
+                            $("#edit_meeting_address").val(meeting.address);
+                            $("#edit_meeting_users").val($.map(meeting.users, function(user) { return user["id"]; })).selectpicker('refresh');
+                            $("#EditMeetingModal").modal('show');
+                        }
+                    },
+                    error: function (error) {
+                        toastr.error('Not Detayları Alınırken Sistemsel Bir Hata Oluştu!');
+                        console.log(error);
+                    }
+                });
+            }
         },
 
         events: function (start, end, timezone, callback) {
-            callback([]);
+            $.ajax({
+                url: '{{ route('ajax.dashboard.calendar') }}',
+                dataType: 'json',
+                data: {
+                    start_date: start.format("YYYY-MM-DD"),
+                    end_date: end.format("YYYY-MM-DD"),
+                    company_id: SelectedCompany.val(),
+                    auth_user_id: '{{ auth()->user()->id() }}',
+                    timezone: timezone
+                },
+                success: function (response) {
+
+                    console.log(response)
+
+                    var events = [];
+
+                    $.each(response.notes, function (index) {
+                        events.push({
+                            _id: response.notes[index].id,
+                            id: response.notes[index].id,
+                            title: `${response.notes[index].title}`,
+                            start: reformatDateForCalendar(response.notes[index].date),
+                            end: reformatDateForCalendar(response.notes[index].date),
+                            url: 'javascript:void(0)',
+                            type: 'note',
+                            className: `fc-event-solid-warning`,
+                            note_id: `${response.notes[index].id}`
+                        });
+                    });
+
+                    $.each(response.meetings, function (index) {
+                        events.push({
+                            _id: response.meetings[index].id,
+                            id: response.meetings[index].id,
+                            title: `${response.meetings[index].title}`,
+                            start: reformatDateForCalendar(response.meetings[index].start_date),
+                            end: reformatDateForCalendar(response.meetings[index].end_date),
+                            url: 'javascript:void(0)',
+                            type: 'meeting',
+                            className: `fc-event-solid-primary`,
+                            meeting_id: `${response.meetings[index].id}`
+                        });
+                    });
+
+                    callback(events);
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
         }
     });
-
-    var SelectedCompany = $("#SelectedCompany");
 
     var opportunityDateSpan = $("#opportunityDateSpan");
     var opportunityCreatedAndTargetSpan = $("#opportunityCreatedAndTargetSpan");
@@ -92,7 +401,6 @@
     var lastActivities = $("#lastActivities");
 
     function index() {
-        console.log(SelectedCompany.val())
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.dashboard.index') }}',
@@ -100,8 +408,6 @@
                 company_id: SelectedCompany.val()
             },
             success: function (response) {
-                console.log(response)
-
                 opportunityDateSpan.html(response.opportunity.date);
                 opportunityCreatedAndTargetSpan.html(`${response.opportunity.created}/${response.opportunity.target}`);
                 opportunityRateSpan.html(`${parseFloat(response.opportunity.target === 0 ? '100' : (response.opportunity.created * 100 / response.opportunity.target)).toFixed(2)}%`);
@@ -136,6 +442,7 @@
                 console.log(error);
             }
         });
+        calendar.fullCalendar('refetchEvents');
     }
 
     index();
