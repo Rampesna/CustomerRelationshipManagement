@@ -2,7 +2,7 @@
 
 
 <style>
-    .fc-day:hover{
+    .fc-day:hover {
         background: lightgrey;
     }
 </style>

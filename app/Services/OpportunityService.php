@@ -62,6 +62,9 @@ class OpportunityService
         $this->opportunity->last_updated_by = $request->auth_user_id;
         $this->opportunity->save();
 
+        $this->opportunity->brands()->syncWithPivotValues($request->brands, ['relation_type' => 'App\\Models\\Opportunity']);
+        $this->opportunity->sectors()->syncWithPivotValues($request->sectors, ['relation_type' => 'App\\Models\\Opportunity']);
+
         $opportunityActivityService = new OpportunityActivityService;
         $opportunityActivityService->setOpportunityActivity(new OpportunityActivity);
         $opportunityActivityService->save($request->auth_user_id, $this->opportunity->id, $request->status_id);

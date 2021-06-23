@@ -283,4 +283,7 @@ Route::prefix('definition')->group(function () {
     Route::get('stockStatuses', [DefinitionController::class, 'stockStatuses'])->name('ajax.definition.stockStatuses');
 
     Route::get('priceListStatuses', [DefinitionController::class, 'priceListStatuses'])->name('ajax.definition.priceListStatuses');
+
+    Route::get('brands', [DefinitionController::class, 'brands'])->name('ajax.definition.brands');
+    Route::get('sectors', [DefinitionController::class, 'sectors'])->name('ajax.definition.sectors');
 });

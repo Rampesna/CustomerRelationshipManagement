@@ -183,7 +183,10 @@ class CustomerController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Customer::find($request->id), 200);
+        return response()->json(Customer::with([
+            'brands',
+            'sectors'
+        ])->find($request->id), 200);
     }
 
     public function save(Request $request)

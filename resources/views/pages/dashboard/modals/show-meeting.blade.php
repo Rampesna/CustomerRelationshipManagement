@@ -7,11 +7,25 @@
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form id="EditMeetingForm" class="modal-body">
+            <div class="modal-body">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="form-group">
                             <label for="show_meeting_title" class="font-weight-bolder">Toplantı Başlığı: </label><span id="show_meeting_title" class="ml-3"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 mt-n5">
+                        <div class="form-group">
+                            <label for="show_meeting_date" class="font-weight-bolder">Toplantı Başlangıcı: </label><span id="show_meeting_date" class="ml-3"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 mt-n5">
+                        <div class="form-group">
+                            <label for="show_meeting_users" class="font-weight-bolder">Katılımcılar: </label><span id="show_meeting_users" class="ml-3"></span>
                         </div>
                     </div>
                 </div>
@@ -26,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

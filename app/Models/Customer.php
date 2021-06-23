@@ -49,4 +49,14 @@ class Customer extends Model
     {
         return $this->hasMany(Opportunity::class);
     }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Definition::class, 'brand_relation', 'relation_id', 'brand_id')->withPivot('relation_type')->where('relation_type', 'App\\Models\\Customer');
+    }
+
+    public function sectors()
+    {
+        return $this->belongsToMany(Definition::class, 'sector_relation', 'relation_id', 'sector_id')->withPivot('relation_type')->where('relation_type', 'App\\Models\\Customer');
+    }
 }

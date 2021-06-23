@@ -183,7 +183,7 @@
     function reformatDate(date) {
         var formattedDate = new Date(date);
         return String(formattedDate.getDate()).padStart(2, '0') + '.' +
-            String(formattedDate.getMonth()).padStart(2, '0') + '.' +
+            String(formattedDate.getMonth() + 1).padStart(2, '0') + '.' +
             formattedDate.getFullYear() + ', ' +
             String(formattedDate.getHours()).padStart(2, '0') + ':' +
             String(formattedDate.getMinutes()).padStart(2, '0') + ' ';
@@ -220,6 +220,8 @@
     }
 
     getUsers();
+
+    ///////////////////////////////////////////////////////////////////////////
 
     var calendar = $('#calendar').fullCalendar({
         defaultView: 'month',
@@ -274,7 +276,7 @@
                         id: calEvent.note_id
                     },
                     success: function (note) {
-                        if (note.user_id != '{{ auth()->user()->id() }}') {
+                        if (note.user_id.toString() !== '{{ auth()->user()->id() }}') {
                             $("#show_note_title").html(note.title);
                             $("#show_note_description").html(note.description);
                             $("#ShowNoteModal").modal('show');
@@ -302,8 +304,12 @@
                     },
                     success: function (meeting) {
                         console.log(meeting)
-                        if (meeting.user_id != '{{ auth()->user()->id() }}') {
+                        if (meeting.user_id.toString() !== '{{ auth()->user()->id() }}') {
                             $("#show_meeting_title").html(meeting.title);
+                            $("#show_meeting_date").html(reformatDate(meeting.start_date));
+                            $("#show_meeting_users").html($.map(meeting.users, function (user) {
+                                return `${user["name"]}, `;
+                            }));
                             $("#show_meeting_description").html(meeting.description);
                             $("#ShowMeetingModal").modal('show');
                         } else {
@@ -315,7 +321,9 @@
                             $("#edit_meeting_end_date").val(reformatDateForCalendar(meeting.end_date));
                             $("#edit_meeting_type").val(meeting.type).selectpicker('refresh');
                             $("#edit_meeting_address").val(meeting.address);
-                            $("#edit_meeting_users").val($.map(meeting.users, function(user) { return user["id"]; })).selectpicker('refresh');
+                            $("#edit_meeting_users").val($.map(meeting.users, function (user) {
+                                return user["id"];
+                            })).selectpicker('refresh');
                             $("#EditMeetingModal").modal('show');
                         }
                     },
@@ -332,7 +340,6 @@
                         id: calEvent.opportunity_id
                     },
                     success: function (opportunity) {
-                        console.log(opportunity)
                         $("#show_opportunity_name").html(opportunity.name ?? '--');
                         $("#show_opportunity_date").html(opportunity.date ? reformatDate(opportunity.date) : '');
                         $("#show_opportunity_company").html(opportunity.company ? opportunity.company.name : '--');
@@ -369,7 +376,13 @@
                         id: calEvent.activity_id
                     },
                     success: function (activity) {
-                        console.log(activity)
+                        $("#show_activity_subject").html(activity.subject);
+                        $("#show_activity_relation_type").html(activity.relation_type === 'App\\Models\\Opportunity' ? 'Fırsat' : (activity.relation_type === 'App\\Models\\Customer' ? 'Müşteri' : '--'));
+                        $("#show_activity_relation").html(activity.relation ? activity.relation.name ?? activity.relation.title : '--');
+                        $("#show_activity_start_date").html(activity.start_date ? reformatDate(activity.start_date) : '--');
+                        $("#show_activity_end_date").html(activity.end_date ? reformatDate(activity.end_date) : '--');
+                        $("#show_activity_meeting_reason").html(activity.meet_reason ? activity.meet_reason.name : '--');
+                        $("#show_activity_priority").html(activity.priority ? activity.priority.name : '--');
                         $("#ShowActivityModal").modal('show');
                     },
                     error: function (error) {
@@ -385,7 +398,60 @@
                         id: calEvent.offer_id
                     },
                     success: function (offer) {
-                        console.log(offer)
+                        $("#show_offer_subject").html(offer.subject);
+                        $("#show_offer_relation_type").html(offer.relation_type === 'App\\Models\\Opportunity' ? 'Fırsat' : (offer.relation_type === 'App\\Models\\Customer' ? 'Müşteri' : '--'));
+                        $("#show_offer_relation").html(offer.relation ? offer.relation.name ?? offer.relation.title : '--');
+                        $("#show_offer_expiry_date").html(offer.expiry_date ? reformatDate(offer.expiry_date) : '--');
+                        $("#show_offer_pay_tpe").html(offer.pay_type ? offer.pay_type.name : '--');
+                        $("#show_offer_delivery_type").html(offer.delivery_type ? offer.delivery_type.name : '--');
+                        $("#show_offer_currency_type").html(offer.currency_type ? offer.currency_type : '--');
+                        $("#show_offer_currency").html(offer.currency ? offer.currency : '--');
+                        $("#show_offer_status").html(offer.status ? offer.status.name : '--');
+
+                        $.ajax({
+                            type: 'get',
+                            url: '{{ route('ajax.offerItem.index') }}',
+                            data: {
+                                offer_id: offer.id
+                            },
+                            success: function (items) {
+                                var ShowOfferItems = $("#ShowOfferItems");
+                                ShowOfferItems.html('');
+                                var offerSubtotalInput = 0;
+                                var offerDiscountTotalInput = 0;
+                                var offerVatTotalInput = 0;
+                                var offerGrandTotalInput = 0;
+                                $.each(items, function (index) {
+                                    offerSubtotalInput = offerSubtotalInput + items[index].subtotal;
+                                    offerDiscountTotalInput = offerSubtotalInput + items[index].discount_total;
+                                    offerVatTotalInput = offerSubtotalInput + items[index].vat_total;
+                                    offerGrandTotalInput = offerSubtotalInput + items[index].grand_total;
+                                    ShowOfferItems.append(`
+                                    <tr>
+                                        <td>${items[index].stock.name}</td>
+                                        <td>${items[index].amount}</td>
+                                        <td>${items[index].unit.name}</td>
+                                        <td>${items[index].unit_price} ${offer.currency_type}</td>
+                                        <td>${items[index].discount_rate}%</td>
+                                        <td>${items[index].discount_total} ${offer.currency_type}</td>
+                                        <td>${items[index].subtotal} ${offer.currency_type}</td>
+                                        <td>${items[index].vat_rate}%</td>
+                                        <td>${items[index].vat_total} ${offer.currency_type}</td>
+                                        <td>${items[index].grand_total} ${offer.currency_type}</td>
+                                    </tr>
+                                    `);
+                                });
+                                $("#offerSubtotalInput").html(`${offerSubtotalInput} ${offer.currency_type}`);
+                                $("#offerDiscountTotalInput").html(`${offerDiscountTotalInput} ${offer.currency_type}`);
+                                $("#offerVatTotalInput").html(`${offerVatTotalInput} ${offer.currency_type}`);
+                                $("#offerGrandTotalInput").html(`${offerGrandTotalInput} ${offer.currency_type}`);
+                            },
+                            error: function (error) {
+                                toastr.error('Teklif Kalemleri Alınırken Sistemsel Bir Hata Oluştu!');
+                                console.log(error);
+                            }
+                        });
+
                         $("#ShowOfferModal").modal('show');
                     },
                     error: function (error) {

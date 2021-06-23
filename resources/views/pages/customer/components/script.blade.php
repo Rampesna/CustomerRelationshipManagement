@@ -35,6 +35,11 @@
     var typeIdEdit = $("#type_id_edit");
     var referenceIdEdit = $("#reference_id_edit");
 
+    var brandsCreate = $('#brands_create');
+    var sectorsCreate = $('#sectors_create');
+    var brandsEdit = $('#brands_edit');
+    var sectorsEdit = $('#sectors_edit');
+
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
@@ -289,6 +294,8 @@
         getCustomerClasses(SelectedCompany.val());
         getCustomerTypes(SelectedCompany.val());
         getCustomerReferences(SelectedCompany.val());
+        brandsCreate.selectpicker('refresh');
+        sectorsCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -321,6 +328,12 @@
                 $("#class_id_edit").val(customer.class_id).selectpicker('refresh');
                 $("#type_id_edit").val(customer.type_id).selectpicker('refresh');
                 $("#reference_id_edit").val(customer.reference_id).selectpicker('refresh');
+                $("#brands_edit").val($.map(customer.brands, function (brand) {
+                    return brand["id"];
+                })).selectpicker('refresh');
+                $("#sectors_edit").val($.map(customer.sectors, function (sector) {
+                    return sector["id"];
+                })).selectpicker('refresh');
                 $("#EditRightbar").fadeIn(250);
             },
             error: function (error) {
@@ -525,15 +538,65 @@
         });
     }
 
+    function getBrands(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.brands') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (brands) {
+                brandsCreate.empty();
+                brandsEdit.empty();
+                $.each(brands, function (index) {
+                    brandsCreate.append(`<option value="${brands[index].id}">${brands[index].name}</option>`);
+                    brandsEdit.append(`<option value="${brands[index].id}">${brands[index].name}</option>`);
+                });
+                brandsCreate.selectpicker('refresh');
+                brandsEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getSectors(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.sectors') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (sectors) {
+                sectorsCreate.empty();
+                sectorsEdit.empty();
+                $.each(sectors, function (index) {
+                    sectorsCreate.append(`<option value="${sectors[index].id}">${sectors[index].name}</option>`);
+                    sectorsEdit.append(`<option value="${sectors[index].id}">${sectors[index].name}</option>`);
+                });
+                sectorsCreate.selectpicker('refresh');
+                sectorsEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     getCountries();
     getCustomerClasses(SelectedCompany.val());
     getCustomerTypes(SelectedCompany.val());
     getCustomerReferences(SelectedCompany.val());
+    getBrands(SelectedCompany.val());
+    getSectors(SelectedCompany.val());
 
     SelectedCompany.change(function () {
         getCustomerClasses(SelectedCompany.val());
         getCustomerTypes(SelectedCompany.val());
         getCustomerReferences(SelectedCompany.val());
+        getBrands(SelectedCompany.val());
+        getSectors(SelectedCompany.val());
         customers.ajax.reload().draw();
     });
 
@@ -581,6 +644,8 @@
         var class_id = $("#class_id_create").val();
         var type_id = $("#type_id_create").val();
         var reference_id = $("#reference_id_create").val();
+        var brands = $("#brands_create").val();
+        var sectors = $("#sectors_create").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -602,6 +667,8 @@
                 class_id: class_id,
                 type_id: type_id,
                 reference_id: reference_id,
+                brands: brands,
+                sectors: sectors,
             }, 'Yeni Müşteri Başarıyla Oluşturuldu', 'Müşteri Oluşturulurken Bir Hata Oluştu!', 0);
         }
     });
@@ -623,6 +690,8 @@
         var class_id = $("#class_id_edit").val();
         var type_id = $("#type_id_edit").val();
         var reference_id = $("#reference_id_edit").val();
+        var brands = $("#brands_edit").val();
+        var sectors = $("#sectors_edit").val();
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
@@ -645,6 +714,8 @@
                 class_id: class_id,
                 type_id: type_id,
                 reference_id: reference_id,
+                brands: brands,
+                sectors: sectors,
             }, 'Müşteri Başarıyla Güncellendi', 'Müşteri Güncellenirken Bir Hata Oluştu!', 1);
         }
     });

@@ -115,6 +115,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="brands_create">Çalıştığı Firmalar</label>
+                            <select id="brands_create" class="form-control" multiple>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="sectors_create">Çalıştığı Sektörler</label>
+                            <select id="sectors_create" class="form-control" multiple>
+
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>

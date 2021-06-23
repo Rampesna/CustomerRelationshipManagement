@@ -216,6 +216,22 @@
                     </div>
                     <div class="col-xl-3">
                         <div class="form-group">
+                            <label for="brands_edit">Çalıştığı Firmalar</label>
+                            <select id="brands_edit" class="form-control" multiple>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="sectors_edit">Çalıştığı Sektörler</label>
+                            <select id="sectors_edit" class="form-control" multiple>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
                             <label for="calendar_edit">Takvimde Gösterilsin</label>
                             <select id="calendar_edit" class="form-control">
                                 <option value="0">Hayır</option>

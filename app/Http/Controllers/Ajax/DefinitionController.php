@@ -136,4 +136,14 @@ class DefinitionController extends Controller
     {
         return response()->json(Definition::where('company_id', $request->company_id)->where('name', 'Fiyat Listesi Durumları')->first()->definitions ?? []);
     }
+
+    public function brands(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('name', 'Fırsat / Müşteri Çalıştığı Firmalar')->first()->definitions ?? []);
+    }
+
+    public function sectors(Request $request)
+    {
+        return response()->json(Definition::where('company_id', $request->company_id)->where('name', 'Fırsat / Müşteri Çalıştığı Sektörler')->first()->definitions ?? []);
+    }
 }

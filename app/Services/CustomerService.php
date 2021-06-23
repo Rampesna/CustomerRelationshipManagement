@@ -46,6 +46,9 @@ class CustomerService
         $this->customer->last_updated_by = $request->auth_user_id;
         $this->customer->save();
 
+        $this->customer->brands()->syncWithPivotValues($request->brands, ['relation_type' => 'App\\Models\\Customer']);
+        $this->customer->sectors()->syncWithPivotValues($request->sectors, ['relation_type' => 'App\\Models\\Customer']);
+
         return $this->customer;
     }
 }

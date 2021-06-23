@@ -30,22 +30,7 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-//    $customers = (new \App\Http\Controllers\Api\Crm)->getMusteriTicari('MikroDB_V16_17')['Response'];
-//    foreach ($customers as $customer) {
-//        $newCustomer = new \App\Models\Customer;
-//        $newCustomer->guid = $customer['cari_Guid'] ?? '';
-//        $newCustomer->code = $customer['cari_kod'] ?? '';
-//        $newCustomer->company_id = 1;
-//        $newCustomer->title = $customer['cari_unvan1'] ?? '';
-//        $newCustomer->tax_office = $customer['cari_vdaire_adi'] ?? '';
-//        $newCustomer->tax_number = $customer['cari_vdaire_no'] ?? '';
-//        $newCustomer->email = $customer['cari_EMail'] ?? '';
-//        $newCustomer->phone_number = $customer['cari_CepTel'] ?? '';
-//        $newCustomer->website = $customer['cari_wwwadresi'] ?? '';
-//        $newCustomer->save();
-//    }
-//
-//    return 'OK';
+    return Opportunity::find(1)->brands()->syncWithPivotValues([253, 254], ['relation_type' => 'App\\Models\\Opportunity']);
 });
 
 //Route::get('mailTest', function () {

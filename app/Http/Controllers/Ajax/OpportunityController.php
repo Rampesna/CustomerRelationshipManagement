@@ -154,7 +154,10 @@ class OpportunityController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Opportunity::find($request->id), 200);
+        return response()->json(Opportunity::with([
+            'brands',
+            'sectors'
+        ])->find($request->id), 200);
     }
 
     public function showDetail(Request $request)

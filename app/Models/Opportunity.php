@@ -74,4 +74,14 @@ class Opportunity extends Model
     {
         return $this->belongsTo(User::class, 'last_updated_by', 'id');
     }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Definition::class, 'brand_relation', 'relation_id', 'brand_id')->withPivot('relation_type')->where('relation_type', 'App\\Models\\Opportunity');
+    }
+
+    public function sectors()
+    {
+        return $this->belongsToMany(Definition::class, 'sector_relation', 'relation_id', 'sector_id')->withPivot('relation_type')->where('relation_type', 'App\\Models\\Opportunity');
+    }
 }

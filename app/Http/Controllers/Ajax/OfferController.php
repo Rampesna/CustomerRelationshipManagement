@@ -81,7 +81,10 @@ class OfferController extends Controller
     public function show(Request $request)
     {
         return response()->json(Offer::with([
-            'relation'
+            'relation',
+            'payType',
+            'deliveryType',
+            'status',
         ])->find($request->id), 200);
     }
 

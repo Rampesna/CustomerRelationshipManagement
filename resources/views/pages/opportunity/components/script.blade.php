@@ -44,6 +44,11 @@
     var capacityTypeIdEdit = $("#capacity_type_id_edit");
     var statusIdEdit = $("#status_id_edit");
 
+    var brandsCreate = $('#brands_create');
+    var sectorsCreate = $('#sectors_create');
+    var brandsEdit = $('#brands_edit');
+    var sectorsEdit = $('#sectors_edit');
+
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
@@ -313,6 +318,8 @@
         capacityTypeIdCreate.selectpicker('refresh');
         accessTypeIdCreate.selectpicker('refresh');
         statusIdCreate.selectpicker('refresh');
+        brandsCreate.selectpicker('refresh');
+        sectorsCreate.selectpicker('refresh');
         $("#calendar_create").selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
@@ -355,6 +362,12 @@
                 $("#capacity_type_id_edit").val(opportunity.capacity_type_id).selectpicker('refresh');
                 $("#status_id_edit").val(opportunity.status_id).selectpicker('refresh');
                 $("#description_edit").val(opportunity.description);
+                $("#brands_edit").val($.map(opportunity.brands, function (brand) {
+                    return brand["id"];
+                })).selectpicker('refresh');
+                $("#sectors_edit").val($.map(opportunity.sectors, function (sector) {
+                    return sector["id"];
+                })).selectpicker('refresh');
                 $("#calendar_edit").val(opportunity.calendar).selectpicker('refresh');
             },
             error: function (error) {
@@ -651,6 +664,52 @@
         });
     }
 
+    function getBrands(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.brands') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (brands) {
+                brandsCreate.empty();
+                brandsEdit.empty();
+                $.each(brands, function (index) {
+                    brandsCreate.append(`<option value="${brands[index].id}">${brands[index].name}</option>`);
+                    brandsEdit.append(`<option value="${brands[index].id}">${brands[index].name}</option>`);
+                });
+                brandsCreate.selectpicker('refresh');
+                brandsEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getSectors(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.sectors') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (sectors) {
+                sectorsCreate.empty();
+                sectorsEdit.empty();
+                $.each(sectors, function (index) {
+                    sectorsCreate.append(`<option value="${sectors[index].id}">${sectors[index].name}</option>`);
+                    sectorsEdit.append(`<option value="${sectors[index].id}">${sectors[index].name}</option>`);
+                });
+                sectorsCreate.selectpicker('refresh');
+                sectorsEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     countryIdCreate.change(function () {
         getProvincesCreate();
     });
@@ -695,6 +754,8 @@
     getOpportunityEstimatedResultTypes(SelectedCompany.val());
     getOpportunityCapacityTypes(SelectedCompany.val());
     getOpportunityStatuses(SelectedCompany.val());
+    getBrands(SelectedCompany.val());
+    getSectors(SelectedCompany.val());
 
     SelectedCompany.change(function () {
         getUsers($(this).val());
@@ -704,6 +765,8 @@
         getOpportunityEstimatedResultTypes(SelectedCompany.val());
         getOpportunityCapacityTypes(SelectedCompany.val());
         getOpportunityStatuses(SelectedCompany.val());
+        getBrands(SelectedCompany.val());
+        getSectors(SelectedCompany.val());
         opportunities.ajax.reload().draw();
     });
 
@@ -735,6 +798,8 @@
         var capacity = $("#capacity_create").val();
         var capacity_type_id = $("#capacity_type_id_create").val();
         var status_id = $("#status_id_create").val();
+        var brands = $("#brands_create").val();
+        var sectors = $("#sectors_create").val();
         var calendar = $("#calendar_create").val();
 
         if (company_id == null || company_id === '') {
@@ -769,6 +834,8 @@
                 capacity: capacity,
                 capacity_type_id: capacity_type_id,
                 status_id: status_id,
+                brands: brands,
+                sectors: sectors,
                 calendar: calendar,
             }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
         }
@@ -803,6 +870,8 @@
         var capacity = $("#capacity_edit").val();
         var capacity_type_id = $("#capacity_type_id_edit").val();
         var status_id = $("#status_id_edit").val();
+        var brands = $("#brands_edit").val();
+        var sectors = $("#sectors_edit").val();
         var calendar = $("#calendar_edit").val();
 
         if (company_id == null || company_id === '') {
@@ -838,6 +907,8 @@
                 capacity: capacity,
                 capacity_type_id: capacity_type_id,
                 status_id: status_id,
+                brands: brands,
+                sectors: sectors,
                 calendar: calendar,
             }, 'Fırsat Başarıyla Güncellendi', 'Fırsat Güncellenirken Bir Hata Oluştu!', 1);
         }

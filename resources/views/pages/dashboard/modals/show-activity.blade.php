@@ -8,7 +8,39 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-0" id="show_activity_subject"></h6>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <div>Bağlantı Türü</div>
+                    <div id="show_activity_relation_type"></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div>Bağlantı</div>
+                    <div id="show_activity_relation"></div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <div>Başlangıç Tarihi</div>
+                    <div id="show_activity_start_date"></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div>Bitiş Tarihi</div>
+                    <div id="show_activity_end_date"></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div>Görüşme Nedeni</div>
+                    <div id="show_activity_meeting_reason"></div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div>Öncelik Durumu</div>
+                    <div id="show_activity_priority"></div>
+                </div>
             </div>
         </div>
     </div>

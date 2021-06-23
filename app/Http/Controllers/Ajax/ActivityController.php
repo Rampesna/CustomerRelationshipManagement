@@ -83,7 +83,11 @@ class ActivityController extends Controller
 
     public function show(Request $request)
     {
-        return response()->json(Activity::find($request->id), 200);
+        return response()->json(Activity::with([
+            'relation',
+            'meetReason',
+            'priority'
+        ])->find($request->id), 200);
     }
 
     public function save(Request $request)

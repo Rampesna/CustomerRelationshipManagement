@@ -14,7 +14,10 @@ class OfferItemController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(OfferItem::where('offer_id', $request->offer_id)->get());
+        return response()->json(OfferItem::with([
+            'stock',
+            'unit'
+        ])->where('offer_id', $request->offer_id)->get());
     }
 
     public function datatable(Request $request)
