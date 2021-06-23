@@ -30,7 +30,7 @@ Route::get('password', function () {
 });
 
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    return Opportunity::find(1)->brands()->syncWithPivotValues([253, 254], ['relation_type' => 'App\\Models\\Opportunity']);
+
 });
 
 //Route::get('mailTest', function () {

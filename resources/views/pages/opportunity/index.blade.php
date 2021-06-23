@@ -8,6 +8,7 @@
     @include('pages.opportunity.components.create')
     @include('pages.opportunity.components.edit')
     @include('pages.opportunity.modals.delete')
+    @include('pages.opportunity.modals.import-excel')
 
     <div class="row">
         <div class="col-xl-12">
@@ -43,6 +44,14 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        <a onclick="importExcel()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-file-excel text-success"></i><span class="ml-4">Excel İçeri Aktar</span>
+                </div>
+            </div>
+        </a>
+        <hr>
         @Authority(14)
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">

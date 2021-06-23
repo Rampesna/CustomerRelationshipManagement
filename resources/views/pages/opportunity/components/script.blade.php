@@ -52,6 +52,7 @@
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
+    var ImportExcelButton = $("#ImportExcelButton");
 
     var opportunities = $('#opportunities').DataTable({
         language: {
@@ -295,6 +296,10 @@
         };
     }();
     EditRightBar.init();
+
+    function importExcel() {
+        $("#ImportExcelModal").modal('show');
+    }
 
     function create() {
         getUsers(SelectedCompany.val());
@@ -940,6 +945,38 @@
             error: function (error) {
                 console.log(error);
                 toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
+    });
+
+    ImportExcelButton.click(function () {
+        var data = new FormData();
+        data.append('_token', '{{ csrf_token() }}');
+        data.append('auth_user_id', '{{ auth()->user()->id() }}');
+        data.append('excel', $('#excel_file')[0].files[0] ?? null);
+        $.ajax({
+            async: false,
+            processData: false,
+            contentType: false,
+            type: 'post',
+            url: '{{ route('ajax.opportunity.import') }}',
+            data: data,
+            success: function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    $("#ImportExcelModal").modal('hide');
+                    opportunities.ajax.reload().draw();
+                } else if (response.type === 'warning') {
+                    toastr.warning(response.message);
+                } else if (response.type === 'error') {
+                    toastr.error(response.message);
+                } else {
+                    toastr.info(response.message);
+                }
+            },
+            error: function (error) {
+                toastr.error('Dosya İçe Aktarılırken Bir Hata Oluştu!');
+                console.log(error);
             }
         });
     });

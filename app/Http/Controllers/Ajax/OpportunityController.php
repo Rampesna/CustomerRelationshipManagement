@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Company;
+use App\Models\Country;
 use App\Models\Customer;
 use App\Models\Definition;
+use App\Models\District;
 use App\Models\Offer;
 use App\Models\Opportunity;
+use App\Models\Province;
 use App\Models\Sample;
 use App\Models\User;
 use App\Services\OpportunityService;
+
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -183,6 +187,11 @@ class OpportunityController extends Controller
         $opportunityService = new OpportunityService;
         $opportunityService->setOpportunity($request->id ? Opportunity::find($request->id) : new Opportunity);
         $opportunityService->save($request);
+    }
+
+    public function import(Request $request)
+    {
+        return response()->json((new OpportunityService)->import($request));
     }
 
     public function drop(Request $request)
