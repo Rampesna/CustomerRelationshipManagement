@@ -38,6 +38,9 @@ class OpportunityController extends Controller
         filterColumn('priority_id', function ($opportunities, $keyword) use ($request) {
             return $opportunities->whereIn('priority_id', Definition::where('company_id', $request->company_id)->where('name', 'Fırsat Öncelik Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
+        filterColumn('province_id', function ($opportunities, $keyword) use ($request) {
+            return $opportunities->whereIn('province_id', Province::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         filterColumn('user_id', function ($opportunities, $keyword) {
             return $opportunities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
@@ -53,6 +56,9 @@ class OpportunityController extends Controller
         editColumn('date', function ($opportunity) {
             return $opportunity->date ? date('d.m.Y', strtotime($opportunity->date)) : '';
         })->
+        editColumn('province_id', function ($opportunity) {
+            return $opportunity->province ? $opportunity->province->name : '';
+        })->
         editColumn('priority_id', function ($opportunity) {
             return $opportunity->priority_id ? @$opportunity->priority->name : '';
         })->
@@ -60,6 +66,126 @@ class OpportunityController extends Controller
             return $opportunity->user_id ? @$opportunity->user->name : '';
         })->
         rawColumns(['customer_id', 'status_id'])->
+        make(true);
+    }
+
+    public function reportDatatable(Request $request)
+    {
+        $opportunities = Opportunity::with([])->where('company_id', $request->company_id);
+
+        if ($request->start_date) {
+            $opportunities->where('date', '>=', $request->start_date);
+        }
+
+        if ($request->end_date) {
+            $opportunities->where('date', '<=', $request->end_date);
+        }
+
+        if ($request->name) {
+            $opportunities->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->email) {
+            $opportunities->where('email', 'like', '%' . $request->email . '%');
+        }
+
+        if ($request->phone_number) {
+            $opportunities->where('phone_number', 'like', '%' . $request->phone_number . '%');
+        }
+
+        if ($request->website) {
+            $opportunities->where('website', 'like', '%' . $request->website . '%');
+        }
+
+        if ($request->countries && count($request->countries) > 0) {
+            $opportunities->whereIn('country_id', $request->countries);
+        }
+
+        if ($request->provinces && count($request->provinces) > 0) {
+            $opportunities->whereIn('province_id', $request->provinces);
+        }
+
+        if ($request->priorities && count($request->priorities) > 0) {
+            $opportunities->whereIn('priority_id', $request->priorities);
+        }
+
+        if ($request->access_types && count($request->access_types) > 0) {
+            $opportunities->whereIn('access_type_id', $request->access_types);
+        }
+
+        if ($request->min_capacity) {
+            $opportunities->where('capacity', '>=', $request->min_capacity);
+        }
+
+        if ($request->max_capacity) {
+            $opportunities->where('capacity', '<=', $request->max_capacity);
+        }
+
+        if ($request->capacity_types) {
+            $opportunities->whereIn('capacity_type_id', $request->capacity_types);
+        }
+
+        return Datatables::of($opportunities)->
+        filterColumn('customer_id', function ($opportunities, $keyword) {
+            return $opportunities->whereIn('customer_id', Customer::where('title', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('company_id', function ($opportunities, $keyword) {
+            return $opportunities->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('priority_id', function ($opportunities, $keyword) use ($request) {
+            return $opportunities->whereIn('priority_id', Definition::where('company_id', $request->company_id)->where('name', 'Fırsat Öncelik Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('province_id', function ($opportunities, $keyword) use ($request) {
+            return $opportunities->whereIn('province_id', Province::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('user_id', function ($opportunities, $keyword) {
+            return $opportunities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        editColumn('id', function ($opportunity) {
+            return '#' . $opportunity->id;
+        })->
+        editColumn('user_id', function ($opportunity) {
+            return $opportunity->user ? @$opportunity->user->name : '';
+        })->
+        editColumn('company_id', function ($opportunity) {
+            return $opportunity->company ? @$opportunity->company->name : '';
+        })->
+        editColumn('customer_id', function ($opportunity) {
+            return $opportunity->customer ? @$opportunity->customer->title : '';
+        })->
+        editColumn('date', function ($opportunity) {
+            return $opportunity->date ? date('d.m.Y', strtotime($opportunity->date)) : '';
+        })->
+        editColumn('priority_id', function ($opportunity) {
+            return $opportunity->priority ? @$opportunity->priority->name : '';
+        })->
+        editColumn('access_type_id', function ($opportunity) {
+            return $opportunity->accessType ? @$opportunity->accessType->name : '';
+        })->
+        editColumn('domestic', function ($opportunity) {
+            return $opportunity->domestic === 0 ? 'Yerli' : 'Yabancı';
+        })->
+        editColumn('country_id', function ($opportunity) {
+            return $opportunity->country ? $opportunity->country->name : '';
+        })->
+        editColumn('province_id', function ($opportunity) {
+            return $opportunity->province ? $opportunity->province->name : '';
+        })->
+        editColumn('district_id', function ($opportunity) {
+            return $opportunity->district ? $opportunity->district->name : '';
+        })->
+        editColumn('foundation_date', function ($opportunity) {
+            return $opportunity->foundation_date ? date('d.m.Y', strtotime($opportunity->foundation_date)) : '';
+        })->
+        editColumn('estimated_result_type_id', function ($opportunity) {
+            return $opportunity->estimatedResultType ? $opportunity->estimatedResultType->name : '';
+        })->
+        editColumn('capacity_type_id', function ($opportunity) {
+            return $opportunity->capacityType ? $opportunity->capacityType->name : '';
+        })->
+        editColumn('status_id', function ($opportunity) {
+            return $opportunity->status ? $opportunity->status->name : '';
+        })->
         make(true);
     }
 

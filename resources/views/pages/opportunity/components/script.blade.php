@@ -125,6 +125,11 @@
             }
         ],
 
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, "Tümü"]
+        ],
+
         initComplete: function () {
             var r = $('#opportunities tfoot tr');
             $('#opportunities thead').append(r);
@@ -159,6 +164,7 @@
             {data: 'name', name: 'name'},
             {data: 'company_id', name: 'company_id'},
             {data: 'date', name: 'date'},
+            {data: 'province_id', name: 'province_id'},
             {data: 'priority_id', name: 'priority_id'},
             {data: 'user_id', name: 'user_id'}
         ],

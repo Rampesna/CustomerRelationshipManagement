@@ -22,6 +22,7 @@
                             <th>Fırsat Müşterisi</th>
                             <th>Firma</th>
                             <th>Tarih</th>
+                            <th>Şehir</th>
                             <th>Öncelik</th>
                             <th>Temsilci</th>
                         </tr>
@@ -33,6 +34,7 @@
                             <th>Fırsat Müşterisi</th>
                             <th>Firma</th>
                             <th>Tarih</th>
+                            <th>Şehir</th>
                             <th>Öncelik</th>
                             <th>Temsilci</th>
                         </tr>

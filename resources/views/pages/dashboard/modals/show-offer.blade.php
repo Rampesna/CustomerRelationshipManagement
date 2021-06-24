@@ -54,6 +54,15 @@
                 <hr>
                 <div class="row">
                     <div class="col-xl-12">
+                        <label class="font-weight-bolder">Açıklamalar: </label>
+                        <p id="show_offer_description">
+
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-12">
                         <table class="table">
                             <thead>
                             <tr>

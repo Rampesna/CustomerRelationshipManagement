@@ -41,6 +41,15 @@
                     <div>Öncelik Durumu</div>
                     <div id="show_activity_priority"></div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <label class="font-weight-bolder">Açıklamalar: </label>
+                        <p id="show_activity_description">
+
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

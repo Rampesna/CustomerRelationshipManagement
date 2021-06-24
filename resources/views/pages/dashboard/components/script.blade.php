@@ -361,6 +361,7 @@
                         $("#show_opportunity_estimated_result_and_type").html(opportunity.estimated_result ? opportunity.estimated_result + ' ' + opportunity.estimated_result_type.name : '--');
                         $("#show_opportunity_capacity_and_type").html(opportunity.capacity ? opportunity.capacity + ' ' + opportunity.capacity_type.name : '--');
                         $("#show_opportunity_status").html(opportunity.status ? opportunity.status.name : '--');
+                        $("#show_opportunity_description").html(opportunity.description ?? '');
                         $("#ShowOpportunityModal").modal('show');
                     },
                     error: function (error) {
@@ -383,6 +384,7 @@
                         $("#show_activity_end_date").html(activity.end_date ? reformatDate(activity.end_date) : '--');
                         $("#show_activity_meeting_reason").html(activity.meet_reason ? activity.meet_reason.name : '--');
                         $("#show_activity_priority").html(activity.priority ? activity.priority.name : '--');
+                        $("#show_activity_description").html(activity.description ?? '');
                         $("#ShowActivityModal").modal('show');
                     },
                     error: function (error) {
@@ -407,6 +409,7 @@
                         $("#show_offer_currency_type").html(offer.currency_type ? offer.currency_type : '--');
                         $("#show_offer_currency").html(offer.currency ? offer.currency : '--');
                         $("#show_offer_status").html(offer.status ? offer.status.name : '--');
+                        $("#show_offer_description").html(offer.description ?? '');
 
                         $.ajax({
                             type: 'get',

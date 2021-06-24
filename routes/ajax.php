@@ -49,6 +49,7 @@ Route::prefix('dashboard')->group(function () {
 Route::prefix('opportunity')->group(function () {
     Route::get('index', [OpportunityController::class, 'index'])->name('ajax.opportunity.index');
     Route::get('datatable', [OpportunityController::class, 'datatable'])->name('ajax.opportunity.datatable');
+    Route::get('reportDatatable', [OpportunityController::class, 'reportDatatable'])->name('ajax.opportunity.reportDatatable');
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
     Route::get('showDetail', [OpportunityController::class, 'showDetail'])->name('ajax.opportunity.showDetail');
     Route::post('save', [OpportunityController::class, 'save'])->name('ajax.opportunity.save');

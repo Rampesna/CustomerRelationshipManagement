@@ -10,6 +10,13 @@ class ProvinceController extends Controller
 {
     public function index(Request $request)
     {
+        return response()->json($request->country_id ? Province::where('country_id', $request->country_id)->get() : (
+        $request->countries ? Province::whereIn('country_id', $request->countries)->get() : []
+        ), 200);
+    }
+
+    public function byCountries(Request $request)
+    {
         return response()->json(Province::where('country_id', $request->country_id)->get(), 200);
     }
 }
