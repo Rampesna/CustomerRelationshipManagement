@@ -1,14 +1,13 @@
 @extends('layouts.master')
-@section('title', 'Fırsat Yorumları')
-@php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
+@section('title', 'Aktivite Yorumları')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    @include('pages.opportunity.show.layouts.subheader')
+    @include('pages.activity.show.layouts.subheader')
 
-    @include('pages.opportunity.show.comment.components.create')
-    @include('pages.opportunity.show.comment.components.edit')
+    @include('pages.activity.show.comment.components.create')
+    @include('pages.activity.show.comment.components.edit')
 
     <div class="row mt-15">
         <div class="col-xl-12">
@@ -65,9 +64,9 @@
 @endsection
 
 @section('page-styles')
-    @include('pages.opportunity.show.comment.components.style')
+    @include('pages.activity.show.comment.components.style')
 @stop
 
 @section('page-script')
-    @include('pages.opportunity.show.comment.components.script')
+    @include('pages.activity.show.comment.components.script')
 @stop

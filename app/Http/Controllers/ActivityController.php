@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Opportunity;
-use App\Models\User;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
@@ -15,6 +14,13 @@ class ActivityController extends Controller
 
     public function show(Request $request)
     {
-        return 1;
+        try {
+            return view('pages.activity.show.' . $request->tab . '.index', [
+                'activity' => Activity::find($request->id),
+                'tab' => $request->tab
+            ]);
+        } catch (\Exception $exception) {
+            return abort(404);
+        }
     }
 }

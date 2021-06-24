@@ -46,6 +46,7 @@
                         <div>Website Adresi</div>
                         <div>{{ @$opportunity->website ?? '--' }}</div>
                     </div>
+                    <br>
                     <div class="d-flex justify-content-between">
                         <div>Firma Kuruluş Tarihi</div>
                         <div>{{ @$opportunity->foundation_date ? date('d.m.Y', strtotime($opportunity->foundation_date)) : '--' }}</div>

@@ -122,8 +122,8 @@
             url: '{{ route('ajax.comment.datatable') }}',
             data: function (d) {
                 return $.extend({}, d, {
-                    relation_type: 'App\\Models\\Opportunity',
-                    relation_id: '{{ $opportunity->id }}',
+                    relation_type: 'App\\Models\\Activity',
+                    relation_id: '{{ $activity->id }}',
                 });
             },
         },
@@ -305,8 +305,8 @@
 
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
-        var relation_type = 'App\\Models\\Opportunity';
-        var relation_id = '{{ $opportunity->id }}';
+        var relation_type = 'App\\Models\\Activity';
+        var relation_id = '{{ $activity->id }}';
         var user_id = '{{ auth()->user()->id() }}';
         var comment = $("#comment_create").val();
 
@@ -327,8 +327,8 @@
     UpdateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var id = $("#id_edit").val();
-        var relation_type = 'App\\Models\\Opportunity';
-        var relation_id = '{{ $opportunity->id }}';
+        var relation_type = 'App\\Models\\Activity';
+        var relation_id = '{{ $activity->id }}';
         var user_id = '{{ auth()->user()->id() }}';
         var comment = $("#comment_edit").val();
 
