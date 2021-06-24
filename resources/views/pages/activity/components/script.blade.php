@@ -359,7 +359,7 @@
 
     function show() {
         var id = $("#id_edit").val();
-        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+        window.open('{{ route('activity.show') }}/' + id + '/index', '_blank');
     }
 
     function drop() {
