@@ -189,6 +189,7 @@
             {data: 'end_date', name: 'end_date'},
             {data: 'meet_reason_id', name: 'meet_reason_id'},
             {data: 'priority_id', name: 'priority_id'},
+            {data: 'description', name: 'description'},
         ],
 
         responsive: true,

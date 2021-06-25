@@ -112,6 +112,7 @@ Route::prefix('sample')->group(function () {
 Route::prefix('offer')->group(function () {
     Route::get('index', [OfferController::class, 'index'])->name('ajax.offer.index');
     Route::get('datatable', [OfferController::class, 'datatable'])->name('ajax.offer.datatable');
+    Route::get('reportDatatable', [OfferController::class, 'reportDatatable'])->name('ajax.offer.reportDatatable');
     Route::get('show', [OfferController::class, 'show'])->name('ajax.offer.show');
     Route::post('save', [OfferController::class, 'save'])->name('ajax.offer.save');
     Route::delete('drop', [OfferController::class, 'drop'])->name('ajax.offer.drop');

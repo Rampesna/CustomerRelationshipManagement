@@ -75,6 +75,7 @@
                             <th>Bitiş Tarihi</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik Durumu</th>
+                            <th>Açıklamalar</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -89,6 +90,7 @@
                             <th>Bitiş Tarihi</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik Durumu</th>
+                            <th>Açıklamalar</th>
                         </tr>
                         </tfoot>
                     </table>
