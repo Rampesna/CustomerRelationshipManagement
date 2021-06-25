@@ -64,6 +64,7 @@ Route::prefix('opportunity')->group(function () {
 Route::prefix('activity')->group(function () {
     Route::get('index', [ActivityController::class, 'index'])->name('ajax.activity.index');
     Route::get('datatable', [ActivityController::class, 'datatable'])->name('ajax.activity.datatable');
+    Route::get('reportDatatable', [ActivityController::class, 'reportDatatable'])->name('ajax.activity.reportDatatable');
     Route::get('getRelations', [ActivityController::class, 'getRelations'])->name('ajax.activity.getRelations');
     Route::get('show', [ActivityController::class, 'show'])->name('ajax.activity.show');
     Route::post('save', [ActivityController::class, 'save'])->name('ajax.activity.save');

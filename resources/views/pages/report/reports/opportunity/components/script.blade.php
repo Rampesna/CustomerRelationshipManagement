@@ -9,6 +9,9 @@
 
     var countriesSelector = $("#countries");
     var provincesSelector = $("#provinces");
+    var prioritiesSelector = $("#priorities");
+    var accessTypesSelector = $("#access_types");
+    var capacityTypesSelector = $("#capacity_types");
 
     function getCountries() {
         $.ajax({
@@ -52,7 +55,70 @@
         });
     }
 
+    function getOpportunityPriorities(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.opportunityPriorities') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (priorities) {
+                prioritiesSelector.empty();
+                $.each(priorities, function (index) {
+                    prioritiesSelector.append(`<option value="${priorities[index].id}">${priorities[index].name}</option>`);
+                });
+                prioritiesSelector.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getOpportunityAccessTypes(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.opportunityAccessTypes') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (accessTypes) {
+                accessTypesSelector.empty();
+                $.each(accessTypes, function (index) {
+                    accessTypesSelector.append(`<option value="${accessTypes[index].id}">${accessTypes[index].name}</option>`);
+                });
+                accessTypesSelector.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function getOpportunityCapacityTypes(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.definition.opportunityCapacityTypes') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (capacityTypes) {
+                capacityTypesSelector.empty();
+                $.each(capacityTypes, function (index) {
+                    capacityTypesSelector.append(`<option value="${capacityTypes[index].id}">${capacityTypes[index].name}</option>`);
+                });
+                capacityTypesSelector.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
     getCountries();
+    getOpportunityPriorities(SelectedCompany.val());
+    getOpportunityAccessTypes(SelectedCompany.val());
+    getOpportunityCapacityTypes(SelectedCompany.val());
 
     countriesSelector.change(function () {
         getProvinces();
@@ -140,9 +206,6 @@
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
-                if (index === 4) {
-                    input.setAttribute("type", "date");
-                }
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -237,5 +300,12 @@
         $("#capacity_types").val('').selectpicker('refresh');
         getProvinces();
         opportunities.ajax.reload().draw();
+    });
+
+    SelectedCompany.change(function () {
+        opportunities.ajax.reload().draw();
+        getOpportunityPriorities(SelectedCompany.val());
+        getOpportunityAccessTypes(SelectedCompany.val());
+        getOpportunityCapacityTypes(SelectedCompany.val());
     });
 </script>

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Company;
+use App\Models\Customer;
 use App\Models\Definition;
+use App\Models\Opportunity;
+use App\Models\Province;
 use App\Models\User;
 use App\Services\ActivityService;
 use Illuminate\Http\Request;
@@ -35,6 +38,85 @@ class ActivityController extends Controller
         })->
         filterColumn('end_date', function ($activities, $date) {
             return $activities->where('end_date', '<=', $date);
+        })->
+        editColumn('id', function ($activity) {
+            return '#' . $activity->id;
+        })->
+        filterColumn('meet_reason_id', function ($activities, $keyword) use ($request) {
+            return $activities->whereIn('meet_reason_id', Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Görüşme Nedenleri')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('priority_id', function ($activities, $keyword) use ($request) {
+            return $activities->whereIn('priority_id', Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Öncelik Durumları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        editColumn('relation_type', function ($activity) {
+            return @$activity->relation_type == 'App\\Models\\Opportunity' ? 'Fırsat' : (
+            @$activity->relation_type == 'App\\Models\\Customer' ? 'Müşteri' : (
+            @$activity->relation_type == 'App\\Models\\Manager' ? 'Yetkili' : @$activity->relation_type
+            )
+            );
+        })->
+        editColumn('relation_id', function ($activity) {
+            return @$activity->relation_type == 'App\\Models\\Opportunity' ? $activity->relation->name : (
+            @$activity->relation_type == 'App\\Models\\Customer' ? $activity->relation->title : (
+            @$activity->relation_type == 'App\\Models\\Manager' ? $activity->relation->name : @$activity->relation_id
+            )
+            );
+        })->
+        editColumn('company_id', function ($activity) {
+            return $activity->company_id ? @$activity->company->name : '';
+        })->
+        editColumn('user_id', function ($activity) {
+            return $activity->user_id ? @$activity->user->name : '';
+        })->
+        editColumn('start_date', function ($activity) {
+            return $activity->start_date ? date('d.m.Y', strtotime($activity->start_date)) : '';
+        })->
+        editColumn('end_date', function ($activity) {
+            return $activity->end_date ? date('d.m.Y', strtotime($activity->end_date)) : '';
+        })->
+        editColumn('priority_id', function ($activity) {
+            return $activity->priority_id ? @$activity->priority->name : '';
+        })->
+        editColumn('meet_reason_id', function ($activity) {
+            return $activity->meet_reason_id ? @$activity->meetReason->name : '';
+        })->
+        rawColumns(['customer_id', 'status_id'])->
+        make(true);
+    }
+
+    public function reportDatatable(Request $request)
+    {
+        $activities = Activity::with([])->where('company_id', $request->company_id);
+
+        if ($request->start_date) {
+            $activities->where('start_date', '>=', $request->start_date);
+        }
+
+        if ($request->end_date) {
+            $activities->where('start_date', '<=', $request->end_date);
+        }
+
+        if ($request->meet_reasons && count($request->meet_reasons) > 0) {
+            $activities->whereIn('meet_reason_id', $request->meet_reasons);
+        }
+
+        if ($request->priorities && count($request->priorities) > 0) {
+            $activities->whereIn('priority_id', $request->priorities);
+        }
+
+        if ($request->subject) {
+            $activities->where('subject', 'like', '%' . $request->subject . '%');
+        }
+
+        return Datatables::of($activities)->
+        filterColumn('relation_type', function ($activities, $data) {
+            return $data == "All" ? $activities : $activities->where('relation_type', $data);
+        })->
+        filterColumn('company_id', function ($activities, $keyword) {
+            return $activities->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('user_id', function ($activities, $keyword) {
+            return $activities->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         editColumn('id', function ($activity) {
             return '#' . $activity->id;
