@@ -28,9 +28,9 @@ class FileController extends Controller
 
     public function save(Request $request)
     {
-        $customerService = new FileService();
-        $customerService->setFile($request->id ? File::find($request->id) : new File);
-        return response()->json($customerService->save($request), 200);
+        $fileService = new FileService();
+        $fileService->setFile($request->id ? File::find($request->id) : new File);
+        return response()->json($fileService->save($request), 200);
     }
 
     public function drop(Request $request)
