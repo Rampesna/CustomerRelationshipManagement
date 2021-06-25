@@ -60,7 +60,7 @@
     <hr>
     <div class="row">
         <div class="col-xl-12">
-            <div class="card" id="activitiessCard">
+            <div class="card" id="activitiesCard">
                 <div class="card-body">
                     <table class="table" id="activities">
                         <thead>

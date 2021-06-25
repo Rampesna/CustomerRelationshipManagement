@@ -96,16 +96,16 @@ class ActivityController extends Controller
             $activities->where('start_date', '<=', $request->end_date);
         }
 
+        if ($request->subject) {
+            $activities->where('subject', 'like', '%' . $request->subject . '%');
+        }
+
         if ($request->meet_reasons && count($request->meet_reasons) > 0) {
             $activities->whereIn('meet_reason_id', $request->meet_reasons);
         }
 
         if ($request->priorities && count($request->priorities) > 0) {
             $activities->whereIn('priority_id', $request->priorities);
-        }
-
-        if ($request->subject) {
-            $activities->where('subject', 'like', '%' . $request->subject . '%');
         }
 
         return Datatables::of($activities)->

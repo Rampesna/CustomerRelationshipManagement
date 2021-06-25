@@ -95,6 +95,7 @@ Route::prefix('manager')->group(function () {
 Route::prefix('sample')->group(function () {
     Route::get('index', [SampleController::class, 'index'])->name('ajax.sample.index');
     Route::get('datatable', [SampleController::class, 'datatable'])->name('ajax.sample.datatable');
+    Route::get('reportDatatable', [SampleController::class, 'reportDatatable'])->name('ajax.sample.reportDatatable');
     Route::get('show', [SampleController::class, 'show'])->name('ajax.sample.show');
     Route::post('save', [SampleController::class, 'save'])->name('ajax.sample.save');
     Route::delete('drop', [SampleController::class, 'drop'])->name('ajax.sample.drop');

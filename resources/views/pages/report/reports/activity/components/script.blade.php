@@ -119,7 +119,7 @@
                 text: '<i class="fas fa-undo"></i> Yenile',
                 action: function (e, dt, node, config) {
                     $('table input').val('');
-                    opportunities.search('').columns().search('').ajax.reload().draw();
+                    activities.search('').columns().search('').ajax.reload().draw();
                 }
             }
         ],
