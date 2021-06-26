@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="row">
+    <form class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
@@ -107,14 +107,14 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-12 text-right">
-                            <button class="btn btn-sm btn-primary" id="ClearFilterButton">Temizle</button>
-                            <button class="btn btn-sm btn-success" id="FilterButton">Filtrele</button>
+                            <button type="button" class="btn btn-sm btn-primary" id="ClearFilterButton">Temizle</button>
+                            <button type="button" class="btn btn-sm btn-success" id="FilterButton">Filtrele</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
     <hr>
     <div class="row">
         <div class="col-xl-12">

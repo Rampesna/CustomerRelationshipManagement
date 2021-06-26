@@ -1,4 +1,13 @@
 <div class="subheader subheader-solid" id="kt_subheader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                 <h5>{{ $opportunity->name }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="subheader subheader-solid mt-15" id="kt_subheader">
     <div class="container-fluid align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <ul class="nav nav-tabs nav-tabs-line mb-n4">
 

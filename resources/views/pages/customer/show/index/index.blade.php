@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', $customer->title . ' - Müşteri Detayları')
+@section('title', $customer->title . ' - Detaylar')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 
 @section('content')
@@ -7,7 +7,7 @@
     @include('pages.customer.show.layouts.subheader')
     @include('pages.customer.show.index.modals.edit')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-6 col-12">
             <div class="card">
                 <div class="card-body">

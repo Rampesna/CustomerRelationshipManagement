@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Fırsat Yorumları')
+@section('title', $opportunity->name . ' - Yorumlar')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 @php(setlocale(LC_TIME, 'Turkish'))
 
@@ -10,7 +10,7 @@
     @include('pages.opportunity.show.comment.components.create')
     @include('pages.opportunity.show.comment.components.edit')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card" id="commentsCard">
                 <div class="card-body">

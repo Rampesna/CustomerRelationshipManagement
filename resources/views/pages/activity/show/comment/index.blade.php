@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Aktivite Yorumları')
+@section('title', $activity->subject . ' - Yorumlar')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
@@ -9,7 +9,7 @@
     @include('pages.activity.show.comment.components.create')
     @include('pages.activity.show.comment.components.edit')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card" id="commentsCard">
                 <div class="card-body">

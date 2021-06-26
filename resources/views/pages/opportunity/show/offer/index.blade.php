@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Fırsat Detayları - Teklifler')
+@section('title', $opportunity->name . ' - Teklifler')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 @php(setlocale(LC_TIME, 'Turkish'))
 
@@ -12,7 +12,7 @@
     @include('pages.opportunity.show.offer.modals.create-offer-item')
     @include('pages.opportunity.show.offer.modals.delete')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card" id="offersCard">
                 <div class="card-body">

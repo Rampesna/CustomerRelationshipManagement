@@ -9,7 +9,7 @@
     @include('pages.customer.show.social.components.create')
     @include('pages.customer.show.social.components.edit')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card" id="socialsCard">
                 <div class="card-body">

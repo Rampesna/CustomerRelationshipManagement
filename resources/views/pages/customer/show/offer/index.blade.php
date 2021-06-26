@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', $customer->title . ' - Müşteri Detayları')
+@section('title', $customer->title . ' - Teklifler')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 
 @section('content')
@@ -11,7 +11,7 @@
     @include('pages.customer.show.offer.modals.create-offer-item')
     @include('pages.customer.show.offer.modals.delete')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card" id="offersCard">
                 <div class="card-body">

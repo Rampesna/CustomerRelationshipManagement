@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Müşteriler')
+@section('title', $customer->title . ' - Satın Alımlar')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 @php(setlocale(LC_TIME, 'Turkish'))
 
@@ -7,7 +7,7 @@
 
     @include('pages.customer.show.layouts.subheader')
 
-    <div class="row mt-10">
+    <div class="row mt-30">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">

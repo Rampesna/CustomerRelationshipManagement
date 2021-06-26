@@ -9,7 +9,7 @@
 
     <input type="hidden" id="id_edit">
 
-    <div class="row mt-15" id="filesCard">
+    <div class="row mt-30" id="filesCard">
         <div class="col-xl-2 mb-5 border-right border-light-dark" id="fileUploadArea">
             <div class="card h-100 flex-center bg-light-primary border-dashed p-8">
                 <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/files/upload.svg" class="mb-8 cursor-pointer" id="fileUploader" alt="" />

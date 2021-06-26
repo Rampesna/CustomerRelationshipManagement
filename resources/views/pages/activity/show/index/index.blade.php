@@ -1,12 +1,12 @@
 @extends('layouts.master')
-@section('title', 'Aktivite Detayları')
+@section('title', $activity->subject . ' - Detayları')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
     @include('pages.activity.show.layouts.subheader')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-6 col-12">
             <div class="card">
                 <div class="card-body">

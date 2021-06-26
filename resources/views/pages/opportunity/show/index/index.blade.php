@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Fırsat Detayları')
+@section('title', $opportunity->name . ' - Detaylar')
 @php(setlocale(LC_ALL, 'tr_TR.UTF-8'))
 {{--@php(setlocale(LC_TIME, 'Turkish'))--}}
 
@@ -8,7 +8,7 @@
     @include('pages.opportunity.show.layouts.subheader')
     @include('pages.opportunity.show.index.modals.edit')
 
-    <div class="row mt-15">
+    <div class="row mt-30">
         <div class="col-xl-6 col-12">
             <div class="card">
                 <div class="card-body">
