@@ -53,6 +53,7 @@ Route::prefix('opportunity')->group(function () {
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
     Route::get('showDetail', [OpportunityController::class, 'showDetail'])->name('ajax.opportunity.showDetail');
     Route::post('save', [OpportunityController::class, 'save'])->name('ajax.opportunity.save');
+    Route::post('createCustomerFromOpportunity', [OpportunityController::class, 'createCustomerFromOpportunity'])->name('ajax.opportunity.createCustomerFromOpportunity');
     Route::post('import', [OpportunityController::class, 'import'])->name('ajax.opportunity.import');
     Route::delete('drop', [OpportunityController::class, 'drop'])->name('ajax.opportunity.drop');
 

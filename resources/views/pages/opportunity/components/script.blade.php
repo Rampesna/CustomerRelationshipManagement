@@ -53,6 +53,7 @@
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
     var ImportExcelButton = $("#ImportExcelButton");
+    var AcceptCreateCustomerFromOpportunityButton = $("#AcceptCreateCustomerFromOpportunityButton");
 
     var opportunities = $('#opportunities').DataTable({
         language: {
@@ -390,6 +391,10 @@
     function show() {
         var id = $("#id_edit").val();
         window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
+    }
+
+    function createCustomerFromOpportunity() {
+        $('#AcceptCreateCustomerFromOpportunityModal').modal('show');
     }
 
     function drop() {
@@ -982,6 +987,30 @@
             },
             error: function (error) {
                 toastr.error('Dosya İçe Aktarılırken Bir Hata Oluştu!');
+                console.log(error);
+            }
+        });
+    });
+
+    AcceptCreateCustomerFromOpportunityButton.click(function () {
+        var id = $('#id_edit').val();
+        var auth_user_id = '{{ auth()->user()->id() }}';
+
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.opportunity.createCustomerFromOpportunity') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id,
+                auth_user_id: auth_user_id
+            },
+            success: function () {
+                toastr.success('Fırsat Başarıyla Müşteriye Çevrildi');
+                $('#AcceptCreateCustomerFromOpportunityModal').modal('hide');
+                opportunities.ajax.reload();
+            },
+            error: function (error) {
+                toastr.error('Fırsat Müşteriye Çevrilirken Sistemsel Bir Hata Oluştu!');
                 console.log(error);
             }
         });

@@ -9,6 +9,7 @@
     @include('pages.opportunity.components.edit')
     @include('pages.opportunity.modals.delete')
     @include('pages.opportunity.modals.import-excel')
+    @include('pages.opportunity.modals.accept-create-customer-from-opportunity')
 
     <div class="row">
         <div class="col-xl-12">
@@ -46,14 +47,6 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
-        <a onclick="importExcel()" class="dropdown-item cursor-pointer">
-            <div class="row">
-                <div class="col-xl-12">
-                    <i class="fas fa-file-excel text-success"></i><span class="ml-4">Excel İçeri Aktar</span>
-                </div>
-            </div>
-        </a>
-        <hr>
         @Authority(14)
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">
@@ -91,7 +84,22 @@
                 </div>
             </a>
             @endAuthority
+            <a onclick="createCustomerFromOpportunity()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-user text-dark-75"></i><span class="ml-4">Müşteriye Çevir</span>
+                    </div>
+                </div>
+            </a>
         </div>
+        <hr>
+        <a onclick="importExcel()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-file-excel text-success"></i><span class="ml-4">Excel İçeri Aktar</span>
+                </div>
+            </div>
+        </a>
     </div>
 
 @endsection

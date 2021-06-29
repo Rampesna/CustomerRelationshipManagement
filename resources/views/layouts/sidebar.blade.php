@@ -56,7 +56,7 @@
                 @endAuthority
 
                 @Authority(18)
-                <li class="menu-item {{ request()->segment(1) === 'activity' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'activity' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('activity.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -77,7 +77,7 @@
                 @endAuthority
 
                 @Authority(23)
-                <li class="menu-item {{ request()->segment(1) === 'customer' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'customer' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('customer.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -94,7 +94,7 @@
                 @endAuthority
 
                 @Authority(34)
-                <li class="menu-item {{ request()->segment(1) === 'manager' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'manager' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('manager.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -111,7 +111,7 @@
                 @endAuthority
 
                 @Authority(39)
-                <li class="menu-item {{ request()->segment(1) === 'sample' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'sample' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('sample.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -128,7 +128,7 @@
                 @endAuthority
 
                 @Authority(44)
-                <li class="menu-item {{ request()->segment(1) === 'offer' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'offer' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('offer.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -148,7 +148,7 @@
                 @endAuthority
 
                 @Authority(49)
-                <li class="menu-item {{ request()->segment(1) === 'stock' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'stock' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('stock.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -165,7 +165,7 @@
                 @endAuthority
 
                 @Authority(54)
-                <li class="menu-item {{ request()->segment(1) === 'priceList' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'priceList' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('priceList.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -189,7 +189,7 @@
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 @Authority(59)
-                <li class="menu-item {{ request()->segment(1) === 'definition' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'definition' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('definition.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -204,7 +204,7 @@
                     </a>
                 </li>
                 @endAuthority
-                <li class="menu-item {{ request()->segment(1) === 'target' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'target' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('target.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -217,7 +217,7 @@
                         <span class="menu-text">Hedefler</span>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->segment(1) === 'report' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'report' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('report.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
@@ -236,7 +236,7 @@
                     <h4 class="menu-text">SİSTEM</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                <li class="menu-item {{ request()->segment(1) === 'setting' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'setting' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('setting.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >

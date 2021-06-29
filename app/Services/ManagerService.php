@@ -41,4 +41,23 @@ class ManagerService
 
         return $this->manager;
     }
+
+    public function saveWithData(
+        $customerId,
+        $name,
+        $email,
+        $phoneNumber,
+        $authUserId
+    )
+    {
+        $this->manager->customer_id = $customerId;
+        $this->manager->name = $name;
+        $this->manager->email = $email;
+        $this->manager->phone_number = $phoneNumber;
+        $this->manager->created_by = $this->manager->id ? $this->manager->created_by : $authUserId;
+        $this->manager->last_updated_by = $authUserId;
+        $this->manager->save();
+
+        return $this->manager;
+    }
 }

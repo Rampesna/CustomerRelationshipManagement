@@ -13,6 +13,12 @@
     var sendStockEmail = $("#send_stock_email");
     var sendPricelistEmail = $("#send_pricelist_email");
 
+    var editSendOpportunityEmail = $('#edit_send_opportunity_email');
+
+    editSendOpportunityEmail.click(function () {
+        $('#EditSendOpportunityEmailModal').modal('show');
+    });
+
     function getSettings() {
         $.ajax({
             type: 'get',

@@ -51,4 +51,38 @@ class CustomerService
 
         return $this->customer;
     }
+
+    public function saveWithData(
+        $company_id,
+        $name,
+        $email,
+        $phoneNumber,
+        $countryId,
+        $provinceId,
+        $districtId,
+        $foundationDate,
+        $website,
+        $authUserId,
+        $brands,
+        $sectors
+    )
+    {
+        $this->customer->company_id = $company_id;
+        $this->customer->title = $name;
+        $this->customer->email = $email;
+        $this->customer->phone_number = $phoneNumber;
+        $this->customer->website = $website;
+        $this->customer->country_id = $countryId;
+        $this->customer->province_id = $provinceId;
+        $this->customer->district_id = $districtId;
+        $this->customer->foundation_date = $foundationDate;
+        $this->customer->created_by = $this->customer->id ? $this->customer->created_by : $authUserId;
+        $this->customer->last_updated_by = $authUserId;
+        $this->customer->save();
+
+        $this->customer->brands()->syncWithPivotValues($brands, ['relation_type' => 'App\\Models\\Customer']);
+        $this->customer->sectors()->syncWithPivotValues($sectors, ['relation_type' => 'App\\Models\\Customer']);
+
+        return $this->customer;
+    }
 }

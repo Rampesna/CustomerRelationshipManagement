@@ -9,11 +9,14 @@ use App\Models\Country;
 use App\Models\Customer;
 use App\Models\Definition;
 use App\Models\District;
+use App\Models\Manager;
 use App\Models\Offer;
 use App\Models\Opportunity;
 use App\Models\Province;
 use App\Models\Sample;
 use App\Models\User;
+use App\Services\CustomerService;
+use App\Services\ManagerService;
 use App\Services\OpportunityService;
 
 use Illuminate\Http\Request;
@@ -343,5 +346,39 @@ class OpportunityController extends Controller
                 ], 200);
             }
         }
+    }
+
+    public function createCustomerFromOpportunity(Request $request)
+    {
+        $opportunity = Opportunity::find($request->id);
+        $customerService = new CustomerService;
+        $customerService->setCustomer(new Customer);
+        $customer = $customerService->saveWithData(
+            $opportunity->company_id,
+            $opportunity->name,
+            $opportunity->email,
+            $opportunity->phone_number,
+            $opportunity->country_id,
+            $opportunity->province_id,
+            $opportunity->district_id,
+            $opportunity->foundation_date,
+            $opportunity->website,
+            $request->auth_user_id,
+            $opportunity->brands()->pluck('brand_id'),
+            $opportunity->sectors()->pluck('sector_id')
+        );
+
+        $managerService = new ManagerService;
+        $managerService->setManager(new Manager);
+        $managerService->saveWithData(
+            $customer->id,
+            $opportunity->manager_name,
+            $opportunity->manager_email,
+            $opportunity->manager_phone_number,
+            $request->auth_user_id
+        );
+
+        $opportunity->customer_id = $customer->id;
+        $opportunity->save();
     }
 }

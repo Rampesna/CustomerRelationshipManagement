@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
-                <h5>{{ $customer->title }}</h5>
+                <h5>{{ $customer->title . ($customer->province ? ' - ' . $customer->province->name : '') }}</h5>
             </div>
         </div>
     </div>

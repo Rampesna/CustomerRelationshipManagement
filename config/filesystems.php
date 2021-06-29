@@ -52,6 +52,11 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'custom' => [
+            'driver' => 'local',
+            'root' => 'C:\Users\talha\Downloads',
+        ],
+
     ],
 
     /*

@@ -144,7 +144,7 @@
             {data: 'id', name: 'id'},
             {data: 'company_id', name: 'company_id'},
             {data: 'title', name: 'title'},
-            {data: 'balance', name: 'balance'},
+            {data: 'balance', name: 'balance', sortable: false},
             {data: 'tax_number', name: 'tax_number'},
             {data: 'email', name: 'email'},
             {data: 'country_id', name: 'country_id'},
