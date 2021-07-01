@@ -122,6 +122,7 @@
                 action: function (e, dt, node, config) {
                     $('table input').val('');
                     opportunities.search('').columns().search('').ajax.reload().draw();
+                    console.log(opportunities.ajax.json())
                 }
             }
         ],
@@ -1021,15 +1022,15 @@
             type: 'post',
             url: '{{ route('ajax.opportunity.save') }}',
             data: data,
-            success: function (response) {
+            success: function () {
                 toastr.success(successMessage);
                 if (direction === 0) {
                     $("#create_rightbar_toggle").click();
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                opportunities.ajax.reload().draw();
-                console.log(response)
+                var currentPage = opportunities.page.info().page;
+                opportunities.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

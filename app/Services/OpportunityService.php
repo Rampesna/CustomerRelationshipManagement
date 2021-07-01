@@ -130,7 +130,7 @@ class OpportunityService
                         'manager_phone_number' => $data[7] ?? null,
                         'website' => $data[8] ?? null,
                         'description' => $data[9] ?? null,
-                        'date' => $data[10] ? date_format($data[10], 'Y-m-d') : null,
+                        'date' => $data[10] && $data[10] instanceof \DateTime ? date_format($data[10], 'Y-m-d') : date('Y-m-d', strtotime($data[10])),
                         'price' => $data[11] != ""  ? $data[11] : null,
                         'currency' => $data[12] ?? null,
                         'priority_id' => Definition::where('company_id', $company->id)->where('name', 'Fırsat Öncelik Durumları')->first()->definitions()->where('name', $data[13])->first()->id ?? null,
