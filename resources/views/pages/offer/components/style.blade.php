@@ -5,4 +5,8 @@
         right: -1500px;
         left: auto
     }
+
+    .bootstrap-select .dropdown-menu{
+        max-width: 100%!important;
+    }
 </style>

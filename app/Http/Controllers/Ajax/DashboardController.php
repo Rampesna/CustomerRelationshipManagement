@@ -82,4 +82,11 @@ class DashboardController extends Controller
             ])->get()
         ], 200);
     }
+
+    public function setSelectedCompany(Request $request)
+    {
+        $user = User::find($request->auth_user_id);
+        $user->last_selected_company = $request->id;
+        $user->save();
+    }
 }

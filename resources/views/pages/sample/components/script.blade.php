@@ -474,7 +474,7 @@
                 success: function (opportunities) {
                     relationIdCreate.empty();
                     $.each(opportunities, function (index) {
-                        relationIdCreate.append(`<option value="${opportunities[index].id}">${opportunities[index].name ?? ''}</option>`);
+                        relationIdCreate.append(`<option value="${opportunities[index].id}">${opportunities[index].name ?? ''} - (${opportunities[index].province ? opportunities[index].province.name : ''})</option>`);
                     });
                     relationIdCreate.selectpicker('refresh');
                 },
@@ -493,7 +493,7 @@
                 success: function (customers) {
                     relationIdCreate.empty();
                     $.each(customers, function (index) {
-                        relationIdCreate.append(`<option value="${customers[index].id}">${customers[index].title ?? ''}</option>`);
+                        relationIdCreate.append(`<option value="${customers[index].id}">${customers[index].title ?? ''} - (${customers[index].province ? customers[index].province.name : ''})</option>`);
                     });
                     relationIdCreate.selectpicker('refresh');
                 },
@@ -520,7 +520,7 @@
                 success: function (opportunities) {
                     relationIdEdit.empty();
                     $.each(opportunities, function (index) {
-                        relationIdEdit.append(`<option ${id && id === opportunities[index].id ? 'selected' : null} value="${opportunities[index].id}">${opportunities[index].name ?? ''}</option>`);
+                        relationIdEdit.append(`<option ${id && id === opportunities[index].id ? 'selected' : null} value="${opportunities[index].id}">${opportunities[index].name ?? ''} - (${opportunities[index].province ? opportunities[index].province.name : ''})</option>`);
                     });
                     relationIdEdit.selectpicker('refresh');
                 },
@@ -539,7 +539,7 @@
                 success: function (customers) {
                     relationIdEdit.empty();
                     $.each(customers, function (index) {
-                        relationIdEdit.append(`<option ${id && id === customers[index].id ? 'selected' : null} value="${customers[index].id}">${customers[index].title ?? ''}</option>`);
+                        relationIdEdit.append(`<option ${id && id === customers[index].id ? 'selected' : null} value="${customers[index].id}">${customers[index].title ?? ''} - (${customers[index].province ? customers[index].province.name : ''})</option>`);
                     });
                     relationIdEdit.selectpicker('refresh');
                 },
@@ -800,8 +800,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                samples.ajax.reload().draw();
-                console.log(response)
+                var currentPage = samples.page.info().page;
+                samples.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

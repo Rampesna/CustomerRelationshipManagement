@@ -349,8 +349,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                socials.ajax.reload().draw();
-                console.log(response)
+                var currentPage = socials.page.info().page;
+                socials.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

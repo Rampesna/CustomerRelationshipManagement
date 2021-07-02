@@ -41,6 +41,8 @@ use App\Http\Controllers\Ajax\SettingController;
 |
 */
 
+Route::post('setSelectedCompany', [DashboardController::class, 'setSelectedCompany'])->name('ajax.setSelectedCompany');
+
 Route::prefix('dashboard')->group(function () {
     Route::get('index', [DashboardController::class, 'index'])->name('ajax.dashboard.index');
     Route::get('calendar', [DashboardController::class, 'calendar'])->name('ajax.dashboard.calendar');

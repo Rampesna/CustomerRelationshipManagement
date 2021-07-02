@@ -359,8 +359,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                comments.ajax.reload().draw();
-                console.log(response)
+                var currentPage = comments.page.info().page;
+                comments.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

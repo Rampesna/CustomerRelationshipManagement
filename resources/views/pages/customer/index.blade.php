@@ -20,6 +20,7 @@
                             <th>Firma</th>
                             <th>Ünvan</th>
                             <th>Bakiye</th>
+                            <th>Şehir</th>
                             <th>Vergi No</th>
                             <th>E-posta</th>
                             <th>Ülke</th>
@@ -35,6 +36,7 @@
                             <th>Firma</th>
                             <th>Ünvan</th>
                             <th>Bakiye</th>
+                            <th>Şehir</th>
                             <th>Vergi No</th>
                             <th>E-posta</th>
                             <th>Ülke</th>

@@ -26,7 +26,9 @@ class OpportunityController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(Opportunity::where('company_id', $request->company_id)->get());
+        return response()->json(Opportunity::with([
+            'province'
+        ])->where('company_id', $request->company_id)->get());
     }
 
     public function datatable(Request $request)

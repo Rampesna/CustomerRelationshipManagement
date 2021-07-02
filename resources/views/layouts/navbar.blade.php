@@ -19,7 +19,7 @@
                                     <label style="width:100%">
                                         <select class="form-control selectpicker" id="SelectedCompany">
                                             @foreach($companies as $company)
-                                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                                <option @if(intval($company->id) == intval($authenticated->last_selected_company)) selected @endif value="{{ $company->id }}">{{ $company->name }}</option>
                                             @endforeach
                                         </select>
                                     </label>

@@ -419,7 +419,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                targets.ajax.reload().draw();
+                var currentPage = targets.page.info().page;
+                targets.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

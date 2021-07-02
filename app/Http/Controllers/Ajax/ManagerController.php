@@ -47,7 +47,7 @@ class ManagerController extends Controller
             return $manager->birth_date ? @date('d.m.Y', strtotime($manager->birth_date)) : '';
         })->
         editColumn('gender', function ($manager) {
-            return $manager->gender == 1 ? 'Erkek' : 'Kadın';
+            return $manager->gender === 1 ? 'Erkek' : ($manager->gender === 0 ? 'Kadın' : '');
         })->
         editColumn('email', function ($manager) {
             return '<a href="mailto:' . $manager->email . '">' . $manager->email . '</a>';

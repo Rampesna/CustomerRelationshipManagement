@@ -547,8 +547,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                stocks.ajax.reload().draw();
-                console.log(response)
+                var currentPage = stocks.page.info().page;
+                stocks.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

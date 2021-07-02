@@ -640,8 +640,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                samples.ajax.reload().draw();
-                console.log(response)
+                var currentPage = samples.page.info().page;
+                samples.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

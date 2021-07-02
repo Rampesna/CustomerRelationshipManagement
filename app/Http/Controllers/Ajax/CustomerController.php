@@ -12,6 +12,7 @@ use App\Models\Customer;
 use App\Models\Definition;
 use App\Models\Manager;
 use App\Models\Offer;
+use App\Models\Province;
 use App\Models\Sample;
 use App\Models\User;
 use App\Services\CustomerService;
@@ -22,7 +23,9 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(Customer::where('company_id', $request->company_id)->get());
+        return response()->json(Customer::with([
+            'province'
+        ])->where('company_id', $request->company_id)->get());
     }
 
     public function datatable(Request $request)
@@ -33,6 +36,9 @@ class CustomerController extends Controller
         })->
         filterColumn('country_id', function ($customers, $keyword) {
             return $customers->whereIn('country_id', Country::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
+        filterColumn('province_id', function ($customers, $keyword) {
+            return $customers->whereIn('province_id', Province::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
         filterColumn('class_id', function ($customers, $keyword) use ($request) {
             return $customers->whereIn('class_id', Definition::where('company_id', $request->company_id)->where('name', 'Müşteri Sınıfları')->first()->definitions()->where('name', 'like', '%' . $keyword . '%')->pluck('id'));
@@ -53,19 +59,22 @@ class CustomerController extends Controller
             return '<a href="mailto:' . $customer->email . '">' . $customer->email . '</a>';
         })->
         editColumn('company_id', function ($customer) {
-            return $customer->company_id ? @$customer->company->name : '';
+            return $customer->company ? @$customer->company->name : '';
         })->
         editColumn('class_id', function ($customer) {
-            return $customer->class_id ? @$customer->class->name : '';
+            return $customer->class ? @$customer->class->name : '';
         })->
         editColumn('type_id', function ($customer) {
-            return $customer->type_id ? @$customer->type->name : '';
+            return $customer->type ? @$customer->type->name : '';
         })->
         editColumn('reference_id', function ($customer) {
-            return $customer->reference_id ? @$customer->reference->name : '';
+            return $customer->reference ? @$customer->reference->name : '';
         })->
         editColumn('country_id', function ($customer) {
-            return $customer->country_id ? @$customer->country->name : '';
+            return $customer->country ? @$customer->country->name : '';
+        })->
+        editColumn('province_id', function ($customer) {
+            return $customer->province ? @$customer->province->name : '';
         })->
         editColumn('balance', function ($customer) {
             try {

@@ -529,8 +529,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                activities.ajax.reload().draw();
-                console.log(response)
+                var currentPage = activities.page.info().page;
+                activities.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

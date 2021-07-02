@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row mt-6">
+                <div class="row mt-6 pr-7">
                     <div class="col-xl-3">
                         <div class="form-group">
                             <label for="company_id_create">Firma Seçimi</label>

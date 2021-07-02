@@ -145,6 +145,7 @@
             {data: 'company_id', name: 'company_id'},
             {data: 'title', name: 'title'},
             {data: 'balance', name: 'balance', sortable: false},
+            {data: 'province_id', name: 'province_id'},
             {data: 'tax_number', name: 'tax_number'},
             {data: 'email', name: 'email'},
             {data: 'country_id', name: 'country_id'},
@@ -762,8 +763,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                customers.ajax.reload().draw();
-                console.log(response)
+                var currentPage = customers.page.info().page;
+                customers.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

@@ -683,7 +683,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                priceLists.ajax.reload().draw();
+                var currentPage = priceLists.page.info().page;
+                priceLists.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);

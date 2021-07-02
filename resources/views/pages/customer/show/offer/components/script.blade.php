@@ -829,8 +829,8 @@
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
-                offers.ajax.reload().draw();
-                console.log(response)
+                var currentPage = offers.page.info().page;
+                offers.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
                 toastr.success(errorMessage);
