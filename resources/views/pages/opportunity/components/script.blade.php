@@ -437,6 +437,7 @@
             },
             success: function (provinces) {
                 provinceIdCreate.empty();
+                provinceIdCreate.append(`<option value="">Seçim Yapılmadı</option>`);
                 $.each(provinces, function (index) {
                     provinceIdCreate.append(`<option value="${provinces[index].id}">${provinces[index].name}</option>`);
                 });
@@ -460,6 +461,7 @@
             },
             success: function (provinces) {
                 provinceIdEdit.empty();
+                provinceIdEdit.append(`<option value="">Seçim Yapılmadı</option>`);
                 $.each(provinces, function (index) {
                     provinceIdEdit.append(`<option value="${provinces[index].id}">${provinces[index].name}</option>`);
                 });
@@ -483,6 +485,7 @@
             },
             success: function (districts) {
                 districtIdCreate.empty();
+                districtIdCreate.append(`<option value="">Seçim Yapılmadı</option>`);
                 $.each(districts, function (index) {
                     districtIdCreate.append(`<option value="${districts[index].id}">${districts[index].name}</option>`);
                 });
@@ -505,6 +508,7 @@
             },
             success: function (districts) {
                 districtIdEdit.empty();
+                districtIdEdit.append(`<option value="">Seçim Yapılmadı</option>`);
                 $.each(districts, function (index) {
                     districtIdEdit.append(`<option value="${districts[index].id}">${districts[index].name}</option>`);
                 });

@@ -24,7 +24,7 @@
                             <th>Firma</th>
                             <th>Temsilci</th>
                             <th>Başlangıç Tarihi</th>
-                            <th>Bitiş Tarihi</th>
+                            <th>Şehir</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik</th>
                         </tr>
@@ -38,7 +38,7 @@
                             <th>Firma</th>
                             <th>Temsilci</th>
                             <th>Başlangıç Tarihi</th>
-                            <th>Bitiş Tarihi</th>
+                            <th>Şehir</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik</th>
                         </tr>

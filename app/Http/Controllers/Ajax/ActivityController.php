@@ -27,6 +27,13 @@ class ActivityController extends Controller
         filterColumn('relation_type', function ($activities, $data) {
             return $data == "All" ? $activities : $activities->where('relation_type', $data);
         })->
+        filterColumn('relation_id', function ($activities, $keyword) {
+            return $activities->whereIn('relation_id',
+                array_merge(
+                    Opportunity::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray(),
+                    Customer::where('title', 'like', '%' . $keyword . '%')->pluck('id')->toArray()
+                ));
+        })->
         filterColumn('company_id', function ($activities, $keyword) {
             return $activities->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
@@ -36,8 +43,13 @@ class ActivityController extends Controller
         filterColumn('start_date', function ($activities, $date) {
             return $activities->where('start_date', '>=', $date);
         })->
-        filterColumn('end_date', function ($activities, $date) {
-            return $activities->where('end_date', '<=', $date);
+        filterColumn('province_id', function ($activities, $keyword) {
+            return $activities->whereIn('relation_id',
+                array_merge(
+                    Opportunity::whereIn('province_id', Province::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray())->pluck('id')->toArray(),
+                    Customer::whereIn('province_id', Province::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray())->pluck('id')->toArray()
+                )
+            );
         })->
         editColumn('id', function ($activity) {
             return '#' . $activity->id;
@@ -71,8 +83,8 @@ class ActivityController extends Controller
         editColumn('start_date', function ($activity) {
             return $activity->start_date ? date('d.m.Y', strtotime($activity->start_date)) : '';
         })->
-        editColumn('end_date', function ($activity) {
-            return $activity->end_date ? date('d.m.Y', strtotime($activity->end_date)) : '';
+        editColumn('province_id', function ($activity) {
+            return $activity->relation ? ($activity->relation->province ? $activity->relation->province->name : '') : '';
         })->
         editColumn('priority_id', function ($activity) {
             return $activity->priority_id ? @$activity->priority->name : '';

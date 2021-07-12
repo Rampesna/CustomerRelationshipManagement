@@ -113,16 +113,24 @@ class PriceListController extends Controller
 
     public function sendEmail(Request $request)
     {
-        $priceListService = new PriceListService;
-        $priceListService->setPriceList(PriceList::with([
-            'items'
-        ])->find($request->id));
-        $priceListService->createPdfFile();
+        try {
+            $priceListService = new PriceListService;
+            $priceListService->setPriceList(PriceList::with([
+                'items'
+            ])->find($request->id));
+            $priceListService->createPdfFile();
 
-        General::setMailConfig($priceListService->getPriceList()->company_id);
-        Mail::to($request->email)->send(new PriceListMail([
-            'subject' => 'Fiyat Listesi',
-            'priceList' => $priceListService->getPriceList()
-        ]));
+            General::setMailConfig($priceListService->getPriceList()->company_id);
+            Mail::to($request->email)->send(new PriceListMail([
+                'subject' => 'Fiyat Listesi',
+                'priceList' => $priceListService->getPriceList()
+            ]));
+
+            return response()->json([
+                'status' => 'OK'
+            ]);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
     }
 }

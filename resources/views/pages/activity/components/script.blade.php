@@ -130,14 +130,7 @@
                     option.setAttribute("value", "App\\Models\\Customer");
                     option.innerHTML = "Müşteri";
                     input.appendChild(option);
-                } else if (index === 2) {
-                    input = null;
-                    $(input).appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            column.search($(this).val(), false, false, true).draw();
-                        });
-                    return;
-                } else if (index === 6 || index === 7) {
+                } else if (index === 6) {
                     input.setAttribute("type", "date");
                 }
                 input.className = 'form-control';
@@ -167,7 +160,7 @@
             {data: 'company_id', name: 'company_id'},
             {data: 'user_id', name: 'user_id'},
             {data: 'start_date', name: 'start_date'},
-            {data: 'end_date', name: 'end_date'},
+            {data: 'province_id', name: 'province_id', orderable: false},
             {data: 'meet_reason_id', name: 'meet_reason_id'},
             {data: 'priority_id', name: 'priority_id'},
         ],
