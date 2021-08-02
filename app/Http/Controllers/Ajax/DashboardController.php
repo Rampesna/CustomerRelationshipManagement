@@ -16,11 +16,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        setlocale(LC_TIME, 'Turkish');
-
         return response()->json([
             'opportunity' => [
-                'date' => strftime("%B %Y"),
+                'date' => date('m.Y'),
                 'created' => Opportunity::where('company_id', $request->company_id)->whereBetween('created_at', [
                     date('Y-m-01 00:00:00'),
                     date('Y-m-t 23:59:59')
@@ -28,7 +26,7 @@ class DashboardController extends Controller
                 'target' => Target::where('company_id', $request->company_id)->where('year', date('Y'))->where('month', date('m'))->where('type', 'opportunity')->first()->target ?? 0
             ],
             'activity' => [
-                'date' => strftime("%B %Y"),
+                'date' => date('m.Y'),
                 'created' => Activity::where('company_id', $request->company_id)->whereBetween('created_at', [
                     date('Y-m-01 00:00:00'),
                     date('Y-m-t 23:59:59')

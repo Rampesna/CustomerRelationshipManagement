@@ -12,6 +12,7 @@ use App\Models\Customer;
 use App\Models\Definition;
 use App\Models\Manager;
 use App\Models\Offer;
+use App\Models\Opportunity;
 use App\Models\Province;
 use App\Models\Sample;
 use App\Models\User;
@@ -113,7 +114,21 @@ class CustomerController extends Controller
 
     public function offersDatatable(Request $request)
     {
-        return Datatables::of(Offer::with([])->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id))->
+        $offers = Offer::with([]);
+
+        $opportunities = Opportunity::where('customer_id', $request->customer_id)->get();
+
+        $offers->where(function ($offers) use ($request) {
+            $offers->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id);
+        });
+
+        if ($opportunities->count() > 0) {
+            $offers->orWhere(function ($offers) use ($opportunities) {
+                $offers->where('relation_type', 'App\\Models\\Opportunity')->whereIn('relation_id', $opportunities->pluck('id')->toArray());
+            });
+        }
+
+        return Datatables::of($offers)->
         editColumn('id', function ($offer) {
             return '#' . $offer->id;
         })->
@@ -140,7 +155,21 @@ class CustomerController extends Controller
 
     public function activitiesDatatable(Request $request)
     {
-        return Datatables::of(Activity::with([])->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id))->
+        $activities = Activity::with([]);
+
+        $opportunities = Opportunity::where('customer_id', $request->customer_id)->get();
+
+        $activities->where(function ($activities) use ($request) {
+            $activities->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id);
+        });
+
+        if ($opportunities->count() > 0) {
+            $activities->orWhere(function ($activities) use ($opportunities) {
+                $activities->where('relation_type', 'App\\Models\\Opportunity')->whereIn('relation_id', $opportunities->pluck('id')->toArray());
+            });
+        }
+
+        return Datatables::of($activities)->
         editColumn('id', function ($activity) {
             return '#' . $activity->id;
         })->
@@ -168,7 +197,21 @@ class CustomerController extends Controller
 
     public function samplesDatatable(Request $request)
     {
-        return Datatables::of(Sample::with([])->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id))->
+        $samples = Sample::with([]);
+
+        $opportunities = Opportunity::where('customer_id', $request->customer_id)->get();
+
+        $samples->where(function ($samples) use ($request) {
+            $samples->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->customer_id);
+        });
+
+        if ($opportunities->count() > 0) {
+            $samples->orWhere(function ($samples) use ($opportunities) {
+                $samples->where('relation_type', 'App\\Models\\Opportunity')->whereIn('relation_id', $opportunities->pluck('id')->toArray());
+            });
+        }
+
+        return Datatables::of($samples)->
         editColumn('id', function ($sample) {
             return '#' . $sample->id;
         })->
