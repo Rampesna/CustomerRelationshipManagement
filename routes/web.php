@@ -1,12 +1,6 @@
 <?php
 
-use App\Mail\LoginMail;
-use App\Models\Comment;
-use App\Models\Opportunity;
-use App\Models\Setting;
-use App\Models\Target;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpportunityController;
@@ -25,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TicketController;
 
 Route::get('test', function () {
     return \App\Models\User::withTrashed()->get();
@@ -166,5 +161,13 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::get('index', [SettingController::class, 'index'])->name('setting.index')->middleware('Authority:1');
         Route::get('show/{setting?}', [SettingController::class, 'show'])->name('setting.show')->middleware('Authority:1');
+    });
+
+    Route::prefix('ticket')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('ticket.index');
+        });
+        Route::get('index', [TicketController::class, 'index'])->name('ticket.index')->middleware('Authority:1');
+        Route::get('show/{ticket?}', [TicketController::class, 'show'])->name('ticket.show')->middleware('Authority:1');
     });
 });
