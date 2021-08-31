@@ -23,7 +23,15 @@ class UserController extends Controller
 
     public function datatable(Request $request)
     {
-        return Datatables::of(User::with([]))->
+        $model = User::with([]);
+
+        if ($request->listing == 'all') {
+            $model->withTrashed();
+        } else if ($request->listing == 'passive') {
+            $model->onlyTrashed();
+        }
+
+        return Datatables::of($model)->
         editColumn('id', function ($user) {
             return '#' . $user->id;
         })->

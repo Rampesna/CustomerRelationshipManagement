@@ -34,6 +34,9 @@ class PriceListMail extends Mailable
         return $this->subject($this->data['subject'])->
         markdown('emails.priceList', [
             'data' => $this->data
-        ])->attach(public_path('priceLists/' . $this->data['priceList']->id . '.pdf'));
+        ])->attach(public_path('priceLists/' . $this->data['priceList']->id . '.pdf'), [
+            'as' => $this->data['priceList']->name . '.pdf',
+            'mime' => 'application/pdf'
+        ]);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\LoginMail;
+use App\Models\Comment;
 use App\Models\Opportunity;
 use App\Models\Setting;
 use App\Models\Target;
@@ -25,21 +26,15 @@ use App\Http\Controllers\TargetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 
-Route::get('password', function () {
-    return bcrypt(123456);
+Route::get('test', function () {
+    return \App\Models\User::withTrashed()->get();
 });
 
-Route::get('test', function (\Illuminate\Http\Request $request) {
-
-});
-
-//Route::get('mailTest', function () {
-//    return view('emails.offer');
-//});
+Route::any('oauth', [\App\Http\Controllers\OauthController::class, 'login']);
 
 Auth::routes();
 
-Route::middleware(['auth', 'MobileDetect'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('dashboard.index');
     });

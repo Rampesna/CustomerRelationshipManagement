@@ -6,6 +6,7 @@ use App\Helper\General;
 use App\Http\Controllers\Api\Crm;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\Customer;
@@ -229,6 +230,32 @@ class CustomerController extends Controller
         })->
         editColumn('user_id', function ($sample) {
             return $sample->user_id ? @$sample->user->name : '';
+        })->
+        make(true);
+    }
+
+    public function commentsDatatable(Request $request)
+    {
+        $comments = Comment::with([]);
+
+        $opportunities = Opportunity::where('customer_id', $request->relation_id)->get();
+
+        $comments->where(function ($comments) use ($request) {
+            $comments->where('relation_type', 'App\\Models\\Customer')->where('relation_id', $request->relation_id);
+        });
+
+        if ($opportunities->count() > 0) {
+            $comments->orWhere(function ($comments) use ($opportunities) {
+                $comments->where('relation_type', 'App\\Models\\Opportunity')->whereIn('relation_id', $opportunities->pluck('id')->toArray());
+            });
+        }
+
+        return Datatables::of($comments->get())->
+        editColumn('id', function ($comment) {
+            return '#' . $comment->id;
+        })->
+        editColumn('user_id', function ($comment) {
+            return $comment->user_id ? @$comment->user->name : '';
         })->
         make(true);
     }

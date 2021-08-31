@@ -128,7 +128,9 @@ function detectMobile() {
 
 if (detectMobile()) {
     $("#navbarControl").css({'margin-top':'20px'});
+    $("#isMobile").show();
     $('.mobile').removeClass('col-6').addClass('col-12');
 } else {
+    $("#isMobile").hide();
     $("#navbarControl").css({'margin-top':'-50px'});
 }

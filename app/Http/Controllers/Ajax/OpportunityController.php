@@ -65,10 +65,13 @@ class OpportunityController extends Controller
             return $opportunity->province ? $opportunity->province->name : '';
         })->
         editColumn('priority_id', function ($opportunity) {
-            return $opportunity->priority_id ? @$opportunity->priority->name : '';
+            return $opportunity->priority ? @$opportunity->priority->name : '';
         })->
         editColumn('user_id', function ($opportunity) {
-            return $opportunity->user_id ? @$opportunity->user->name : '';
+            return $opportunity->user ? @$opportunity->user->name : '';
+        })->
+        editColumn('status_id', function ($opportunity) {
+            return $opportunity->status ? @$opportunity->status->name : '';
         })->
         rawColumns(['customer_id', 'status_id'])->
         make(true);

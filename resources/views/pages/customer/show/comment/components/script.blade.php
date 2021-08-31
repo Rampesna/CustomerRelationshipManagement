@@ -119,7 +119,7 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('ajax.comment.datatable') }}',
+            url: '{{ route('ajax.customer.commentsDatatable') }}',
             data: function (d) {
                 return $.extend({}, d, {
                     relation_type: 'App\\Models\\Customer',

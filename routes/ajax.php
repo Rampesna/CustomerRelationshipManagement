@@ -85,6 +85,7 @@ Route::prefix('customer')->group(function () {
     Route::get('offersDatatable', [CustomerController::class, 'offersDatatable'])->name('ajax.customer.offersDatatable');
     Route::get('activitiesDatatable', [CustomerController::class, 'activitiesDatatable'])->name('ajax.customer.activitiesDatatable');
     Route::get('samplesDatatable', [CustomerController::class, 'samplesDatatable'])->name('ajax.customer.samplesDatatable');
+    Route::get('commentsDatatable', [CustomerController::class, 'commentsDatatable'])->name('ajax.customer.commentsDatatable');
 });
 
 Route::prefix('manager')->group(function () {

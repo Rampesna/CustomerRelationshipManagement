@@ -11,6 +11,34 @@
     @include('pages.opportunity.modals.import-excel')
     @include('pages.opportunity.modals.accept-create-customer-from-opportunity')
 
+    <div id="isMobile">
+        <div class="row">
+            <div class="col-4">
+                @Authority(14)
+                <button class="btn btn-primary btn-block" onclick="create()">Yeni Oluştur</button>
+                @endAuthority
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(15)
+                    <div class="col-12">
+                        <button class="btn btn-dark-75 btn-block" onclick="edit()">Düzenle</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(16)
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="drop()">Sil</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="opportunitiesCard">
@@ -26,6 +54,7 @@
                             <th>Şehir</th>
                             <th>Öncelik</th>
                             <th>Temsilci</th>
+                            <th>Durum</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -38,6 +67,7 @@
                             <th>Şehir</th>
                             <th>Öncelik</th>
                             <th>Temsilci</th>
+                            <th>Durum</th>
                         </tr>
                         </tfoot>
                     </table>

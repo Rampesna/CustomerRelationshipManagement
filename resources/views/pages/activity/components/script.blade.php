@@ -356,6 +356,10 @@
     }
 
     function drop() {
+        var selectedRows = activities.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].subject ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 
@@ -699,6 +703,7 @@
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id.replace('#', '');
             $("#id_edit").val(id);
+            $("#deleting").html(selectedRows.data()[0].subject ?? '');
             $("#EditingContexts").show();
         } else {
             $("#EditingContexts").hide();

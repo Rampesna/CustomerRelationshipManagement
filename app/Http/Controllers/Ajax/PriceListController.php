@@ -108,7 +108,7 @@ class PriceListController extends Controller
             'items'
         ])->find($request->id));
         $priceListService->createPdfFile();
-        return response()->download(public_path('priceLists/' . $priceListService->getPriceList()->id . '.pdf'), '#' . $priceListService->getPriceList()->id . ' Numaralı Fiyat Listesi.pdf');
+        return response()->download(public_path('priceLists/' . $priceListService->getPriceList()->id . '.pdf'), '#' . $priceListService->getPriceList()->name . ' Numaralı Fiyat Listesi.pdf');
     }
 
     public function sendEmail(Request $request)

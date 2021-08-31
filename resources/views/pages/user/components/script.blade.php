@@ -29,6 +29,12 @@
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
 
+    var listing = $('#listing');
+
+    listing.change(function () {
+        users.ajax.reload().draw();
+    });
+
     var users = $('#users').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -87,7 +93,11 @@
         ajax: {
             type: 'get',
             url: '{{ route('ajax.user.datatable') }}',
-            data: {},
+            data: function (d) {
+                return $.extend({}, d, {
+                    listing: listing.val()
+                });
+            },
         },
         columns: [
             {data: 'id', name: 'id'},
@@ -265,6 +275,10 @@
     }
 
     function drop() {
+        var selectedRows = users.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].name ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 

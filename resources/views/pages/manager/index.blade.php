@@ -10,6 +10,34 @@
 
     @include('pages.manager.modals.delete')
 
+    <div id="isMobile">
+        <div class="row">
+            <div class="col-4">
+                @Authority(36)
+                <button class="btn btn-primary btn-block" onclick="create()">Yeni Oluştur</button>
+                @endAuthority
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(37)
+                    <div class="col-12">
+                        <button class="btn btn-dark-75 btn-block" onclick="edit()">Düzenle</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(38)
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="drop()">Sil</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="managersCard">

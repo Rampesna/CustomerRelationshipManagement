@@ -327,6 +327,10 @@
     }
 
     function drop() {
+        var selectedRows = targets.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].month + '.' + selectedRows.data()[0].year ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 

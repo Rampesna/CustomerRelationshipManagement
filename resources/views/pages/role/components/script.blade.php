@@ -243,6 +243,10 @@
     }
 
     function drop() {
+        var selectedRows = roles.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].name ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 

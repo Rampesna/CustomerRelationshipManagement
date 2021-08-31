@@ -10,6 +10,28 @@
 
     @include('pages.target.modals.delete')
 
+    <div id="isMobile">
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary btn-block" onclick="create()">Yeni Oluştur</button>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-dark-75 btn-block" onclick="edit()">Düzenle</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="drop()">Sil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="targetsCard">

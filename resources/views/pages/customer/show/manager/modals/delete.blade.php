@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Silmek İstediğinize Emin misiniz?
+                    <span id="deleting"></span> - Silmek İstediğinize Emin misiniz?
                 </p>
             </div>
             <div class="modal-footer">

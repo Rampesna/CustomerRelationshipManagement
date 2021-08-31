@@ -168,7 +168,8 @@
             {data: 'date', name: 'date'},
             {data: 'province_id', name: 'province_id'},
             {data: 'priority_id', name: 'priority_id'},
-            {data: 'user_id', name: 'user_id'}
+            {data: 'user_id', name: 'user_id'},
+            {data: 'status_id', name: 'status_id'},
         ],
 
         responsive: true,
@@ -395,10 +396,18 @@
     }
 
     function createCustomerFromOpportunity() {
+        var selectedRows = opportunities.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#converting").html(selectedRows.data()[0].name ?? '');
+        }
         $('#AcceptCreateCustomerFromOpportunityModal').modal('show');
     }
 
     function drop() {
+        var selectedRows = opportunities.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].name ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 

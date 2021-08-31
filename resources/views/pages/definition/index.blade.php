@@ -6,6 +6,20 @@
 
     @include('pages.definition.components.edit')
 
+    <div id="isMobile">
+        <div class="row">
+            <div class="col-4">
+                <div class="row">
+                    @Authority(62)
+                    <div class="col-12">
+                        <button class="btn btn-dark-75 btn-block" onclick="edit()">Düzenle</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="definitionsCard">

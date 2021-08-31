@@ -207,7 +207,7 @@ class OfferController extends Controller
             'items'
         ])->find($request->id));
         $offerService->createPdfFile();
-        return response()->download(public_path('offers/' . $offerService->getOffer()->id . '.pdf'), '#' . $offerService->getOffer()->id . ' Numaralı Teklif.pdf');
+        return response()->download(public_path('offers/' . $offerService->getOffer()->id . '.pdf'), $offerService->getOffer()->subject . '.pdf');
     }
 
     public function sendEmail(Request $request)

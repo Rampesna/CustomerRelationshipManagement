@@ -34,6 +34,9 @@ class OfferMail extends Mailable
         return $this->subject($this->data['subject'])->
         markdown('emails.offer', [
             'data' => $this->data
-        ])->attach(public_path('offers/' . $this->data['offer']->id . '.pdf'));
+        ])->attach(public_path('offers/' . $this->data['offer']->id . '.pdf'), [
+            'as' => $this->data['offer']->subject . '.pdf',
+            'mime' => 'application/pdf'
+        ]);
     }
 }

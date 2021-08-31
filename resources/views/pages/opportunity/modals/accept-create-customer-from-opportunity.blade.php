@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Bu fırsatı müşteriye çevirmek istediğinize emin misiniz?
+                    <span id="converting"></span> - Bu fırsatı müşteriye çevirmek istediğinize emin misiniz?
                 </p>
             </div>
             <div class="modal-footer">

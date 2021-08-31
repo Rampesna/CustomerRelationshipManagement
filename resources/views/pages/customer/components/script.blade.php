@@ -349,6 +349,10 @@
     }
 
     function drop() {
+        var selectedRows = customers.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].title ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 

@@ -12,6 +12,34 @@
     @include('pages.offer.modals.delete')
     @include('pages.offer.modals.send-email')
 
+    <div id="isMobile">
+        <div class="row">
+            <div class="col-4">
+                @Authority(46)
+                <button class="btn btn-primary btn-block" onclick="create()">Yeni Oluştur</button>
+                @endAuthority
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(47)
+                    <div class="col-12">
+                        <button class="btn btn-dark-75 btn-block" onclick="edit()">Düzenle</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    @Authority(48)
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="drop()">Sil</button>
+                    </div>
+                    @endAuthority
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="offersCard">

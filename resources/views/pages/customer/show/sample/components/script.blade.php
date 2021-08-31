@@ -399,6 +399,10 @@
     }
 
     function drop() {
+        var selectedRows = samples.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].subject ?? '');
+        }
         $("#DeleteModal").modal('show');
     }
 
