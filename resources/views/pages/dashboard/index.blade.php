@@ -21,6 +21,23 @@
     @include('pages.dashboard.modals.show-offer')
 
     <div class="row">
+        <div class="col-xl-2">
+            <div class="form-group">
+                <label style="width: 100%">
+                    <input type="date" id="start_date" class="form-control" value="{{ date('Y-m-01') }}">
+                </label>
+            </div>
+        </div>
+        <div class="col-xl-2">
+            <div class="form-group">
+                <label style="width: 100%">
+                    <input type="date" id="end_date" class="form-control" value="{{ date('Y-m-t') }}">
+                </label>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-n5">
+    <div class="row">
         <div class="col-xl-8">
             <div class="row">
                 <div class="col-xl-6">

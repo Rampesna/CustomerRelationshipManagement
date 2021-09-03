@@ -574,11 +574,15 @@
     var lastActivities = $("#lastActivities");
 
     function index() {
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.dashboard.index') }}',
             data: {
-                company_id: SelectedCompany.val()
+                company_id: SelectedCompany.val(),
+                start_date: start_date,
+                end_date: end_date,
             },
             success: function (response) {
                 opportunityDateSpan.html(response.opportunity.date);

@@ -19,10 +19,10 @@
 
     var SelectedCompany = $("#SelectedCompany");
 
-    var companyIdCreate = $("#company_id_create");
+    var userIdCreate = $("#user_id_create");
     var typeCreate = $("#type_create");
 
-    var companyIdEdit = $("#company_id_edit");
+    var userIdEdit = $("#user_id_edit");
     var typeEdit = $("#type_edit");
 
     var CreateButton = $("#CreateButton");
@@ -288,10 +288,34 @@
     }();
     EditRightBar.init();
 
+    function getUsers() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.user.all') }}',
+            data: {},
+            success: function (users) {
+                userIdCreate.empty();
+                userIdEdit.empty();
+                $.each(users, function (i, user) {
+                    userIdCreate.append(`<option value="${user.id}">${user.name}</option>`);
+                    userIdEdit.append(`<option value="${user.id}">${user.name}</option>`);
+                });
+                userIdCreate.selectpicker('refresh');
+                userIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.warning('Temsilci listesi alınırken sistemsel bir hata oluştu. Geliştirici ekibi ile iletişime geçin!');
+            }
+        });
+    }
+
+    getUsers();
+
     function create() {
         $("#CreateForm").trigger('reset');
-        companyIdCreate.selectpicker('refresh');
-        $("#type_create").selectpicker('refresh');
+        userIdCreate.selectpicker('refresh');
+        typeCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
 
@@ -308,10 +332,9 @@
                 id: id
             },
             success: function (target) {
-                console.log(target)
-                SelectedCompany.val(target.company_id).selectpicker('refresh');
-                $("#company_id_edit").val(target.company_id).selectpicker('refresh');
-                $("#date_edit").val(target.year + '-' + target.month);
+                userIdEdit.val(target.user_id).selectpicker('refresh');
+                $("#start_date_edit").val(target.start_date);
+                $("#end_date_edit").val(target.end_date);
                 $("#type_edit").val(target.type).selectpicker('refresh');
                 $("#target_edit").val(target.target);
                 $("#EditRightbar").fadeIn(250);
@@ -320,11 +343,6 @@
                 console.log(error)
             }
         });
-    }
-
-    function show() {
-        var id = $("#id_edit").val();
-        window.open('{{ route('opportunity.show') }}/' + id + '/index', '_blank');
     }
 
     function drop() {
@@ -341,20 +359,22 @@
 
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
-        var company_id = $("#company_id_create").val();
-        var type = $("#type_create").val();
-        var date = $("#date_create").val();
+        var user_id = userIdCreate.val();
+        var start_date = $("#start_date_create").val();
+        var end_date = $("#end_date_create").val();
+        var type = typeCreate.val();
         var target = $("#target_create").val();
 
-        if (company_id == null || company_id === '') {
-            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        if (user_id == null || user_id === '') {
+            toastr.warning('Temsilci Seçimi Yapılması Zorunludur!');
         } else {
             saveTarget({
                 _token: '{{ csrf_token() }}',
                 auth_user_id: auth_user_id,
-                company_id: company_id,
+                user_id: user_id,
+                start_date: start_date,
+                end_date: end_date,
                 type: type,
-                date: date,
                 target: target,
             }, 0);
         }
@@ -363,21 +383,23 @@
     UpdateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var id = $("#id_edit").val();
-        var company_id = $("#company_id_edit").val();
+        var user_id = userIdEdit.val();
+        var start_date = $("#start_date_edit").val();
+        var end_date = $("#end_date_edit").val();
         var type = $("#type_edit").val();
-        var date = $("#date_edit").val();
         var target = $("#target_edit").val();
 
-        if (company_id == null || company_id === '') {
-            toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        if (user_id == null || user_id === '') {
+            toastr.warning('Temsilci Seçimi Yapılması Zorunludur!');
         } else {
             saveTarget({
                 _token: '{{ csrf_token() }}',
                 id: id,
                 auth_user_id: auth_user_id,
-                company_id: company_id,
+                user_id: user_id,
+                start_date: start_date,
+                end_date: end_date,
                 type: type,
-                date: date,
                 target: target,
             }, 1);
         }

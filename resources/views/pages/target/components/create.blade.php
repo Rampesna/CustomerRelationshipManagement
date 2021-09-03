@@ -10,7 +10,7 @@
                 </div>
                 <hr>
                 <div class="row mt-6">
-                    <div class="col-xl-12">
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="user_id_create">Temsilci Seçimi</label>
                             <select id="user_id_create" class="form-control">
@@ -18,16 +18,16 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="start_date_create">Başlangıç Tarihi</label>
                             <input type="date" id="start_date_create" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-4">
                         <div class="form-group">
-                            <label for="end_date">Bitiş Tarihi</label>
-                            <input type="date" id="end_date" class="form-control">
+                            <label for="end_date_create">Bitiş Tarihi</label>
+                            <input type="date" id="end_date_create" class="form-control">
                         </div>
                     </div>
                     <div class="col-xl-6">

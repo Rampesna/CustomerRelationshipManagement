@@ -18,20 +18,20 @@ class DashboardController extends Controller
     {
         return response()->json([
             'opportunity' => [
-                'date' => date('m.Y'),
+                'date' => date('d.m.Y', strtotime($request->start_date)) . ' - ' . date('d.m.Y', strtotime($request->end_date)),
                 'created' => Opportunity::where('company_id', $request->company_id)->whereBetween('created_at', [
-                    date('Y-m-01 00:00:00'),
-                    date('Y-m-t 23:59:59')
+                    $request->start_date,
+                    $request->end_date
                 ])->count(),
-                'target' => Target::where('company_id', $request->company_id)->where('year', date('Y'))->where('month', date('m'))->where('type', 'opportunity')->first()->target ?? 0
+                'target' => Target::where('start_date', '>=', $request->start_date)->where('end_date', '<=', date('Y-m-d', strtotime('+1 days', strtotime($request->end_date))))->where('type', 'opportunity')->sum('target') ?? 0
             ],
             'activity' => [
-                'date' => date('m.Y'),
+                'date' => date('d.m.Y', strtotime($request->start_date)) . ' - ' . date('d.m.Y', strtotime($request->end_date)),
                 'created' => Activity::where('company_id', $request->company_id)->whereBetween('created_at', [
-                    date('Y-m-01 00:00:00'),
-                    date('Y-m-t 23:59:59')
+                    $request->start_date,
+                    $request->end_date
                 ])->count(),
-                'target' => Target::where('company_id', $request->company_id)->where('year', date('Y'))->where('month', date('m'))->where('type', 'activity')->first()->target ?? 0,
+                'target' => Target::where('start_date', '>=', $request->start_date)->where('end_date', '<=', date('Y-m-d', strtotime('+1 days', strtotime($request->end_date))))->where('type', 'activity')->sum('target') ?? 0,
                 'lastActivities' => Activity::with([
                     'relation'
                 ])->where('company_id', $request->company_id)->orderBy('updated_at', 'desc')->limit(10)->get()

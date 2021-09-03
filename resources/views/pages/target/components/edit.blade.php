@@ -11,24 +11,27 @@
                 </div>
                 <hr>
                 <div class="row mt-6">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <div class="form-group">
-                            <label for="company_id_edit">Firma Seçimi</label>
-                            <select id="company_id_edit" class="form-control">
-                                <option selected hidden disabled></option>
-                                @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
+                            <label for="user_id_edit">Temsilci Seçimi</label>
+                            <select id="user_id_edit" class="form-control">
+
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <div class="form-group">
-                            <label for="date_edit">Tarih</label>
-                            <input type="month" id="date_edit" class="form-control">
+                            <label for="start_date_edit">Başlangıç Tarihi</label>
+                            <input type="date" id="start_date_edit" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="end_date_edit">Bitiş Tarihi</label>
+                            <input type="date" id="end_date_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
                         <div class="form-group">
                             <label for="type_edit">Hedef Türü</label>
                             <select id="type_edit" class="form-control">
@@ -37,7 +40,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-6">
                         <div class="form-group">
                             <label for="target_edit">Hedef</label>
                             <input type="text" id="target_edit" class="form-control decimal">
