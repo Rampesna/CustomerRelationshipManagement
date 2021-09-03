@@ -51,4 +51,10 @@ class TicketService
 
         return $this->ticket;
     }
+
+    public function updateStatus($status)
+    {
+        $this->ticket->status_id = $status;
+        $this->ticket->save();
+    }
 }
