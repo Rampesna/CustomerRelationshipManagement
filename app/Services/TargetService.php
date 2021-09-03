@@ -28,10 +28,10 @@ class TargetService
 
     public function save(Request $request)
     {
-        $this->target->company_id = $request->company_id;
+        $this->target->user_id = $request->user_id;
+        $this->target->start_date = $request->start_date;
+        $this->target->end_date = $request->end_date;
         $this->target->type = $request->type;
-        $this->target->year = date('Y', strtotime($request->date));
-        $this->target->month = date('m', strtotime($request->date));
         $this->target->target = $request->target;
         $this->target->save();
 

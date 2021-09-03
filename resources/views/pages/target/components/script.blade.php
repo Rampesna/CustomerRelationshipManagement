@@ -107,7 +107,7 @@
                 var column = this;
                 var input = document.createElement('input');
 
-                if (index === 2) {
+                if (index === 3) {
                     input = document.createElement('select');
                     var option = document.createElement("option");
                     option.setAttribute("value", 'all');
@@ -123,8 +123,8 @@
                     option.setAttribute("value", 'activity');
                     option.innerHTML = "Aktivite";
                     input.appendChild(option);
-                } else if (index === 1) {
-                    input.setAttribute("type", "month");
+                } else if (index === 1 || index === 2) {
+                    input.setAttribute("type", "date");
                 }
 
                 input.className = 'form-control';
@@ -147,8 +147,9 @@
             },
         },
         columns: [
-            {data: 'company_id', name: 'company_id'},
-            {data: 'date', name: 'date'},
+            {data: 'user_id', name: 'user_id'},
+            {data: 'start_date', name: 'start_date'},
+            {data: 'end_date', name: 'end_date'},
             {data: 'type', name: 'type'},
             {data: 'target', name: 'target'},
         ],

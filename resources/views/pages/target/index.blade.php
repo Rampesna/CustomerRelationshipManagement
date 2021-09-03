@@ -39,16 +39,18 @@
                     <table class="table" id="targets">
                         <thead>
                         <tr>
-                            <th>Firma</th>
-                            <th>Tarih</th>
+                            <th>Temsilci</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
                             <th>Hedef Türü</th>
                             <th>Hedef</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>Firma</th>
-                            <th>Tarih</th>
+                            <th>Temsilci</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
                             <th>Hedef Türü</th>
                             <th>Hedef</th>
                         </tr>

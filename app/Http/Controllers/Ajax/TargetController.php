@@ -12,7 +12,17 @@ class TargetController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(Target::where('company_id', $request->company_id)->get());
+        $targets = Target::with([]);
+
+        if ($request->start_date) {
+            $targets->where('start_date', '>=', $request->start_date);
+        }
+
+        if ($request->start_date) {
+            $targets->where('end_date', '<=', date('Y-m-d', strtotime('+1 days', strtotime($request->end_date))));
+        }
+
+        return response()->json($targets->get());
     }
 
     public function datatable(Request $request)
@@ -20,25 +30,32 @@ class TargetController extends Controller
         setlocale(LC_TIME, "turkish");
         setlocale(LC_ALL, 'turkish');
 
-        return Datatables::of(Target::with([])->where('company_id', $request->company_id))->
+        return Datatables::of(Target::with([]))->
         filterColumn('type', function ($targets, $type) {
             return $type == 'all' ? $targets : $targets->where('type', $type);
         })->
-        filterColumn('date', function ($targets, $date) {
-            return $targets->where('year', date('Y', strtotime($date)))->where('month', date('m', strtotime($date)));
+        filterColumn('start_date', function ($targets, $date) {
+            return $targets->where('start_date', '>=', $date);
+        })->
+        filterColumn('end_date', function ($targets, $date) {
+            return $targets->where('end_date', '<=', date('Y-m-d', strtotime('+1 days', strtotime($date))));
         })->
         editColumn('id', function ($target) {
             return '#' . $target->id;
         })->
-        editColumn('company_id', function ($target) {
-            return $target->company_id ? $target->company->name : '';
+        editColumn('user_id', function ($target) {
+            return $target->user ? $target->user->name : '';
         })->
         editColumn('type', function ($target) {
-            return $target->type == 'opportunity' ? 'Fırsat' : '';
+            return $target->type == 'opportunity' ? 'Fırsat' : ($target->type == 'activity' ? 'Aktivite' : '');
         })->
-        editColumn('date', function ($target) {
-            iconv('latin5', 'utf-8', strftime('%B %Y', strtotime($target->year . '-' . $target->month)));
-            return iconv('latin5', 'utf-8', strftime('%B %Y', strtotime($target->year . '-' . $target->month)));
+        editColumn('start_date', function ($target) {
+            iconv('latin5', 'utf-8', strftime('%d %B %Y', strtotime($target->start_date)));
+            return iconv('latin5', 'utf-8', strftime('%d %B %Y', strtotime($target->start_date)));
+        })->
+        editColumn('end_date', function ($target) {
+            iconv('latin5', 'utf-8', strftime('%d %B %Y', strtotime($target->end_date)));
+            return iconv('latin5', 'utf-8', strftime('%d %B %Y', strtotime($target->end_date)));
         })->
         make(true);
     }
@@ -50,28 +67,14 @@ class TargetController extends Controller
 
     public function save(Request $request)
     {
-        $targetControl = Target::where('type', $request->type)->
-        where('company_id', $request->company_id)->
-        where('year', date('Y', strtotime($request->date)))->
-        where('month', date('m', strtotime($request->date)));
+        $targetService = new TargetService;
+        $targetService->setTarget($request->id ? Target::find($request->id) : new Target);
+        $targetService->save($request);
 
-        $targetControl = $request->id ? $targetControl->where('id', '<>', $request->id) : $targetControl;
-
-        if ($targetControl->first()) {
-            return response()->json([
-                'type' => 'error',
-                'message' => 'Hedef Zaten Mevcut! Düzenlemeyi Deneyin.'
-            ], 200);
-        } else {
-            $targetService = new TargetService;
-            $targetService->setTarget($request->id ? Target::find($request->id) : new Target);
-            $targetService->save($request);
-
-            return response()->json([
-                'type' => 'success',
-                'message' => 'Başarıyla Kaydedildi'
-            ], 200);
-        }
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Başarıyla Kaydedildi'
+        ], 200);
     }
 
     public function drop(Request $request)

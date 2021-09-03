@@ -10,24 +10,27 @@
                 </div>
                 <hr>
                 <div class="row mt-6">
-                    <div class="col-xl-3">
+                    <div class="col-xl-12">
                         <div class="form-group">
-                            <label for="company_id_create">Firma Seçimi</label>
-                            <select id="company_id_create" class="form-control">
-                                <option selected hidden disabled></option>
-                                @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
+                            <label for="user_id_create">Temsilci Seçimi</label>
+                            <select id="user_id_create" class="form-control">
+
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-6">
                         <div class="form-group">
-                            <label for="date_create">Tarih</label>
-                            <input type="month" id="date_create" class="form-control">
+                            <label for="start_date_create">Başlangıç Tarihi</label>
+                            <input type="date" id="start_date_create" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-6">
+                        <div class="form-group">
+                            <label for="end_date">Bitiş Tarihi</label>
+                            <input type="date" id="end_date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
                         <div class="form-group">
                             <label for="type_create">Hedef Türü</label>
                             <select id="type_create" class="form-control">
@@ -36,7 +39,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-6">
                         <div class="form-group">
                             <label for="target_create">Hedef</label>
                             <input type="text" id="target_create" class="form-control decimal">

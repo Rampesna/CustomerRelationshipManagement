@@ -15,9 +15,10 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->string('type')->nullable();
-            $table->string('year', 4)->nullable();
-            $table->string('month', 2)->nullable();
             $table->smallInteger('target')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
