@@ -10,7 +10,7 @@ class File extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function relatio()
+    public function relation()
     {
         return $this->morphTo();
     }

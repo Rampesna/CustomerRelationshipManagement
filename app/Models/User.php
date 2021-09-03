@@ -79,4 +79,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Meeting::class);
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function ticketMessages()
+    {
+        return $this->hasMany(TicketMessage::class);
+    }
 }

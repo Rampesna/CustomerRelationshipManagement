@@ -29,6 +29,7 @@ use App\Http\Controllers\Ajax\DefinitionController;
 use App\Http\Controllers\Ajax\ProfileController;
 use App\Http\Controllers\Ajax\TargetController;
 use App\Http\Controllers\Ajax\SettingController;
+use App\Http\Controllers\Ajax\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -226,6 +227,14 @@ Route::prefix('target')->group(function () {
     Route::get('show', [TargetController::class, 'show'])->name('ajax.target.show');
     Route::post('save', [TargetController::class, 'save'])->name('ajax.target.save');
     Route::delete('drop', [TargetController::class, 'drop'])->name('ajax.target.drop');
+});
+
+Route::prefix('ticket')->group(function () {
+    Route::get('index', [TicketController::class, 'index'])->name('ajax.ticket.index');
+    Route::get('datatable', [TicketController::class, 'datatable'])->name('ajax.ticket.datatable');
+    Route::get('show', [TicketController::class, 'show'])->name('ajax.ticket.show');
+    Route::post('save', [TicketController::class, 'save'])->name('ajax.ticket.save');
+    Route::delete('drop', [TicketController::class, 'drop'])->name('ajax.ticket.drop');
 });
 
 

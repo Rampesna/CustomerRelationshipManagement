@@ -20,6 +20,7 @@ use App\Http\Controllers\TargetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TicketMessageController;
 
 Route::get('test', function () {
     return \App\Models\User::withTrashed()->get();
@@ -168,6 +169,10 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->route('ticket.index');
         });
         Route::get('index', [TicketController::class, 'index'])->name('ticket.index')->middleware('Authority:1');
-        Route::get('show/{ticket?}', [TicketController::class, 'show'])->name('ticket.show')->middleware('Authority:1');
+        Route::get('show/{id?}', [TicketController::class, 'show'])->name('ticket.show')->middleware('Authority:1');
+    });
+
+    Route::prefix('ticket-message')->group(function () {
+        Route::post('save', [TicketMessageController::class, 'save'])->name('ticket-message.save');
     });
 });

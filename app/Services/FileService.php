@@ -38,7 +38,29 @@ class FileService
         $this->file->path = $path;
         $this->file->created_by = $request->id ? $this->file->created_by : $request->auth_user_id;
         try {
-            $request->file('file')->move($path, $request->file('file')->getClientOriginalName());
+            $request->file('file')->move($path);
+            $this->file->save();
+
+            return $this->file;
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
+    public function saveRelation(
+        $path,
+        $name,
+        $mimeType,
+        $createdBy,
+        $file
+    )
+    {
+        $this->file->name = $name;
+        $this->file->mime_type = $mimeType;
+        $this->file->path = $path;
+        $this->file->created_by = $createdBy;
+        try {
+            $file->move($path, $file->getClientOriginalName());
             $this->file->save();
 
             return $this->file;

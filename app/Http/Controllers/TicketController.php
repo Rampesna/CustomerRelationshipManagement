@@ -14,8 +14,12 @@ class TicketController extends Controller
 
     public function show(Request $request)
     {
+        $ticket = Ticket::find($request->id);
+
+        if (!$ticket) abort(404);
+
         return view('pages.ticket.show.index', [
-            'ticket' => Ticket::find($request->id)
+            'ticket' => $ticket
         ]);
     }
 }

@@ -17,9 +17,12 @@ class TicketController extends Controller
 
     public function datatable(Request $request)
     {
-        $model = $request->status_id != 0 ? Ticket::where('status_id', $request->status_id)->get() : Ticket::with([]);
+        $model = $request->status != 0 ? Ticket::where('status_id', $request->status)->get() : Ticket::with([]);
 
         return Datatables::of($model)->
+        editColumn('status_id', function ($ticket) {
+            return $ticket->status ? $ticket->status->name : '';
+        })->
         make(true);
     }
 

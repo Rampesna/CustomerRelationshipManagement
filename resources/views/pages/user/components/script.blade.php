@@ -16,12 +16,19 @@
         'Kasım',
         'Aralık',
     ];
-
+    var SelectedCompany = $("#SelectedCompany");
+    var companiesSelectorCreate = $("#companies_create");
+    var roleIdCreate = $("#role_id_create");
+    var companiesSelectorEdit = $("#companies_edit");
+    var roleIdEdit = $("#role_id_edit");
     var CreateButton = $("#CreateButton");
     var UpdateButton = $("#UpdateButton");
     var DeleteButton = $("#DeleteButton");
-
-    var tickets = $('#tickets').DataTable({
+    var listing = $('#listing');
+    listing.change(function () {
+        users.ajax.reload().draw();
+    });
+    var users = $('#users').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -50,16 +57,13 @@
                 }
             }
         },
-
         dom: 'rtipl',
-
         order: [
             [
                 0,
                 "desc"
             ]
         ],
-
         initComplete: function () {
             var r = $('#users tfoot tr');
             $('#users thead').append(r);
@@ -73,7 +77,6 @@
                     });
             });
         },
-
         processing: true,
         serverSide: true,
         ajax: {
@@ -92,24 +95,121 @@
             {data: 'phone_number', name: 'phone_number'},
             {data: 'role_id', name: 'role_id'},
         ],
-
         responsive: true,
         stateSave: true,
         select: 'single'
     });
-
+    var CreateRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'create_rightbar_close',
+                toggleBy: 'create_rightbar_toggle'
+            });
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+                    height = height - 2;
+                    return height;
+                }
+            });
+        }
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('CreateRightbar');
+                if (!_element) {
+                    return;
+                }
+                // Initialize
+                _init();
+            },
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    CreateRightBar.init();
+    var EditRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'edit_rightbar_close',
+                toggleBy: 'edit_rightbar_toggle'
+            });
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+                    height = height - 2;
+                    return height;
+                }
+            });
+        }
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('EditRightbar');
+                if (!_element) {
+                    return;
+                }
+                // Initialize
+                _init();
+            },
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    EditRightBar.init();
     function create() {
         $("#CreateForm").trigger('reset');
         companiesSelectorCreate.selectpicker('refresh');
         $("#create_rightbar_toggle").trigger('click');
     }
-
     function edit() {
         $("#edit_rightbar_toggle").trigger('click');
         $("#EditRightbar").hide();
-
         var id = $("#id_edit").val();
-
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.user.show') }}',
@@ -131,7 +231,6 @@
             }
         });
     }
-
     function drop() {
         var selectedRows = users.rows({selected: true});
         if (selectedRows.count() > 0) {
@@ -139,7 +238,6 @@
         }
         $("#DeleteModal").modal('show');
     }
-
     function getCompanies() {
         $.ajax({
             async: false,
@@ -161,7 +259,6 @@
             }
         });
     }
-
     function getRoles() {
         $.ajax({
             async: false,
@@ -183,10 +280,8 @@
             }
         });
     }
-
     getCompanies();
     getRoles();
-
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var companies = $("#companies_create").val();
@@ -195,7 +290,6 @@
         var phone_number = $("#phone_number_create").val();
         var password = $("#password_create").val();
         var role_id = $("#role_id_create").val();
-
         if (companies.length === 0) {
             toastr.warning('En Az (1) Firma Seçilmelidir!');
         } else if (name == null || name === '') {
@@ -238,7 +332,6 @@
             });
         }
     });
-
     UpdateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var id = $("#id_edit").val();
@@ -248,7 +341,6 @@
         var phone_number = $("#phone_number_edit").val();
         var password = $("#password_edit").val();
         var role_id = $("#role_id_edit").val();
-
         if (companies.length === 0) {
             toastr.warning('En Az (1) Firma Seçilmelidir!');
         } else if (name == null || name === '') {
@@ -289,10 +381,8 @@
                     console.log(error);
                 }
             });
-
         }
     });
-
     DeleteButton.click(function () {
         $("#DeleteModal").modal('hide');
         var id = $("#id_edit").val();
@@ -313,8 +403,7 @@
             }
         });
     });
-
-    function saveTicket(data, successMessage, errorMessage, direction) {
+    function saveUser(data, successMessage, errorMessage, direction) {
         $.ajax({
             type: 'post',
             url: '{{ route('ajax.user.save') }}',
@@ -335,9 +424,8 @@
             }
         });
     }
-
     $('body').on('contextmenu', function (e) {
-        var selectedRows = tickets.rows({selected: true});
+        var selectedRows = users.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id.replace('#', '');
             $("#id_edit").val(id);
@@ -345,31 +433,26 @@
         } else {
             $("#EditingContexts").hide();
         }
-
         var top = e.pageY - 10;
         var left = e.pageX - 10;
-
         $("#context-menu").css({
             display: "block",
             top: top,
             left: left
         });
-
         return false;
     }).on("click", function () {
         $("#context-menu").hide();
     }).on('focusout', function () {
         $("#context-menu").hide();
     });
-
-    $('#tickets tbody').on('mousedown', 'tr', function (e) {
+    $('#users tbody').on('mousedown', 'tr', function (e) {
         if (e.button === 0) {
             return false;
         } else {
-            tickets.row(this).select();
+            users.row(this).select();
         }
     });
-
     $(document).click((e) => {
         if ($.contains($("#usersCard").get(0), e.target)) {
         } else {
