@@ -66,13 +66,13 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Temsilci</th>
                             <th>Firma</th>
-                            <th>Bağlantı Türü</th>
-                            <th>Bağlantı</th>
-                            <th>Konu</th>
                             <th>Başlangıç Tarihi</th>
                             <th>Bitiş Tarihi</th>
+                            <th>Bağlantı Türü</th>
+                            <th>Bağlantı</th>
+                            <th>Temsilci</th>
+                            <th>Konu</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik Durumu</th>
                             <th>Açıklamalar</th>
@@ -81,13 +81,13 @@
                         <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Temsilci</th>
                             <th>Firma</th>
-                            <th>Bağlantı Türü</th>
-                            <th>Bağlantı</th>
-                            <th>Konu</th>
                             <th>Başlangıç Tarihi</th>
                             <th>Bitiş Tarihi</th>
+                            <th>Bağlantı Türü</th>
+                            <th>Bağlantı</th>
+                            <th>Temsilci</th>
+                            <th>Konu</th>
                             <th>Görüşme Nedeni</th>
                             <th>Öncelik Durumu</th>
                             <th>Açıklamalar</th>

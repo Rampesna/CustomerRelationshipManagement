@@ -20,9 +20,15 @@ class TicketController extends Controller
         $model = $request->status != 0 ? Ticket::where('status_id', $request->status)->get() : Ticket::with([]);
 
         return Datatables::of($model)->
+        editColumn('id', function ($ticket) {
+            return '#' . $ticket->id;
+        })->
         editColumn('status_id', function ($ticket) {
             return $ticket->status ? $ticket->status->name : '';
         })->
+        rawColumns([
+            'id'
+        ])->
         make(true);
     }
 
@@ -36,6 +42,13 @@ class TicketController extends Controller
         $ticketService = new TicketService;
         $ticketService->setTicket($request->id ? Ticket::find($request->id) : new Ticket);
         $ticketService->save($request);
+    }
+
+    public function setStatus(Request $request)
+    {
+        $ticket = Ticket::find($request->ticket_id);
+        $ticket->status_id = $request->status_id;
+        $ticket->save();
     }
 
     public function drop(Request $request)

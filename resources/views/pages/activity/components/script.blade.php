@@ -448,7 +448,7 @@
                 success: function (opportunities) {
                     relationIdEdit.empty();
                     $.each(opportunities, function (index) {
-                        relationIdEdit.append(`<option ${id && id === opportunities[index].id ? 'selected' : null} value="${opportunities[index].id}">${opportunities[index].name ?? ''} - (${opportunities[index].province ? opportunities[index].province.name : ''})</option>`);
+                        relationIdEdit.append(`<option ${id && id == opportunities[index].id ? 'selected' : null} value="${opportunities[index].id}">${opportunities[index].name ?? ''} - (${opportunities[index].province ? opportunities[index].province.name : ''})</option>`);
                     });
                     relationIdEdit.selectpicker('refresh');
                 },

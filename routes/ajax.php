@@ -234,6 +234,7 @@ Route::prefix('ticket')->group(function () {
     Route::get('datatable', [TicketController::class, 'datatable'])->name('ajax.ticket.datatable');
     Route::get('show', [TicketController::class, 'show'])->name('ajax.ticket.show');
     Route::post('save', [TicketController::class, 'save'])->name('ajax.ticket.save');
+    Route::post('setStatus', [TicketController::class, 'setStatus'])->name('ajax.ticket.setStatus');
     Route::delete('drop', [TicketController::class, 'drop'])->name('ajax.ticket.drop');
 });
 

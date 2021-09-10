@@ -35,7 +35,7 @@ class TicketService
         $this->ticket->status_id = $request->status_id;
         $this->ticket->save();
 
-        foreach ($request->file('images') as $image) {
+        foreach ($request->file('images') ?? [] as $image) {
             $fileService = new FileService;
             $fileService->setFile(new File);
             $file = $fileService->saveRelation(

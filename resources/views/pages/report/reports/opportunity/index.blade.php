@@ -124,62 +124,62 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Temsilci</th>
                             <th>Firma</th>
-                            <th>Müşteri Bağlantısı</th>
+                            <th>Fırsat Tarihi</th>
+                            <th>Durum</th>
+                            <th>Temsilci</th>
                             <th>Fırst Müşterisi</th>
+                            <th>Müşteri Bağlantısı</th>
+                            <th>Yerli/Yabancı</th>
+                            <th>Ülke</th>
+                            <th>Şehir</th>
+                            <th>İlçe</th>
                             <th>E-posta Adresi</th>
                             <th>Telefon Numarası</th>
                             <th>Yetkili Ad Soyad</th>
                             <th>Yetkili E-posta</th>
                             <th>Yetkili Telefon</th>
                             <th>Website</th>
-                            <th>Fırsat Tarihi</th>
                             <th>Tutar</th>
                             <th>Döviz Türü</th>
                             <th>Öncelik</th>
                             <th>Erişim Türü</th>
-                            <th>Yerli/Yabancı</th>
-                            <th>Ülke</th>
-                            <th>Şehir</th>
-                            <th>İlçe</th>
                             <th>Firma Kuruluş Tarihi</th>
                             <th>Tahmini Sonuçlanma</th>
                             <th>Tahmini Sonuçlanma Türü</th>
                             <th>Kapasite</th>
                             <th>Kapasite Türü</th>
-                            <th>Durum</th>
                             <th>Açıklamalar</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Temsilci</th>
                             <th>Firma</th>
-                            <th>Müşteri Bağlantısı</th>
+                            <th>Fırsat Tarihi</th>
+                            <th>Durum</th>
+                            <th>Temsilci</th>
                             <th>Fırst Müşterisi</th>
+                            <th>Müşteri Bağlantısı</th>
+                            <th>Yerli/Yabancı</th>
+                            <th>Ülke</th>
+                            <th>Şehir</th>
+                            <th>İlçe</th>
                             <th>E-posta Adresi</th>
                             <th>Telefon Numarası</th>
                             <th>Yetkili Ad Soyad</th>
                             <th>Yetkili E-posta</th>
                             <th>Yetkili Telefon</th>
                             <th>Website</th>
-                            <th>Fırsat Tarihi</th>
                             <th>Tutar</th>
                             <th>Döviz Türü</th>
                             <th>Öncelik</th>
                             <th>Erişim Türü</th>
-                            <th>Yerli/Yabancı</th>
-                            <th>Ülke</th>
-                            <th>Şehir</th>
-                            <th>İlçe</th>
                             <th>Firma Kuruluş Tarihi</th>
                             <th>Tahmini Sonuçlanma</th>
                             <th>Tahmini Sonuçlanma Türü</th>
                             <th>Kapasite</th>
                             <th>Kapasite Türü</th>
-                            <th>Durum</th>
                             <th>Açıklamalar</th>
                         </tr>
                         </tfoot>

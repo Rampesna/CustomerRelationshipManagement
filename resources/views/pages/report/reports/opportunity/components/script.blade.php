@@ -170,17 +170,26 @@
                 buttons: [
                     {
                         extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
+                        text: '<i class="fa fa-file-pdf"></i> PDF İndir',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 9, 10, 12, 20 ]
+                        }
                     },
                     {
                         extend: 'excel',
-                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
+                        text: '<i class="fa fa-file-excel"></i> Excel İndir',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 9, 10, 12, 20 ]
+                        }
                     }
                 ]
             },
             {
                 extend: 'print',
-                text: '<i class="fa fa-print"></i> Yazdır'
+                text: '<i class="fa fa-print"></i> Yazdır',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 9, 10, 12, 20 ]
+                }
             },
             {
                 extend: 'colvis',
@@ -240,31 +249,31 @@
         },
         columns: [
             {data: 'id', name: 'id', width: '3%'},
-            {data: 'user_id', name: 'user_id'},
             {data: 'company_id', name: 'company_id'},
-            {data: 'customer_id', name: 'customer_id'},
+            {data: 'date', name: 'date'},
+            {data: 'status_id', name: 'status_id'},
+            {data: 'user_id', name: 'user_id'},
             {data: 'name', name: 'name'},
+            {data: 'customer_id', name: 'customer_id'},
+            {data: 'domestic', name: 'domestic'},
+            {data: 'country_id', name: 'country_id'},
+            {data: 'province_id', name: 'province_id'},
+            {data: 'district_id', name: 'district_id'},
             {data: 'email', name: 'email'},
             {data: 'phone_number', name: 'phone_number'},
             {data: 'manager_name', name: 'manager_name'},
             {data: 'manager_email', name: 'manager_email'},
             {data: 'manager_phone_number', name: 'manager_phone_number'},
             {data: 'website', name: 'website'},
-            {data: 'date', name: 'date'},
             {data: 'price', name: 'price'},
             {data: 'currency', name: 'currency'},
             {data: 'priority_id', name: 'priority_id'},
             {data: 'access_type_id', name: 'access_type_id'},
-            {data: 'domestic', name: 'domestic'},
-            {data: 'country_id', name: 'country_id'},
-            {data: 'province_id', name: 'province_id'},
-            {data: 'district_id', name: 'district_id'},
             {data: 'foundation_date', name: 'foundation_date'},
             {data: 'estimated_result', name: 'estimated_result'},
             {data: 'estimated_result_type_id', name: 'estimated_result_type_id'},
             {data: 'capacity', name: 'capacity'},
             {data: 'capacity_type_id', name: 'capacity_type_id'},
-            {data: 'status_id', name: 'status_id'},
             {data: 'description', name: 'description'},
         ],
 

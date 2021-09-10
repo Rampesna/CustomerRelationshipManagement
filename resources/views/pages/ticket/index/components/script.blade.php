@@ -61,6 +61,16 @@
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
+
+                if (index === 2) {
+                    input = null;
+                    $(input).appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                    return;
+                }
+
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -81,8 +91,13 @@
             },
         },
         columns: [
+            {data: 'id', name: 'id', width: '7%'},
             {data: 'subject', name: 'subject'},
-            {data: 'status_id', name: 'status_id'}
+            {data: 'status_id', name: 'status_id', sortable: false, searchable: false}
+        ],
+
+        order: [
+            [0, 'desc']
         ],
 
         responsive: true,
@@ -178,11 +193,11 @@
 
             data.append('status_id', 1);
 
-            saveTicket(data, 'Yeni Destek Talebi Başarıyla Oluşturuldu', 'Destek Talebi Oluşturulurken Bir Hata Oluştu!', 0);
+            saveTicket(data, 0);
         }
     });
 
-    function saveTicket(data, successMessage, errorMessage, direction) {
+    function saveTicket(data, direction) {
         $.ajax({
             async: false,
             processData: false,
@@ -191,9 +206,10 @@
             url: '{{ route('ajax.ticket.save') }}',
             data: data,
             success: function (response) {
-                toastr.success(successMessage);
+                toastr.success('Yeni Talep Başarıyla Oluşturuldu!');
                 if (direction === 0) {
                     $("#create_rightbar_toggle").click();
+                    $('#CreateForm').trigger('reset');
                 } else if (direction === 1) {
                     $("#edit_rightbar_toggle").click();
                 }
@@ -201,7 +217,7 @@
                 tickets.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error('Destek Talebi Oluşturulurken Bir Hata Oluştu!');
                 console.log(error)
             }
         });
@@ -210,7 +226,7 @@
     $('body').on('contextmenu', function (e) {
         var selectedRows = tickets.rows({selected: true});
         if (selectedRows.count() > 0) {
-            var id = selectedRows.data()[0].id;
+            var id = selectedRows.data()[0].id.replace('#', '');
             $("#id_edit").val(id);
             $("#EditingContexts").show();
         } else {

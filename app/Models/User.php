@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->name;
     }
 
+    public function manager()
+    {
+        return $this->manager;
+    }
+
     public function phoneNumber()
     {
         return $this->phone_number;

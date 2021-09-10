@@ -30,85 +30,111 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-4">
-                            <div class="card card-custom">
-                                <div class="card-header h-auto py-4">
-                                    <div class="card-title">
-                                        <h3 class="card-label">
-                                            Detaylar
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div class="card-body py-4">
-                                    <div class="form-group row my-2">
-                                        <label class="col-6 col-form-label">Oluşturan:</label>
-                                        <div class="col-6 text-right">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card card-custom">
+                                        <div class="card-header h-auto py-4">
+                                            <div class="card-title">
+                                                <h3 class="card-label">
+                                                    Detaylar
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-4">
+                                            <div class="form-group row my-2">
+                                                <label class="col-6 col-form-label">Oluşturan:</label>
+                                                <div class="col-6 text-right">
                                             <span class="form-control-plaintext font-weight-bolder">
                                                 {{ @$ticket->user->name }}
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row my-2">
-                                        <label class="col-6 col-form-label">Oluşturulma Tarihi:</label>
-                                        <div class="col-6 text-right">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row my-2">
+                                                <label class="col-6 col-form-label">Oluşturulma Tarihi:</label>
+                                                <div class="col-6 text-right">
                                             <span class="form-control-plaintext font-weight-bolder">
                                                 {{ @date($ticket->created_at) }}
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row my-2">
-                                        <label class="col-6 col-form-label">Durum:</label>
-                                        <div class="col-6 text-right">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row my-2">
+                                                <label class="col-6 col-form-label">Durum:</label>
+                                                <div class="col-6 text-right">
                                             <span class="form-control-plaintext font-weight-bolder">
                                                 <span class="label label-light-{{ $ticket->status->color }} label-inline font-weight-bolder mr-1">
                                                     {{ @$ticket->status->name }}
                                                 </span>
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row my-2">
-                                        <label class="col-6 col-form-label"><i class="fa fa-paperclip mr-2"></i>Ekler: </label>
-                                        <div class="col-6 text-right">
-                                            @foreach($ticket->files as $file)
-                                                <a href="{{ asset($file->path . $file->name) }}" target="_blank" class="fa fa-file cursor-pointer mt-4 mr-2" title="{{ $file->name }}"></a>
-                                            @endforeach
+                                                </div>
+                                            </div>
+                                            <div class="form-group row my-2">
+                                                <label class="col-6 col-form-label"><i class="fa fa-paperclip mr-2"></i>Ekler: </label>
+                                                <div class="col-6 text-right">
+                                                    @foreach($ticket->files as $file)
+                                                        <a href="{{ asset($file->path . $file->name) }}" target="_blank" class="fa fa-file cursor-pointer mt-4 mr-2" title="{{ $file->name }}"></a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @if(auth()->user()->manager() == 1)
+                                @if($ticket->status_id == 1 || $ticket->status_id == 2)
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <button class="btn btn-success btn-block" onclick="setTicketStatus(3)">Onayla/Sonlandır</button>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <button class="btn btn-danger btn-block" onclick="setTicketStatus(4)">İptal Et</button>
+                                        </div>
+                                    </div>
+                                @else
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <button class="btn btn-warning btn-block" onclick="setTicketStatus(1)">Talebi Tekrar Aktif Et</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
                                         <div class="container">
-                                            <form action="{{ route('ticket-message.save') }}" method="post" class="form" enctype="multipart/form-data">
-                                                <div class="row">
-                                                    <div class="col-xl-12">
-                                                        <span class="mr-2"><i class="fa fa-paperclip mr-2"></i>Ekler: </span>
-                                                        <input type="file" name="images[]" multiple>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                                <input type="hidden" name="status_id" value="2">
-                                                <div class="row">
-                                                    <div class="col-xl-12">
-                                                        <div class="form-group">
-                                                            <label style="width: 100%">
-                                                                <textarea class="form-control form-control-lg form-control-solid" id="message" name="message" rows="3" placeholder="Mesajınız..." required></textarea>
-                                                            </label>
+                                            @if($ticket->status_id == 1 || $ticket->status_id == 2)
+                                                <form action="{{ route('ticket-message.save') }}" method="post" class="form" enctype="multipart/form-data">
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <span class="mr-2"><i class="fa fa-paperclip mr-2"></i>Ekler: </span>
+                                                            <input type="file" name="images[]" multiple>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xl-12 text-right mt-n5">
-                                                        <button type="submit" class="btn btn-light-success font-weight-bold">Yanıtla</button>
+                                                    <br>
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                                    <input type="hidden" name="status_id" value="2">
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group">
+                                                                <label style="width: 100%">
+                                                                    <textarea class="form-control form-control-lg form-control-solid" id="message" name="message" rows="3" placeholder="Mesajınız..." required></textarea>
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                            <div class="separator separator-dashed my-10"></div>
+                                                    <div class="row">
+                                                        <div class="col-xl-12 text-right mt-n5">
+                                                            <button type="submit" class="btn btn-light-success font-weight-bold">Yanıtla</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <div class="separator separator-dashed my-10"></div>
+                                            @endif
                                             <div class="timeline timeline-3">
                                                 <div class="timeline-items">
                                                     @foreach($ticket->messages as $message)

@@ -37,9 +37,15 @@ class TicketMessageService
 
         $ticketService = new TicketService;
         $ticketService->setTicket(Ticket::find($this->ticketMessage->ticket_id));
-        $ticketService->updateStatus(2);
 
-        foreach ($request->file('images') as $image) {
+        $user = User::find($request->user_id);
+        if ($user->manager == 1) {
+            $ticketService->updateStatus(2);
+        } else {
+            $ticketService->updateStatus(1);
+        }
+
+        foreach ($request->file('images') ?? [] as $image) {
             $fileService = new FileService;
             $fileService->setFile(new File);
             $file = $fileService->saveRelation(
