@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Opportunity;
 use App\Models\Target;
 use App\Services\TargetService;
 use Illuminate\Http\Request;

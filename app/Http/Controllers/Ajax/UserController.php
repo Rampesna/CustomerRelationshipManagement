@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Company;
+use App\Models\Opportunity;
+use App\Models\Target;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -38,6 +41,60 @@ class UserController extends Controller
         editColumn('role_id', function ($user) {
             return $user->role_id ? $user->role->name : '';
         })->
+        make(true);
+    }
+
+    public function targetReportDatatable(Request $request)
+    {
+        $users = User::with([]);
+
+        if ($request->users && count($request->users) > 0) {
+            $users->whereIn('id', $request->users);
+        }
+
+        return Datatables::of($users)->
+        editColumn('opportunity_target', function ($user) use ($request) {
+            $targets = Target::where('user_id', $user->id)->where('type', 'opportunity');
+            $opportunities = Opportunity::where('created_by', $user->id);
+
+            if ($request->start_date) {
+                $targets->where('start_date', '>=', $request->start_date);
+                $opportunities->where('created_at', '>=', $request->start_date);
+            }
+
+            if ($request->end_date) {
+                $targets->where('end_date', '<=', $request->end_date);
+                $opportunities->where('created_at', '<=', $request->end_date);
+            }
+
+            $target = $targets->get();
+            $opportunity = $opportunities->get();
+
+            return $opportunity->count() . ' / ' . $target->sum('target');
+        })->
+        editColumn('activity_target', function ($user) use ($request) {
+            $targets = Target::where('user_id', $user->id)->where('type', 'activity');
+            $activities = Activity::where('created_by', $user->id);
+
+            if ($request->start_date) {
+                $targets->where('start_date', '>=', $request->start_date);
+                $activities->where('created_at', '>=', $request->start_date);
+            }
+
+            if ($request->end_date) {
+                $targets->where('end_date', '<=', $request->end_date);
+                $activities->where('created_at', '<=', $request->end_date);
+            }
+
+            $target = $targets->get();
+            $activity = $activities->get();
+
+            return $activity->count() . ' / ' . $target->sum('target');
+        })->
+        rawColumns([
+            'opportunity_target',
+            'activity_target'
+        ])->
         make(true);
     }
 

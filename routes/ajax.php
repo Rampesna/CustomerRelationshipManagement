@@ -210,6 +210,10 @@ Route::prefix('user')->group(function () {
     Route::delete('drop', [UserController::class, 'drop'])->name('ajax.user.drop');
 
     Route::get('emailControl', [UserController::class, 'emailControl'])->name('ajax.user.emailControl');
+
+    Route::prefix('target')->group(function () {
+        Route::get('reportDatatable', [UserController::class, 'targetReportDatatable'])->name('ajax.user.target.reportDatatable');
+    });
 });
 
 Route::prefix('role')->group(function () {
