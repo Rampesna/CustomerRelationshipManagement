@@ -23,12 +23,16 @@ use App\Http\Controllers\Ajax\CompanyController;
 use App\Http\Controllers\Ajax\RoleController;
 use App\Http\Controllers\Ajax\PermissionController;
 use App\Http\Controllers\Ajax\CountryController;
+use App\Http\Controllers\Ajax\CountryErpController;
 use App\Http\Controllers\Ajax\ProvinceController;
+use App\Http\Controllers\Ajax\ProvinceErpController;
 use App\Http\Controllers\Ajax\DistrictController;
+use App\Http\Controllers\Ajax\DistrictErpController;
 use App\Http\Controllers\Ajax\DefinitionController;
 use App\Http\Controllers\Ajax\ProfileController;
 use App\Http\Controllers\Ajax\TargetController;
 use App\Http\Controllers\Ajax\SettingController;
+use App\Http\Controllers\Ajax\ErpMatchController;
 use App\Http\Controllers\Ajax\TicketController;
 
 /*
@@ -252,20 +256,40 @@ Route::prefix('company')->group(function () {
 
 Route::prefix('country')->group(function () {
     Route::get('index', [CountryController::class, 'index'])->name('ajax.country.index');
+
+    Route::prefix('erp')->group(function () {
+        Route::get('index', [CountryErpController::class, 'index'])->name('ajax.country.erp.index');
+    });
 });
 
 Route::prefix('province')->group(function () {
+    Route::get('all', [ProvinceController::class, 'all'])->name('ajax.province.all');
     Route::get('index', [ProvinceController::class, 'index'])->name('ajax.province.index');
+
+    Route::prefix('erp')->group(function () {
+        Route::get('index', [ProvinceErpController::class, 'index'])->name('ajax.province.erp.index');
+    });
 });
 
 Route::prefix('district')->group(function () {
+    Route::get('all', [DistrictController::class, 'all'])->name('ajax.district.all');
     Route::get('index', [DistrictController::class, 'index'])->name('ajax.district.index');
+
+    Route::prefix('erp')->group(function () {
+        Route::get('index', [DistrictErpController::class, 'index'])->name('ajax.district.erp.index');
+    });
 });
 
 Route::prefix('setting')->group(function () {
     Route::get('show', [SettingController::class, 'show'])->name('ajax.setting.show');
     Route::post('updateMailSettings', [SettingController::class, 'updateMailSettings'])->name('ajax.setting.updateMailSettings');
     Route::post('updateSystemSettings', [SettingController::class, 'updateSystemSettings'])->name('ajax.setting.updateSystemSettings');
+});
+
+Route::prefix('erpMatch')->group(function () {
+    Route::get('datatable', [ErpMatchController::class, 'datatable'])->name('ajax.erpMatch.datatable');
+    Route::post('save', [ErpMatchController::class, 'save'])->name('ajax.erpMatch.save');
+    Route::delete('drop', [ErpMatchController::class, 'drop'])->name('ajax.erpMatch.drop');
 });
 
 Route::prefix('definition')->group(function () {

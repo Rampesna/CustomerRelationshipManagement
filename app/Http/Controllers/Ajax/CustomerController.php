@@ -33,6 +33,9 @@ class CustomerController extends Controller
     public function datatable(Request $request)
     {
         return Datatables::of(Customer::with([])->where('company_id', $request->company_id))->
+        filterColumn('user_id', function ($customers, $keyword) {
+            return $customers->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         filterColumn('company_id', function ($customers, $keyword) {
             return $customers->whereIn('company_id', Company::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
@@ -59,6 +62,9 @@ class CustomerController extends Controller
         })->
         editColumn('email', function ($customer) {
             return '<a href="mailto:' . $customer->email . '">' . $customer->email . '</a>';
+        })->
+        editColumn('user_id', function ($customer) {
+            return $customer->user ? @$customer->user->name : '';
         })->
         editColumn('company_id', function ($customer) {
             return $customer->company ? @$customer->company->name : '';

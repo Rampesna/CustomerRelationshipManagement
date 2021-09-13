@@ -80,7 +80,11 @@ class OfferController extends Controller
 
     public function reportDatatable(Request $request)
     {
-        $offers = Offer::with([])->where('company_id', $request->company_id);
+        $offers = Offer::with([]);
+
+        if ($request->all_companies == 0) {
+            $offers->where('company_id', $request->company_id);
+        }
 
         if ($request->start_date) {
             $offers->where('created_at', '>=', $request->start_date);

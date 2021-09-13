@@ -311,7 +311,6 @@
     }
 
     function create() {
-        getUsers(SelectedCompany.val());
         getCustomers(SelectedCompany.val());
         getOpportunityPriorities(SelectedCompany.val());
         getOpportunityAccessTypes(SelectedCompany.val());
@@ -776,6 +775,7 @@
         getOpportunityStatuses($(this).val());
     });
 
+    getUsers(SelectedCompany.val());
     getCountries();
     getUsers(SelectedCompany.val());
     getCustomers(SelectedCompany.val());

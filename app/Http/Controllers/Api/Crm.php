@@ -69,4 +69,34 @@ class Crm extends Base
         ];
         return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
     }
+
+    public function getUlkeListesi($db = 'MikroDB_V16')
+    {
+        $endpoint = "getUlkeListesi";
+        $params = [
+            'VeriTabani' => $db ?? 'MikroDB_V16'
+        ];
+
+        return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
+    }
+
+    public function getSehirListesi($db = 'MikroDB_V16')
+    {
+        $endpoint = "getSehirListesi";
+        $params = [
+            'VeriTabani' => $db ?? 'MikroDB_V16'
+        ];
+
+        return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
+    }
+
+    public function getIlceListesi($db = 'MikroDB_V16')
+    {
+        $endpoint = "getIlceListesi";
+        $params = [
+            'VeriTabani' => $db ?? 'MikroDB_V16'
+        ];
+
+        return $this->call($this->baseUrl . $endpoint . '?' . http_build_query($params), 'post', [], []);
+    }
 }

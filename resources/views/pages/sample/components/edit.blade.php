@@ -5,7 +5,7 @@
         <div class="offcanvas-wrapper mb-5 scroll-pull">
             <div class="row">
                 <div class="col-xl-10">
-                    <h5>Aktiviyi Düzenle</h5>
+                    <h5>Numuneyi Düzenle</h5>
                 </div>
             </div>
             <hr>

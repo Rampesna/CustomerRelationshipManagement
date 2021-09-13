@@ -79,7 +79,11 @@ class OpportunityController extends Controller
 
     public function reportDatatable(Request $request)
     {
-        $opportunities = Opportunity::with([])->where('company_id', $request->company_id);
+        $opportunities = Opportunity::with([]);
+
+        if ($request->all_companies == 0) {
+            $opportunities->where('company_id', $request->company_id);
+        }
 
         if ($request->start_date) {
             $opportunities->where('date', '>=', $request->start_date);

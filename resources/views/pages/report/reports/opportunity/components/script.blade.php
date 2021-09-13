@@ -7,6 +7,8 @@
     var FilterButton = $("#FilterButton");
     var ClearFilterButton = $("#ClearFilterButton");
 
+    var allCompanies = $('#all_companies');
+
     var countriesSelector = $("#countries");
     var provincesSelector = $("#provinces");
     var prioritiesSelector = $("#priorities");
@@ -230,6 +232,7 @@
             url: '{{ route('ajax.opportunity.reportDatatable') }}',
             data: function (d) {
                 return $.extend({}, d, {
+                    all_companies: allCompanies.val(),
                     company_id: SelectedCompany.val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val(),

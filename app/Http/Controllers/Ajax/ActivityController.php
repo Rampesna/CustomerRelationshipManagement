@@ -98,7 +98,11 @@ class ActivityController extends Controller
 
     public function reportDatatable(Request $request)
     {
-        $activities = Activity::with([])->where('company_id', $request->company_id);
+        $activities = Activity::with([]);
+
+        if ($request->all_companies == 0) {
+            $activities->where('company_id', $request->company_id);
+        }
 
         if ($request->start_date) {
             $activities->where('start_date', '>=', $request->start_date);

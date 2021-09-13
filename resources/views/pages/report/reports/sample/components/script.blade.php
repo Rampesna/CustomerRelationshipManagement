@@ -10,6 +10,8 @@
     var statusesSelector = $("#statuses");
     var cargoCompaniesSelector = $("#cargo_companies");
 
+    var allCompanies = $('#all_companies');
+
     function getSampleStatuses(company_id) {
         $.ajax({
             type: 'get',
@@ -169,6 +171,7 @@
             url: '{{ route('ajax.sample.reportDatatable') }}',
             data: function (d) {
                 return $.extend({}, d, {
+                    all_companies: allCompanies.val(),
                     company_id: SelectedCompany.val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val(),

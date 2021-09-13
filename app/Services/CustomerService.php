@@ -28,6 +28,7 @@ class CustomerService
 
     public function save(Request $request)
     {
+        $this->customer->user_id = $request->user_id;
         $this->customer->company_id = $request->company_id;
         $this->customer->title = $request->title;
         $this->customer->tax_number = $request->tax_number;

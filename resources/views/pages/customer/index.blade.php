@@ -45,6 +45,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Temsilci</th>
                             <th>Firma</th>
                             <th>Ünvan</th>
                             <th>Bakiye</th>
@@ -61,6 +62,7 @@
                         <tfoot>
                         <tr>
                             <th>#</th>
+                            <th>Temsilci</th>
                             <th>Firma</th>
                             <th>Ünvan</th>
                             <th>Bakiye</th>

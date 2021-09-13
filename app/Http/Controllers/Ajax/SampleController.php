@@ -70,7 +70,11 @@ class SampleController extends Controller
 
     public function reportDatatable(Request $request)
     {
-        $samples = Sample::with([])->where('company_id', $request->company_id);
+        $samples = Sample::with([]);
+
+        if ($request->all_companies == 0) {
+            $samples = $samples->where('company_id', $request->company_id);
+        }
 
         if ($request->start_date) {
             $samples->where('date', '>=', $request->start_date);

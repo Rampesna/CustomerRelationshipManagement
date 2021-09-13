@@ -18,12 +18,13 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ErpMatchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 
 Route::get('test', function () {
-    return \App\Models\User::withTrashed()->get();
+    return collect((new \App\Http\Controllers\Api\Crm)->getSehirListesi()['Response'])->where('iller_iladi', 'NEVŞEHİR')->all();
 });
 
 Route::any('oauth', [\App\Http\Controllers\OauthController::class, 'login']);
@@ -162,6 +163,14 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::get('index', [SettingController::class, 'index'])->name('setting.index')->middleware('Authority:1');
         Route::get('show/{setting?}', [SettingController::class, 'show'])->name('setting.show')->middleware('Authority:1');
+    });
+
+    Route::prefix('erpMatch')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('erpMatch.index');
+        });
+        Route::get('index', [ErpMatchController::class, 'index'])->name('erpMatch.index')->middleware('Authority:1');
+        Route::get('show/{match?}', [ErpMatchController::class, 'show'])->name('erpMatch.show')->middleware('Authority:1');
     });
 
     Route::prefix('ticket')->group(function () {

@@ -11,7 +11,15 @@
                 </div>
                 <hr>
                 <div class="row mt-6 pr-7">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="user_id_edit">Temsilci Seçimi</label>
+                            <select id="user_id_edit" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="company_id_edit">Firma Seçimi</label>
                             <select id="company_id_edit" class="form-control">
@@ -22,7 +30,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <div class="form-group">
                             <label for="title_edit">Ünvan</label>
                             <input type="text" id="title_edit" class="form-control">

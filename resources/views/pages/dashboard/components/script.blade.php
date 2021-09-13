@@ -32,6 +32,9 @@
     var CreateMeetingUsers = $("#create_meeting_users");
     var EditMeetingUsers = $("#edit_meeting_users");
 
+    var StartDate = $('#start_date');
+    var EndDate = $('#end_date');
+
     CreateMeetingModalTrigger.click(function () {
         $("#create_meeting_company_id").val(SelectedCompany.val()).selectpicker('refresh');
         $("#create_meeting_title").val('');
@@ -574,8 +577,8 @@
     var lastActivities = $("#lastActivities");
 
     function index() {
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+        var start_date = StartDate.val();
+        var end_date = EndDate.val();
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.dashboard.index') }}',
@@ -628,7 +631,15 @@
         index();
     });
 
-    setInterval(function () {
+    StartDate.change(function () {
         index();
-    }, 5000);
+    });
+
+    EndDate.change(function () {
+        index();
+    });
+
+    // setInterval(function () {
+    //     index();
+    // }, 5000);
 </script>

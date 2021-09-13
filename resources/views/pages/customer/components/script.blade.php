@@ -19,6 +19,7 @@
 
     var SelectedCompany = $("#SelectedCompany");
 
+    var userIdCreate = $("#user_id_create");
     var companyIdCreate = $("#company_id_create");
     var countryIdCreate = $("#country_id_create");
     var provinceIdCreate = $("#province_id_create");
@@ -27,6 +28,7 @@
     var typeIdCreate = $("#type_id_create");
     var referenceIdCreate = $("#reference_id_create");
 
+    var userIdEdit = $("#user_id_edit");
     var companyIdEdit = $("#company_id_edit");
     var countryIdEdit = $("#country_id_edit");
     var provinceIdEdit = $("#province_id_edit");
@@ -142,6 +144,7 @@
         },
         columns: [
             {data: 'id', name: 'id'},
+            {data: 'user_id', name: 'user_id'},
             {data: 'company_id', name: 'company_id'},
             {data: 'title', name: 'title'},
             {data: 'balance', name: 'balance', sortable: false},
@@ -313,6 +316,7 @@
                 id: id
             },
             success: function (customer) {
+                $("#user_id_edit").val(customer.user_id).selectpicker('refresh');
                 $("#company_id_edit").val(customer.company_id).selectpicker('refresh');
                 $("#title_edit").val(customer.title);
                 $("#tax_number_edit").val(customer.tax_number);
@@ -354,6 +358,31 @@
             $("#deleting").html(selectedRows.data()[0].title ?? '');
         }
         $("#DeleteModal").modal('show');
+    }
+
+    function getUsers(company_id) {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.user.index') }}',
+            data: {
+                company_id: company_id
+            },
+            success: function (users) {
+                userIdCreate.empty();
+                userIdEdit.empty();
+                userIdCreate.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                userIdEdit.append(`<optgroup label=""><option value="" selected>Seçim Yok</optgroup>`);
+                $.each(users, function (index) {
+                    userIdCreate.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                    userIdEdit.append(`<option value="${users[index].id}">${users[index].name}</option>`);
+                });
+                userIdCreate.selectpicker('refresh');
+                userIdEdit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
     }
 
     function getCountries() {
@@ -589,6 +618,7 @@
         });
     }
 
+    getUsers(SelectedCompany.val());
     getCountries();
     getCustomerClasses(SelectedCompany.val());
     getCustomerTypes(SelectedCompany.val());
@@ -597,6 +627,7 @@
     getSectors(SelectedCompany.val());
 
     SelectedCompany.change(function () {
+        getUsers(SelectedCompany.val());
         getCustomerClasses(SelectedCompany.val());
         getCustomerTypes(SelectedCompany.val());
         getCustomerReferences(SelectedCompany.val());
@@ -635,6 +666,7 @@
 
     CreateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
+        var user_id = $("#user_id_create").val();
         var company_id = $("#company_id_create").val();
         var title = $("#title_create").val();
         var tax_number = $("#tax_number_create").val();
@@ -658,6 +690,7 @@
             saveCustomer({
                 _token: '{{ csrf_token() }}',
                 auth_user_id: auth_user_id,
+                user_id: user_id,
                 company_id: company_id,
                 title: title,
                 tax_number: tax_number,
@@ -681,6 +714,7 @@
     UpdateButton.click(function () {
         var auth_user_id = '{{ auth()->user()->id() }}';
         var id = $("#id_edit").val();
+        var user_id = $("#user_id_edit").val();
         var company_id = $("#company_id_edit").val();
         var title = $("#title_edit").val();
         var tax_number = $("#tax_number_edit").val();
@@ -705,6 +739,7 @@
                 _token: '{{ csrf_token() }}',
                 id: id,
                 auth_user_id: auth_user_id,
+                user_id: user_id,
                 company_id: company_id,
                 title: title,
                 tax_number: tax_number,

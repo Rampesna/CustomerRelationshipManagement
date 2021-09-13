@@ -8,10 +8,21 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
-                    Detaylı Arama
+                    <div class="row">
+                        <div class="col-xl-12">
+                            Detaylı Arama
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-xl-3">
+                            <label for="all_companies">Firma Seçimi</label>
+                            <select id="all_companies" class="form-control">
+                                <option value="0">Seçili Firma</option>
+                                <option value="1">Tüm Firmalar</option>
+                            </select>
+                        </div>
                         <div class="col-xl-2">
                             <div class="form-group">
                                 <label for="start_date">Başlangıç Tarihi</label>
@@ -24,7 +35,7 @@
                                 <input type="datetime-local" id="end_date" value="" class="form-control filterer">
                             </div>
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-xl-5">
                             <div class="form-group">
                                 <label for="subject_filterer">Konu</label>
                                 <input type="text" id="subject_filterer" class="form-control filterer">

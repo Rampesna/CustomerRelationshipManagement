@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->loadHelpers();
     }
 
     /**
@@ -33,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', AuthenticatedComposer::class);
         View::composer('*', CompaniesComposer::class);
+    }
+
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__ . '/../Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 }
