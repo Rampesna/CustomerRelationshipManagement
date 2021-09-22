@@ -38,9 +38,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('dashboard')->group(function () {
         Route::get('/', function () {
-            return redirect()->route('dashboard.index');
+            return redirect()->route('dashboard.index', ['tab' => 'index']);
         });
-        Route::get('index', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('Authority:1');
+        Route::get('{tab?}', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('Authority:1');
     });
 
     Route::prefix('opportunity')->group(function () {

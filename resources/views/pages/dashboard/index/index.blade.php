@@ -5,22 +5,24 @@
 
 @section('content')
 
-    @include('pages.dashboard.modals.modal-selector')
+    @include('pages.dashboard.index.modals.modal-selector')
 
-    @include('pages.dashboard.modals.create-meeting')
-    @include('pages.dashboard.modals.create-note')
+    @include('pages.dashboard.index.modals.create-meeting')
+    @include('pages.dashboard.index.modals.create-note')
 
-    @include('pages.dashboard.modals.edit-meeting')
-    @include('pages.dashboard.modals.edit-note')
+    @include('pages.dashboard.index.modals.edit-meeting')
+    @include('pages.dashboard.index.modals.edit-note')
 
-    @include('pages.dashboard.modals.show-note')
-    @include('pages.dashboard.modals.show-meeting')
+    @include('pages.dashboard.index.modals.show-note')
+    @include('pages.dashboard.index.modals.show-meeting')
 
-    @include('pages.dashboard.modals.show-opportunity')
-    @include('pages.dashboard.modals.show-activity')
-    @include('pages.dashboard.modals.show-offer')
+    @include('pages.dashboard.index.modals.show-opportunity')
+    @include('pages.dashboard.index.modals.show-activity')
+    @include('pages.dashboard.index.modals.show-offer')
 
-    <div class="row">
+    @include('pages.dashboard.layouts.subheader')
+
+    <div class="row mt-15">
         <div class="col-xl-2">
             <div class="form-group">
                 <label style="width: 100%">
@@ -122,9 +124,9 @@
 @endsection
 
 @section('page-styles')
-    @include('pages.dashboard.components.style')
+    @include('pages.dashboard.index.components.style')
 @stop
 
 @section('page-script')
-    @include('pages.dashboard.components.script')
+    @include('pages.dashboard.index.components.script')
 @stop

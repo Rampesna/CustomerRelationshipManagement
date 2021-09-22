@@ -89,7 +89,7 @@
     @yield('page-script')
 @endif
 
-<script src="{{ asset('assets/js/custom.js?v=2.8.3.0') }}"></script>
+<script src="{{ asset('assets/js/custom.js?v=2.9.1.7') }}"></script>
 @include('layouts.custom-scripts')
 
 </body>

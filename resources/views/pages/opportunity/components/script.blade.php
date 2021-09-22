@@ -54,6 +54,8 @@
     var DeleteButton = $("#DeleteButton");
     var ImportExcelButton = $("#ImportExcelButton");
     var AcceptCreateCustomerFromOpportunityButton = $("#AcceptCreateCustomerFromOpportunityButton");
+    var RedirectButton = $("#RedirectButton");
+    var RejectRedirectButton = $("#RejectRedirectButton");
 
     var opportunities = $('#opportunities').DataTable({
         language: {
@@ -354,6 +356,7 @@
                 $("#customer_id_edit").val(opportunity.customer_id).selectpicker('refresh');
                 $("#name_edit").val(opportunity.name);
                 $("#email_edit").val(opportunity.email);
+                $("#identification_number_edit").val(opportunity.identification_number);
                 $("#domestic_edit").val(opportunity.domestic).selectpicker('refresh');
                 $("#country_id_edit").val(opportunity.country_id).selectpicker('refresh');
                 $("#phone_number_edit").val(opportunity.phone_number);
@@ -807,6 +810,7 @@
         var customer_id = $("#customer_id_create").val();
         var name = $("#name_create").val();
         var email = $("#email_create").val();
+        var identification_number = $("#identification_number_create").val();
         var phone_number = $("#phone_number_create").val();
         var manager_name = $("#manager_name_create").val();
         var manager_email = $("#manager_email_create").val();
@@ -835,40 +839,69 @@
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
         } else {
-            saveOpportunity({
-                _token: '{{ csrf_token() }}',
-                auth_user_id: auth_user_id,
-                user_id: user_id,
-                company_id: company_id,
-                customer_id: customer_id,
-                name: name,
-                email: email,
-                phone_number: phone_number,
-                manager_name: manager_name,
-                manager_email: manager_email,
-                manager_phone_number: manager_phone_number,
-                website: website,
-                description: description,
-                date: date,
-                price: price,
-                currency: currency,
-                priority_id: priority_id,
-                access_type_id: access_type_id,
-                domestic: domestic,
-                country_id: country_id,
-                province_id: province_id,
-                district_id: district_id,
-                foundation_date: foundation_date,
-                estimated_result: estimated_result,
-                estimated_result_type_id: estimated_result_type_id,
-                capacity: capacity,
-                capacity_type_id: capacity_type_id,
-                status_id: status_id,
-                brands: brands,
-                sectors: sectors,
-                calendar: calendar,
-            }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
+            $.ajax({
+                type: 'get',
+                url: '{{ route('ajax.opportunity.check') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    phone_number: phone_number,
+                    email: email,
+                    identification_number: identification_number
+                },
+                success: function (response) {
+                    console.log(response)
+                    if (response.redirection === 1) {
+                        $('#redirect_id').val(response.opportunity.id);
+                        $('#RedirectModal').modal('show');
+                    } else {
+                        saveOpportunity({
+                            _token: '{{ csrf_token() }}',
+                            auth_user_id: auth_user_id,
+                            user_id: user_id,
+                            company_id: company_id,
+                            customer_id: customer_id,
+                            name: name,
+                            email: email,
+                            identification_number: identification_number,
+                            phone_number: phone_number,
+                            manager_name: manager_name,
+                            manager_email: manager_email,
+                            manager_phone_number: manager_phone_number,
+                            website: website,
+                            description: description,
+                            date: date,
+                            price: price,
+                            currency: currency,
+                            priority_id: priority_id,
+                            access_type_id: access_type_id,
+                            domestic: domestic,
+                            country_id: country_id,
+                            province_id: province_id,
+                            district_id: district_id,
+                            foundation_date: foundation_date,
+                            estimated_result: estimated_result,
+                            estimated_result_type_id: estimated_result_type_id,
+                            capacity: capacity,
+                            capacity_type_id: capacity_type_id,
+                            status_id: status_id,
+                            brands: brands,
+                            sectors: sectors,
+                            calendar: calendar,
+                        }, 'Yeni Fırsat Başarıyla Oluşturuldu', 'Fırsat Oluşturulurken Bir Hata Oluştu!', 0);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Kontroller Sağlanırken Sistemsel Bir Sorun Oluştu!');
+                }
+            });
         }
+    });
+
+    RedirectButton.click(function () {
+        $('#RedirectModal').modal('hide');
+        var id = $("#redirect_id").val();
+        window.open('{{ route('opportunity.show') }}/' + id + '/activity', '_self');
     });
 
     UpdateButton.click(function () {
@@ -879,6 +912,7 @@
         var customer_id = $("#customer_id_edit").val();
         var name = $("#name_edit").val();
         var email = $("#email_edit").val();
+        var identification_number = $("#identification_number_edit").val();
         var phone_number = $("#phone_number_edit").val();
         var manager_name = $("#manager_name_edit").val();
         var manager_email = $("#manager_email_edit").val();
@@ -916,6 +950,7 @@
                 customer_id: customer_id,
                 name: name,
                 email: email,
+                identification_number: identification_number,
                 phone_number: phone_number,
                 manager_name: manager_name,
                 manager_email: manager_email,

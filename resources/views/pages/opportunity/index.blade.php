@@ -10,6 +10,7 @@
     @include('pages.opportunity.modals.delete')
     @include('pages.opportunity.modals.import-excel')
     @include('pages.opportunity.modals.accept-create-customer-from-opportunity')
+    @include('pages.opportunity.modals.redirect')
 
     <div id="isMobile">
         <div class="row">

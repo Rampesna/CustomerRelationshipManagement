@@ -68,17 +68,17 @@ class ActivityController extends Controller
             );
         })->
         editColumn('relation_id', function ($activity) {
-            return @$activity->relation_type == 'App\\Models\\Opportunity' ? $activity->relation->name : (
-            @$activity->relation_type == 'App\\Models\\Customer' ? $activity->relation->title : (
-            @$activity->relation_type == 'App\\Models\\Manager' ? $activity->relation->name : @$activity->relation_id
+            return @$activity->relation_type == 'App\\Models\\Opportunity' && $activity->relation ? $activity->relation->name : (
+            @$activity->relation_type == 'App\\Models\\Customer' && $activity->relation ? $activity->relation->title : (
+            @$activity->relation_type == 'App\\Models\\Manager' && $activity->relation ? $activity->relation->name : @$activity->relation_id
             )
             );
         })->
         editColumn('company_id', function ($activity) {
-            return $activity->company_id ? @$activity->company->name : '';
+            return $activity->company ? @$activity->company->name : '';
         })->
         editColumn('user_id', function ($activity) {
-            return $activity->user_id ? @$activity->user->name : '';
+            return $activity->user ? @$activity->user->name : '';
         })->
         editColumn('start_date', function ($activity) {
             return $activity->start_date ? date('d.m.Y', strtotime($activity->start_date)) : '';
@@ -87,10 +87,10 @@ class ActivityController extends Controller
             return $activity->relation ? ($activity->relation->province ? $activity->relation->province->name : '') : '';
         })->
         editColumn('priority_id', function ($activity) {
-            return $activity->priority_id ? @$activity->priority->name : '';
+            return $activity->priority ? @$activity->priority->name : '';
         })->
         editColumn('meet_reason_id', function ($activity) {
-            return $activity->meet_reason_id ? @$activity->meetReason->name : '';
+            return $activity->meet_reason ? @$activity->meetReason->name : '';
         })->
         rawColumns(['customer_id', 'status_id'])->
         make(true);

@@ -57,6 +57,7 @@ class CustomerService
         $company_id,
         $name,
         $email,
+        $identificationNumber,
         $phoneNumber,
         $countryId,
         $provinceId,
@@ -71,6 +72,7 @@ class CustomerService
         $this->customer->company_id = $company_id;
         $this->customer->title = $name;
         $this->customer->email = $email;
+        $this->customer->tax_number = $identificationNumber;
         $this->customer->phone_number = $phoneNumber;
         $this->customer->website = $website;
         $this->customer->country_id = $countryId;

@@ -31,6 +31,18 @@ class OpportunityController extends Controller
         ])->where('company_id', $request->company_id)->get());
     }
 
+    public function check(Request $request)
+    {
+        $opportunity = Opportunity::where('phone_number', $request->phone_number)
+            ->orWhere('email', $request->email)
+            ->orWhere('identification_number', $request->identification_number)
+            ->first();
+        return response()->json([
+            'redirection' => $opportunity ? 1 : 0,
+            'opportunity' => $opportunity
+        ]);
+    }
+
     public function datatable(Request $request)
     {
         return Datatables::of(Opportunity::with([])->where('company_id', $request->company_id))->
@@ -366,6 +378,7 @@ class OpportunityController extends Controller
             $opportunity->company_id,
             $opportunity->name,
             $opportunity->email,
+            $opportunity->identification_number,
             $opportunity->phone_number,
             $opportunity->country_id,
             $opportunity->province_id,

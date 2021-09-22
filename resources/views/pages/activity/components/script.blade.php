@@ -151,6 +151,9 @@
                     company_id: SelectedCompany.val()
                 });
             },
+            error: function (error) {
+                console.log(error)
+            }
         },
         columns: [
             {data: 'id', name: 'id', width: '5%'},

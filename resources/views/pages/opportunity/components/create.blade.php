@@ -78,6 +78,16 @@
                     </div>
                     <div class="col-xl-3">
                         <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="identification_number_create">VKN/TCKN</label>
+                                    <input id="identification_number_create" type="text" class="form-control onlyNumber" maxlength="11">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="row">
                             <div class="col-xl-6">
                                 <div class="form-group">
                                     <label for="province_id_create">Şehir</label>

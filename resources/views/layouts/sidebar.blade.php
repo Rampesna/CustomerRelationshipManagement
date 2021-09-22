@@ -19,7 +19,7 @@
         <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
             <ul class="menu-nav">
 
-                <li class="menu-item {{ request()->segment(1) === 'dashboard' && request()->segment(2) === 'index' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                <li class="menu-item {{ request()->segment(1) === 'dashboard' ? 'menu-item-active' : null }}" aria-haspopup="true">
                     <a href="{{ route('dashboard.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >

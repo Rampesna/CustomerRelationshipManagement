@@ -73,6 +73,12 @@ $('.decimal').on("copy cut paste drop", function () {
     $(this).val(val);
 });
 
+$(".onlyNumber").keypress(function (e) {
+    if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
+        return false;
+    }
+});
+
 $('.mobile-phone-number').inputmask('(999) 999-99-99', {placeholder: '(___) ___-__-__'});
 
 $(".email-input-mask").inputmask({

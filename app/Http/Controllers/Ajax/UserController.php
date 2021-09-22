@@ -19,6 +19,36 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
+    public function allWithTarget(Request $request)
+    {
+        return response()->json(User::all()->map(function ($user) use ($request) {
+            $targets = Target::where('user_id', $user->id);
+            $opportunities = Opportunity::where('created_by', $user->id);
+            $activities = Activity::where('created_by', $user->id);
+
+            if ($request->start_date) {
+                $targets->where('start_date', '>=', $request->start_date);
+                $opportunities->where('created_at', '>=', $request->start_date);
+                $activities->where('created_at', '>=', $request->start_date);
+            }
+
+            if ($request->end_date) {
+                $targets->where('end_date', '<=', $request->end_date);
+                $opportunities->where('created_at', '<=', $request->end_date);
+                $activities->where('created_at', '<=', $request->end_date);
+            }
+
+            $target = $targets->get();
+            $opportunity = $opportunities->get();
+            $activity = $activities->get();
+
+            $user->opportunity_target = $opportunity->count() . ' / ' . $target->where('type', 'opportunity')->sum('target');
+            $user->activity_target = $activity->count() . ' / ' . $target->where('type', 'activity')->sum('target');
+
+            return $user;
+        }));
+    }
+
     public function index(Request $request)
     {
         return response()->json(Company::find($request->company_id)->users);

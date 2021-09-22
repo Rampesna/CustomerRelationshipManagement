@@ -55,6 +55,7 @@ Route::prefix('dashboard')->group(function () {
 
 Route::prefix('opportunity')->group(function () {
     Route::get('index', [OpportunityController::class, 'index'])->name('ajax.opportunity.index');
+    Route::get('check', [OpportunityController::class, 'check'])->name('ajax.opportunity.check');
     Route::get('datatable', [OpportunityController::class, 'datatable'])->name('ajax.opportunity.datatable');
     Route::get('reportDatatable', [OpportunityController::class, 'reportDatatable'])->name('ajax.opportunity.reportDatatable');
     Route::get('show', [OpportunityController::class, 'show'])->name('ajax.opportunity.show');
@@ -202,6 +203,7 @@ Route::prefix('meeting')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
+    Route::get('allWithTarget', [UserController::class, 'allWithTarget'])->name('ajax.user.all.with.target');
     Route::get('all', [UserController::class, 'all'])->name('ajax.user.all');
     Route::get('index', [UserController::class, 'index'])->name('ajax.user.index');
     Route::get('datatable', [UserController::class, 'datatable'])->name('ajax.user.datatable');

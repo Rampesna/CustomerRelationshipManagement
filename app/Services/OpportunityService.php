@@ -42,6 +42,7 @@ class OpportunityService
         $this->opportunity->customer_id = $request->customer_id;
         $this->opportunity->name = $request->name;
         $this->opportunity->email = $request->email;
+        $this->opportunity->identification_number = $request->identification_number;
         $this->opportunity->phone_number = $request->phone_number;
         $this->opportunity->manager_name = $request->manager_name;
         $this->opportunity->manager_email = $request->manager_email;

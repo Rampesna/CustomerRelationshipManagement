@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index($tab = 'index')
     {
-        return view('pages.dashboard.index');
+        try {
+            return view('pages.dashboard.' . $tab . '.index');
+        } catch (\Exception $exception) {
+            abort(404);
+        }
     }
 }
