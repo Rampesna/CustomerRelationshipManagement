@@ -11,6 +11,15 @@
         <div class="col-xl-2">
             <div class="form-group">
                 <label style="width: 100%">
+                    <select id="usersSelection" class="form-control selectpicker" data-live-search="true" title="Tümü" multiple>
+
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="col-xl-2">
+            <div class="form-group">
+                <label style="width: 100%">
                     <input type="date" id="start_date" class="form-control" value="{{ date('Y-m-01') }}">
                 </label>
             </div>

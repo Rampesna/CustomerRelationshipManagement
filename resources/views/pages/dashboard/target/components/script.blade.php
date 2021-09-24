@@ -2,16 +2,37 @@
 
     var FilterButton = $('#FilterButton');
     var usersRow = $('#usersRow');
+    var usersSelection = $('#usersSelection');
+
+    function getUsersForSelection() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.user.all') }}',
+            data: {},
+            success: function (users) {
+                usersSelection.empty();
+                $.each(users, function (i, user) {
+                    usersSelection.append(`<option value="${user.id}">${user.name}</option>`);
+                });
+                usersSelection.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
 
     function getUsers() {
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
+        var users = usersSelection.val();
         $.ajax({
             type: 'get',
             url: '{{ route('ajax.user.all.with.target') }}',
             data: {
                 start_date: start_date,
-                end_date: end_date
+                end_date: end_date,
+                users: users
             },
             success: function (users) {
                 usersRow.html('');
@@ -50,6 +71,7 @@
     }
 
     getUsers();
+    getUsersForSelection();
 
     FilterButton.click(function () {
         getUsers();

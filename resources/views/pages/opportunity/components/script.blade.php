@@ -838,6 +838,12 @@
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else if (name == null || name === '') {
+            toastr.warning('Müşteri Ünvanı Girilmesi Zorunludur!');
+        } else if (province_id == null || province_id === '') {
+            toastr.warning('Şehir Seçilmesi Zorunludur!');
+        } else if (phone_number == null || phone_number === '') {
+            toastr.warning('Telefon Girilmesi Zorunludur!');
         } else {
             $.ajax({
                 type: 'get',
@@ -940,6 +946,12 @@
 
         if (company_id == null || company_id === '') {
             toastr.warning('Firma Seçimi Yapılması Zorunludur!');
+        } else if (name == null || name === '') {
+            toastr.warning('Müşteri Ünvanı Girilmesi Zorunludur!');
+        } else if (province_id == null || province_id === '') {
+            toastr.warning('Şehir Seçilmesi Zorunludur!');
+        } else if (phone_number == null || phone_number === '') {
+            toastr.warning('Telefon Girilmesi Zorunludur!');
         } else {
             saveOpportunity({
                 _token: '{{ csrf_token() }}',

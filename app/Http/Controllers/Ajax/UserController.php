@@ -21,7 +21,13 @@ class UserController extends Controller
 
     public function allWithTarget(Request $request)
     {
-        return response()->json(User::all()->map(function ($user) use ($request) {
+        $users = User::with([]);
+
+        if (!empty($request->users) && count($request->users) > 0) {
+            $users->whereIn('id', $request->users);
+        }
+
+        return response()->json($users->get()->map(function ($user) use ($request) {
             $targets = Target::where('user_id', $user->id);
             $opportunities = Opportunity::where('created_by', $user->id);
             $activities = Activity::where('created_by', $user->id);
