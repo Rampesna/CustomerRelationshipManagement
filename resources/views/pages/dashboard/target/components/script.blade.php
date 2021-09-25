@@ -35,6 +35,7 @@
                 users: users
             },
             success: function (users) {
+                console.log(users)
                 usersRow.html('');
                 $.each(users, function (i, user) {
                     usersRow.append(`

@@ -21,6 +21,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ErpMatchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\TicketMessageController;
 
 Route::get('test', function () {
@@ -183,5 +184,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('ticket-message')->group(function () {
         Route::post('save', [TicketMessageController::class, 'save'])->name('ticket-message.save');
+    });
+
+    Route::prefix('video')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('video.index');
+        });
+        Route::get('index', [VideoController::class, 'index'])->name('video.index');
+        Route::get('settings', [VideoController::class, 'settings'])->name('video.settings');
     });
 });

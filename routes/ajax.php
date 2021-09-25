@@ -50,6 +50,7 @@ Route::post('setSelectedCompany', [DashboardController::class, 'setSelectedCompa
 
 Route::prefix('dashboard')->group(function () {
     Route::get('index', [DashboardController::class, 'index'])->name('ajax.dashboard.index');
+    Route::get('report', [DashboardController::class, 'report'])->name('ajax.dashboard.report');
     Route::get('calendar', [DashboardController::class, 'calendar'])->name('ajax.dashboard.calendar');
 });
 

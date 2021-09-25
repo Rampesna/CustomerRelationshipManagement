@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Definition;
 use App\Models\Meeting;
 use App\Models\Note;
 use App\Models\Offer;
@@ -79,6 +80,49 @@ class DashboardController extends Controller
                 date('Y-m-t 23:59:59', strtotime($request->end_date))
             ])->get()
         ], 200);
+    }
+
+    public function report(Request $request)
+    {
+        return response()->json([
+            'opportunityStatuses' => collect(
+                !empty($request->opportunity_statuses) && count($request->opportunity_statuses) > 0 ?
+                    Definition::where('company_id', $request->company_id)->where('name', 'Fırsat Durumları')->first()->definitions()->whereIn('id', $request->opportunity_statuses)->get() :
+                    Definition::where('company_id', $request->company_id)->where('name', 'Fırsat Durumları')->first()->definitions
+            )->map(function ($opportunityStatus) use ($request) {
+                $opportunityStatus->opportunities = Opportunity::where('status_id', $opportunityStatus->id)->whereBetween('created_at', [
+                    $request->start_date . ' 00:00:00',
+                    $request->end_date . ' 23:59:59'
+                ])->get();
+                return $opportunityStatus;
+            }),
+            'activityMeetingReasons' => collect(
+                !empty($request->activity_meeting_reasons) && count($request->activity_meeting_reasons) > 0 ?
+                    Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Görüşme Nedenleri')->first()->definitions()->whereIn('id', $request->activity_meeting_reasons)->get() :
+                    Definition::where('company_id', $request->company_id)->where('name', 'Aktivite Görüşme Nedenleri')->first()->definitions
+            )->map(function ($activityMeetingReason) use ($request) {
+                $activityMeetingReason->activities = Activity::where('meet_reason_id', $activityMeetingReason->id)->whereBetween('created_at', [
+                    $request->start_date . ' 00:00:00',
+                    $request->end_date . ' 23:59:59'
+                ])->get();
+                return $activityMeetingReason;
+            }),
+            'dates' => collect(
+                new \DatePeriod(new \DateTime($request->start_date), new \DateInterval('P1D'), (new \DateTime($request->end_date))->modify('+1 day'))
+            )->map(function ($date) use ($request) {
+                return [
+                    'date' => $date->format('Y-m-d'),
+                    'opportunities_count' => Opportunity::where('company_id', $request->company_id)->whereBetween('created_at', [
+                        $date->format('Y-m-d') . ' 00:00:00',
+                        $date->format('Y-m-d') . ' 23:59:59'
+                    ])->count(),
+                    'activities_count' => Activity::where('company_id', $request->company_id)->whereBetween('created_at', [
+                        $date->format('Y-m-d') . ' 00:00:00',
+                        $date->format('Y-m-d') . ' 23:59:59'
+                    ])->count()
+                ];
+            })
+        ]);
     }
 
     public function setSelectedCompany(Request $request)

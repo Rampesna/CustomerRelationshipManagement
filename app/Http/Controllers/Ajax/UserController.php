@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Company;
+use App\Models\Definition;
 use App\Models\Opportunity;
 use App\Models\Target;
 use App\Models\User;
