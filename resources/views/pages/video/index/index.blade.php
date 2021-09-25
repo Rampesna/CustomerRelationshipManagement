@@ -9,7 +9,7 @@
         <a href="{{ route('video.settings') }}" class="dropdown-item cursor-pointer">
             <div class="row">
                 <div class="col-xl-12">
-                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Videoları Düzenle</span>
+                    <i class="far fa-dot-circle text-primary"></i><span class="ml-4">Videoları Düzenle</span>
                 </div>
             </div>
         </a>

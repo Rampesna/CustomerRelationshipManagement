@@ -35,9 +35,9 @@
 @endsection
 
 @section('page-styles')
-    @include('pages.video.index.components.style')
+    @include('pages.video.setting.components.style')
 @stop
 
 @section('page-script')
-    @include('pages.video.index.components.script')
+    @include('pages.video.setting.components.script')
 @stop
