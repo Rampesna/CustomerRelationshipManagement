@@ -257,6 +257,11 @@ Route::prefix('setting')->group(function () {
     Route::post('updateSystemSettings', [\App\Http\Controllers\Ajax\SettingController::class, 'updateSystemSettings'])->name('ajax.setting.updateSystemSettings');
 });
 
+Route::prefix('backupSetting')->group(function () {
+    Route::get('show', [\App\Http\Controllers\Ajax\BackupSettingController::class, 'show'])->name('ajax.backupSetting.show');
+    Route::post('update', [\App\Http\Controllers\Ajax\BackupSettingController::class, 'update'])->name('ajax.backupSetting.update');
+});
+
 Route::prefix('erpMatch')->group(function () {
     Route::get('datatable', [\App\Http\Controllers\Ajax\ErpMatchController::class, 'datatable'])->name('ajax.erpMatch.datatable');
     Route::post('save', [\App\Http\Controllers\Ajax\ErpMatchController::class, 'save'])->name('ajax.erpMatch.save');

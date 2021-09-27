@@ -34,11 +34,15 @@ class BackupDatabase extends Command
         $DbName = env('DB_DATABASE');
         $path = BackupSetting::find(1)->database_backup_path;
 
+        if (substr($path, -1) != "/") {
+            $path .= "/";
+        }
+
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
-        $file_name = $path . 'database_backup_on_' . date('YmdHis') . '.sql';
+        $file_name = $path . date('YmdHis') . '.sql';
 
         $tables = [];
         $queryTables = \DB::select(\DB::raw('SHOW TABLES'));
