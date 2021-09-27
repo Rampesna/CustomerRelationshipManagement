@@ -3,6 +3,10 @@
 
 <script>
 
+    var CreateButton = $("#CreateButton");
+    var UpdateButton = $("#UpdateButton");
+    var DeleteButton = $("#DeleteButton");
+
     var videos = $('#videos').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -59,8 +63,8 @@
             url: '{{ route('ajax.video.datatable') }}'
         },
         columns: [
-            {data: 'id', name: 'id'},
-            {data: 'name', name: 'name'},
+            {data: 'id', name: 'id', width: '3%'},
+            {data: 'name', name: 'name', width: '22%'},
             {data: 'url', name: 'url'},
         ],
         responsive: true,
@@ -215,7 +219,7 @@
         } else if (url == null || url === '') {
             toastr.warning('URL Boş Olamaz!');
         } else {
-            saveUser({
+            saveVideo({
                 _token: '{{ csrf_token() }}',
                 auth_user_id: auth_user_id,
                 name: name,
@@ -237,7 +241,7 @@
         } else if (url == null || url === '') {
             toastr.warning('URL Boş Olamaz!');
         } else {
-            saveUser({
+            saveVideo({
                 _token: '{{ csrf_token() }}',
                 auth_user_id: auth_user_id,
                 id: id,
@@ -252,14 +256,14 @@
         var id = $("#id_edit").val();
         $.ajax({
             type: 'delete',
-            url: '{{ route('ajax.user.drop') }}',
+            url: '{{ route('ajax.video.drop') }}',
             data: {
                 _token: '{{ csrf_token() }}',
                 id: id
             },
             success: function () {
                 toastr.success('Başarıyla Silindi');
-                users.ajax.reload().draw();
+                videos.ajax.reload().draw();
             },
             error: function (error) {
                 console.log(error);
@@ -271,7 +275,7 @@
     function saveVideo(data, successMessage, errorMessage, direction) {
         $.ajax({
             type: 'post',
-            url: '{{ route('ajax.user.save') }}',
+            url: '{{ route('ajax.video.save') }}',
             data: data,
             success: function (response) {
                 toastr.success(successMessage);

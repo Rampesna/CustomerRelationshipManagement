@@ -15,6 +15,8 @@
         </a>
     </div>
 
+    <div class="row" id="videosRow"></div>
+
 @endsection
 
 @section('page-styles')
