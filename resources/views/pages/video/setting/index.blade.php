@@ -5,6 +5,31 @@
 
 @section('content')
 
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card" id="videosCard">
+                <div class="card-body">
+                    <table class="table" id="videos">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Video Başlığı</th>
+                            <th>URL</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Video Başlığı</th>
+                            <th>URL</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
         <a onclick="create()" class="dropdown-item cursor-pointer">
             <div class="row">
