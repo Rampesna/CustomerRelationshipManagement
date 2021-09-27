@@ -363,7 +363,7 @@
                 console.log(response)
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 console.log(error)
             }
         });

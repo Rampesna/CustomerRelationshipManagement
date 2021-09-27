@@ -691,7 +691,7 @@
                 priceLists.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 console.log(error)
             }
         });
@@ -909,7 +909,7 @@
                 priceListItems.ajax.reload().draw();
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 console.log(error)
             }
         });

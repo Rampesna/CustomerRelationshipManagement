@@ -345,7 +345,7 @@
                 roles.ajax.reload().draw();
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 console.log(error)
             }
         });

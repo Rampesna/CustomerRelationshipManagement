@@ -56,24 +56,239 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('ajax.video.datatable') }}',
-            data: function (d) {
-                return $.extend({}, d, {
-                    listing: listing.val()
-                });
-            },
+            url: '{{ route('ajax.video.datatable') }}'
         },
         columns: [
             {data: 'id', name: 'id'},
             {data: 'name', name: 'name'},
-            {data: 'email', name: 'email'},
-            {data: 'phone_number', name: 'phone_number'},
-            {data: 'role_id', name: 'role_id'},
+            {data: 'url', name: 'url'},
         ],
         responsive: true,
         stateSave: true,
         select: 'single'
     });
+
+    var CreateRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'create_rightbar_close',
+                toggleBy: 'create_rightbar_toggle'
+            });
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+                    height = height - 2;
+                    return height;
+                }
+            });
+        }
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('CreateRightbar');
+                if (!_element) {
+                    return;
+                }
+                // Initialize
+                _init();
+            },
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    CreateRightBar.init();
+
+    var EditRightBar = function () {
+        var _element;
+        var _offcanvasObject;
+        var _init = function () {
+            var header = KTUtil.find(_element, '.offcanvas-header');
+            var content = KTUtil.find(_element, '.offcanvas-content');
+            _offcanvasObject = new KTOffcanvas(_element, {
+                overlay: true,
+                baseClass: 'offcanvas',
+                placement: 'right',
+                closeBy: 'edit_rightbar_close',
+                toggleBy: 'edit_rightbar_toggle'
+            });
+            KTUtil.scrollInit(content, {
+                disableForMobile: true,
+                resetHeightOnDestroy: true,
+                handleWindowResize: true,
+                height: function () {
+                    var height = parseInt(KTUtil.getViewPort().height);
+                    if (header) {
+                        height = height - parseInt(KTUtil.actualHeight(header));
+                        height = height - parseInt(KTUtil.css(header, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(header, 'marginBottom'));
+                    }
+                    if (content) {
+                        height = height - parseInt(KTUtil.css(content, 'marginTop'));
+                        height = height - parseInt(KTUtil.css(content, 'marginBottom'));
+                    }
+                    height = height - parseInt(KTUtil.css(_element, 'paddingTop'));
+                    height = height - parseInt(KTUtil.css(_element, 'paddingBottom'));
+                    height = height - 2;
+                    return height;
+                }
+            });
+        }
+        // Public methods
+        return {
+            init: function () {
+                _element = KTUtil.getById('EditRightbar');
+                if (!_element) {
+                    return;
+                }
+                // Initialize
+                _init();
+            },
+            getElement: function () {
+                return _element;
+            }
+        };
+    }();
+    EditRightBar.init();
+
+    function create() {
+        $("#CreateForm").trigger('reset');
+        $("#create_rightbar_toggle").trigger('click');
+    }
+
+    function edit() {
+        $("#edit_rightbar_toggle").trigger('click');
+        $("#EditRightbar").hide();
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('ajax.video.show') }}',
+            data: {
+                id: id
+            },
+            success: function (video) {
+                $("#name_edit").val(video.name);
+                $("#url_edit").val(video.url);
+                $("#EditRightbar").fadeIn(250);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function drop() {
+        var selectedRows = videos.rows({selected: true});
+        if (selectedRows.count() > 0) {
+            $("#deleting").html(selectedRows.data()[0].name ?? '');
+        }
+        $("#DeleteModal").modal('show');
+    }
+
+    CreateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var name = $("#name_create").val();
+        var url = $("#url_create").val();
+        if (name == null || name === '') {
+            toastr.warning('Video Başlığı Boş Olamaz!');
+        } else if (url == null || url === '') {
+            toastr.warning('URL Boş Olamaz!');
+        } else {
+            saveUser({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                name: name,
+                url: url,
+            }, 'Yeni Video Başarıyla Oluşturuldu', 'Video Oluşturulurken Bir Hata Oluştu!', 0);
+        }
+    });
+
+    UpdateButton.click(function () {
+        var auth_user_id = '{{ auth()->user()->id() }}';
+        var id = $("#id_edit").val();
+        var name = $("#name_edit").val();
+        var url = $("#url_edit").val();
+
+        if (id == null || id === '') {
+            toastr.warning('Sistemsel Bir Sorun Oluştu. Sayfayı Yenileyip Tekrar Deneyin.');
+        } else if (name == null || name === '') {
+            toastr.warning('Video Başlığı Boş Olamaz!');
+        } else if (url == null || url === '') {
+            toastr.warning('URL Boş Olamaz!');
+        } else {
+            saveUser({
+                _token: '{{ csrf_token() }}',
+                auth_user_id: auth_user_id,
+                id: id,
+                name: name,
+                url: url,
+            }, 'Video Başarıyla Güncellendi', 'Video Güncellenirken Bir Hata Oluştu!', 1);
+        }
+    });
+
+    DeleteButton.click(function () {
+        $("#DeleteModal").modal('hide');
+        var id = $("#id_edit").val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('ajax.user.drop') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                users.ajax.reload().draw();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Silinirken Sistemsel Bir Hata Oluştu!');
+            }
+        });
+    });
+
+    function saveVideo(data, successMessage, errorMessage, direction) {
+        $.ajax({
+            type: 'post',
+            url: '{{ route('ajax.user.save') }}',
+            data: data,
+            success: function (response) {
+                toastr.success(successMessage);
+                if (direction === 0) {
+                    $("#create_rightbar_toggle").click();
+                } else if (direction === 1) {
+                    $("#edit_rightbar_toggle").click();
+                }
+                var currentPage = videos.page.info().page;
+                videos.ajax.reload().page(currentPage).draw('page');
+            },
+            error: function (error) {
+                toastr.error(errorMessage);
+                console.log(error)
+            }
+        });
+    }
 
     $('body').on('contextmenu', function (e) {
         var selectedRows = videos.rows({selected: true});

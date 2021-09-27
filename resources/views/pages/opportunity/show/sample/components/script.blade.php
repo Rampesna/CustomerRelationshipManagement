@@ -648,7 +648,7 @@
                 samples.ajax.reload().page(currentPage).draw('page');
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 console.log(error)
             }
         });

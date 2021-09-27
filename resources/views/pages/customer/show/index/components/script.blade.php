@@ -260,7 +260,7 @@
                 location.reload();
             },
             error: function (error) {
-                toastr.success(errorMessage);
+                toastr.error(errorMessage);
                 $("#loader").fadeOut(250);
                 console.log(error)
             }

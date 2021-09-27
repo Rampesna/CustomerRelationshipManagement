@@ -5,6 +5,10 @@
 
 @section('content')
 
+    @include('pages.video.setting.components.create')
+    @include('pages.video.setting.components.edit')
+    @include('pages.video.setting.modals.delete')
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="videosCard">
