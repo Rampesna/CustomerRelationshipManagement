@@ -1,4 +1,4 @@
-<div class="modal fade" id="RedirectModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+<div class="modal fade" id="RedirectModal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width:900px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <input type="hidden" id="redirect_id">
                 <p>
-                    Bu GSM, E-posta veya VKN/TCKN Bilgisine Ait Bir Fırsat Zaten Mevcut!
+                    <span id="exists_type"></span> Bilgisine Ait Bir Fırsat Zaten Mevcut!
                     <br><br>
                     Fırsat Ekranına Giderek Aktivite Eklemek İster misiniz?
                 </p>

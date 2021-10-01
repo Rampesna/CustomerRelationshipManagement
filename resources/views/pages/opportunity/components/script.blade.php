@@ -855,9 +855,9 @@
                     identification_number: identification_number
                 },
                 success: function (response) {
-                    console.log(response)
-                    if (response.redirection === 1) {
+                    if (response.exists === 1) {
                         $('#redirect_id').val(response.opportunity.id);
+                        $('#exists_type').html(response.type);
                         $('#RedirectModal').modal('show');
                     } else {
                         saveOpportunity({

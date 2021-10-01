@@ -33,13 +33,40 @@ class OpportunityController extends Controller
 
     public function check(Request $request)
     {
-        $opportunity = Opportunity::where('phone_number', $request->phone_number)
-            ->orWhere('email', $request->email)
-            ->orWhere('identification_number', $request->identification_number)
-            ->first();
+        if ($request->phone_number != '') {
+            if ($opportunity = Opportunity::where('phone_number', $request->phone_number)->first()) {
+                return response()->json([
+                    'exists' => 1,
+                    'type' => 'Telefon Numarası',
+                    'opportunity' => $opportunity
+                ]);
+            }
+        }
+
+        if ($request->email != '') {
+            if ($opportunity = Opportunity::where('email', $request->email)->first()) {
+                return response()->json([
+                    'exists' => 1,
+                    'type' => 'E-posta Adresi',
+                    'opportunity' => $opportunity
+                ]);
+            }
+        }
+
+        if ($request->identification_number != '') {
+            if ($opportunity = Opportunity::where('identification_number', $request->identification_number)->first()) {
+                return response()->json([
+                    'exists' => 1,
+                    'type' => 'VKN/TCKN',
+                    'opportunity' => $opportunity
+                ]);
+            }
+        }
+
         return response()->json([
-            'redirection' => $opportunity ? 1 : 0,
-            'opportunity' => $opportunity
+            'exists' => 0,
+            'type' => '',
+            'opportunity' => null
         ]);
     }
 
