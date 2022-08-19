@@ -32,4 +32,16 @@ class CompanyService
 
         return $this->company;
     }
+
+    public function getAll()
+    {
+        return Company::all()->map(function ($company) {
+            return [
+                'id' => $company->id,
+                'name' => $company->name,
+                'tax_number' => $company->tax_number,
+                'tax_office' => $company->tax_office,
+            ];
+        });
+    }
 }

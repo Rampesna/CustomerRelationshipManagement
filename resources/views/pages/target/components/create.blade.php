@@ -1,4 +1,4 @@
-<div id="CreateRightbar" style="width: 1100px" class="offcanvas offcanvas-right p-10">
+<div id="CreateRightbar" style="width: 1100px; max-width: 90%" class="offcanvas offcanvas-right p-10">
     <input type="hidden" id="create_rightbar_toggle">
     <form id="CreateForm">
         <div class="offcanvas-content">

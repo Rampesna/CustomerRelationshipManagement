@@ -86,6 +86,81 @@ class OpportunityService
         return $this->opportunity;
     }
 
+    public function saveWithParams(
+        $id,
+        $userId,
+        $companyId,
+        $customerId,
+        $name,
+        $email,
+        $identificationNumber,
+        $phoneNumber,
+        $managerName,
+        $managerEmail,
+        $managerPhoneNumber,
+        $website,
+        $description,
+        $date,
+        $price,
+        $currency,
+        $priorityId,
+        $accessTypeId,
+        $domestic,
+        $countryId,
+        $provinceId,
+        $districtId,
+        $foundationDate,
+        $estimatedResult,
+        $estimatedResultTypeId,
+        $capacity,
+        $capacityTypeId,
+        $statusId,
+        $calendar,
+        $createdBy,
+        $lastUpdatedBy,
+        $brands,
+        $sectors
+    )
+    {
+        $opportunity = $id ? Opportunity::find($id) : new Opportunity;
+        $opportunity->user_id = $userId;
+        $opportunity->company_id = $companyId;
+        $opportunity->customer_id = $customerId;
+        $opportunity->name = $name;
+        $opportunity->email = $email;
+        $opportunity->identification_number = $identificationNumber;
+        $opportunity->phone_number = $phoneNumber;
+        $opportunity->manager_name = $managerName;
+        $opportunity->manager_email = $managerEmail;
+        $opportunity->manager_phone_number = $managerPhoneNumber;
+        $opportunity->website = $website;
+        $opportunity->description = $description;
+        $opportunity->date = $date;
+        $opportunity->price = $price;
+        $opportunity->currency = $currency;
+        $opportunity->priority_id = $priorityId;
+        $opportunity->access_type_id = $accessTypeId;
+        $opportunity->domestic = $domestic;
+        $opportunity->country_id = $countryId;
+        $opportunity->province_id = $provinceId;
+        $opportunity->district_id = $districtId;
+        $opportunity->foundation_date = $foundationDate;
+        $opportunity->estimated_result = $estimatedResult;
+        $opportunity->estimated_result_type_id = $estimatedResultTypeId;
+        $opportunity->capacity = $capacity;
+        $opportunity->capacity_type_id = $capacityTypeId;
+        $opportunity->status_id = $statusId;
+        $opportunity->calendar = $calendar;
+        $opportunity->created_by = $createdBy;
+        $opportunity->last_updated_by = $lastUpdatedBy;
+        $opportunity->save();
+
+        $opportunity->brands()->syncWithPivotValues($brands, ['relation_type' => 'App\\Models\\Opportunity']);
+        $opportunity->sectors()->syncWithPivotValues($sectors, ['relation_type' => 'App\\Models\\Opportunity']);
+
+        return $opportunity;
+    }
+
     public function import(Request $request)
     {
         if (!$request->hasFile('excel')) {

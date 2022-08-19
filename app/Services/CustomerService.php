@@ -88,4 +88,44 @@ class CustomerService
 
         return $this->customer;
     }
+
+    public function getByCompanyId(
+        $company_id
+    )
+    {
+        return Customer::where('company_id', $company_id)->get()->map(function ($customer) {
+            return [
+                'id' => $customer->id,
+                'title' => $customer->title,
+                'tax_number' => $customer->tax_number,
+                'tax_office' => $customer->tax_office,
+                'email' => $customer->email,
+                'phone_number' => $customer->phone_number,
+                'website' => $customer->website,
+                'country_id' => $customer->country_id,
+                'province_id' => $customer->province_id,
+                'district_id' => $customer->district_id,
+                'foundation_date' => $customer->foundation_date,
+                'class_id' => $customer->class_id,
+                'type_id' => $customer->type_id,
+                'reference_id' => $customer->reference_id,
+                'created_at' => $customer->created_at,
+                'updated_at' => $customer->updated_at,
+                'created_by' => $customer->created_by,
+                'updated_by' => $customer->updated_by,
+                'brands' => $customer->brands()->get()->map(function ($brand) {
+                    return [
+                        'id' => $brand->id,
+                        'name' => $brand->name,
+                    ];
+                }),
+                'sectors' => $customer->sectors()->get()->map(function ($sector) {
+                    return [
+                        'id' => $sector->id,
+                        'name' => $sector->name,
+                    ];
+                }),
+            ];
+        });
+    }
 }

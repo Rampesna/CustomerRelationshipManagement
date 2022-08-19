@@ -54,4 +54,40 @@ class UserService
 
         return $this->user;
     }
+
+    public function getAll()
+    {
+        return User::all()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+            ];
+        });
+    }
+
+    public function getById(
+        $id
+    )
+    {
+        return User::find($id);
+    }
+
+    public function getByEmail(
+        $email
+    )
+    {
+        return User::where('email', $email)->first();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function generateSanctumToken(
+        User $user
+    )
+    {
+        return $user->createToken('userApiToken')->plainTextToken;
+    }
 }

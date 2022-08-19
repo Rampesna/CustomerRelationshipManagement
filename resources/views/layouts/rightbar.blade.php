@@ -1,4 +1,4 @@
-<div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
+<div id="kt_quick_user" style="max-width: 90%" class="offcanvas offcanvas-right p-10">
     <!--begin::Header-->
     <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
         <h3 class="font-weight-bold m-0">Profilim</h3>

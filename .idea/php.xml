@@ -133,6 +133,7 @@
       <path value="$PROJECT_DIR$/vendor/cyber-duck/laravel-excel" />
       <path value="$PROJECT_DIR$/vendor/spatie/db-dumper" />
       <path value="$PROJECT_DIR$/vendor/codecheef/backup" />
+      <path value="$PROJECT_DIR$/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

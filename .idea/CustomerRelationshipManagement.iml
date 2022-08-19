@@ -140,6 +140,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/cyber-duck/laravel-excel" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/db-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codecheef/backup" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sanctum" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

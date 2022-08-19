@@ -1,4 +1,4 @@
-<div id="EditRightbar" style="width: 1500px" class="offcanvas offcanvas-right p-10">
+<div id="EditRightbar" style="width: 1500px; max-width: 90%" class="offcanvas offcanvas-right p-10">
     <input type="hidden" id="edit_rightbar_toggle">
     <input type="hidden" id="id_edit">
     <form id="EditForm">

@@ -1,4 +1,4 @@
-<div id="CreateRightbar" style="width: 1500px" class="offcanvas offcanvas-right p-10">
+<div id="CreateRightbar" style="width: 1500px; max-width: 90%" class="offcanvas offcanvas-right p-10">
     <input type="hidden" id="create_rightbar_toggle">
     <div class="offcanvas-content">
         <div class="offcanvas-wrapper mb-5 scroll-pull">
