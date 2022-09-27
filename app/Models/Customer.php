@@ -20,6 +20,11 @@ class Customer extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function dealer()
+    {
+        return $this->belongsTo(Dealer::class);
+    }
+
     public function country()
     {
         return $this->belongsTo(Country::class);

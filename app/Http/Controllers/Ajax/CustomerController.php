@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Dealer;
 use App\Models\Definition;
 use App\Models\Manager;
 use App\Models\Offer;
@@ -33,6 +34,9 @@ class CustomerController extends Controller
     public function datatable(Request $request)
     {
         return Datatables::of(Customer::with([])->where('company_id', $request->company_id))->
+        filterColumn('dealer_id', function ($customers, $keyword) {
+            return $customers->whereIn('dealer_id', Dealer::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
+        })->
         filterColumn('user_id', function ($customers, $keyword) {
             return $customers->whereIn('user_id', User::where('name', 'like', '%' . $keyword . '%')->pluck('id'));
         })->
@@ -62,6 +66,9 @@ class CustomerController extends Controller
         })->
         editColumn('email', function ($customer) {
             return '<a href="mailto:' . $customer->email . '">' . $customer->email . '</a>';
+        })->
+        editColumn('dealer_id', function ($customer) {
+            return $customer->dealer ? @$customer->dealer->name : '';
         })->
         editColumn('user_id', function ($customer) {
             return $customer->user ? @$customer->user->name : '';

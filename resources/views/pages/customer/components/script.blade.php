@@ -144,6 +144,7 @@
         },
         columns: [
             {data: 'id', name: 'id'},
+            {data: 'dealer_id', name: 'dealer_id'},
             {data: 'user_id', name: 'user_id'},
             {data: 'company_id', name: 'company_id'},
             {data: 'title', name: 'title'},
